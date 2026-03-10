@@ -1,11 +1,11 @@
 export function nextNote({
-  nextNoteTime,
-  currentStep,
+  nextNoteTimeRef,
+  currentStepRef,
   secondsPerStep,
   stepCount,
 }) {
-  nextNoteTime.current = nextNoteTime.current + secondsPerStep;
-  currentStep.current = (currentStep.current + 1) % stepCount;
+  nextNoteTimeRef.current = nextNoteTimeRef.current + secondsPerStep;
+  currentStepRef.current = (currentStepRef.current + 1) % stepCount;
 }
 
 export function handleBPM(event, setTempo) {
@@ -30,8 +30,7 @@ export function handleStart({
   audioContextRef,
   isPlaying,
   setIsPlaying,
-  nextNoteTime,
-  secondsPerStep,
+  nextNoteTimeRef,
   stopPlayback,
 }) {
   const context = audioContextRef.current;
@@ -45,7 +44,7 @@ export function handleStart({
     return;
   }
 
-  nextNoteTime.current = context.currentTime;
+  nextNoteTimeRef.current = context.currentTime;
   if (context.state === "suspended") {
     context.resume();
   }
@@ -58,7 +57,7 @@ export function stopPlayback(audioContextRef) {
   }
 }
 
-export function triggerSample(
+function triggerSample(
   { drumStateRef, audioBufferRefs, audioContextRef },
   currentStepRef,
   time,
@@ -86,27 +85,32 @@ export function updateActiveStep(index, type, drumState) {
 
 export function scheduler({
   audioContextRef,
-  nextNoteTime,
-  currentStep,
+  nextNoteTimeRef,
+  currentStepRef,
   secondsPerStep,
   stepCount,
   sequencerClockId,
+  drumStateRef,
+  audioBufferRefs,
   LOOKAHEAD_MS,
   SCHEDULE_AHEAD_SECONDS,
-  triggerSampleFn,
 }) {
   function loop() {
     if (!audioContextRef.current) {
       return;
     }
     while (
-      nextNoteTime.current <
+      nextNoteTimeRef.current <
       audioContextRef.current.currentTime + SCHEDULE_AHEAD_SECONDS
     ) {
-      triggerSampleFn(currentStep, nextNoteTime.current);
+      triggerSample(
+        { drumStateRef, audioBufferRefs, audioContextRef },
+        currentStepRef,
+        nextNoteTimeRef.current,
+      );
       nextNote({
-        nextNoteTime,
-        currentStep,
+        nextNoteTimeRef,
+        currentStepRef,
         secondsPerStep,
         stepCount,
       });
