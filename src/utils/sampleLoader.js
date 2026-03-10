@@ -4,10 +4,12 @@ export async function fetchDecodeSample(path, audioContextRef) {
   return audioContextRef.current.decodeAudioData(arrayBuffer);
 }
 
-export async function loadSamples({ audioContextRef, audioBufferRefs, drumStateRef }) {
-  for (const [sampleType, buffer] of Object.entries(
-    audioBufferRefs.current,
-  )) {
+export async function loadSamples({
+  audioContextRef,
+  audioBufferRefs,
+  drumStateRef,
+}) {
+  for (const [sampleType, buffer] of Object.entries(audioBufferRefs.current)) {
     if (buffer) {
       return;
     }
@@ -21,7 +23,11 @@ export async function loadSamples({ audioContextRef, audioBufferRefs, drumStateR
   }
 }
 
-export async function initDrumMachine({ audioContextRef, audioBufferRefs, drumStateRef }) {
+export async function initDrumMachine({
+  audioContextRef,
+  audioBufferRefs,
+  drumStateRef,
+}) {
   if (!audioContextRef.current) {
     audioContextRef.current = new AudioContext();
     await loadSamples({ audioContextRef, audioBufferRefs, drumStateRef });
