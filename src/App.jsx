@@ -1,4 +1,3 @@
-import React from "react";
 import Sequencer from "./View/Sequencer";
 
 function App() {
