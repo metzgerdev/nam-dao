@@ -1,4 +1,9 @@
-export function nextNote({ nextNoteTime, currentStep, secondsPerStep, stepCount }) {
+export function nextNote({
+  nextNoteTime,
+  currentStep,
+  secondsPerStep,
+  stepCount,
+}) {
   nextNoteTime.current = nextNoteTime.current + secondsPerStep;
   currentStep.current = (currentStep.current + 1) % stepCount;
 }
@@ -53,7 +58,11 @@ export function stopPlayback(audioContextRef) {
   }
 }
 
-export function triggerSample({ drumStateRef, audioBufferRefs, audioContextRef }, currentStepRef, time) {
+export function triggerSample(
+  { drumStateRef, audioBufferRefs, audioContextRef },
+  currentStepRef,
+  time,
+) {
   for (const sampleType in drumStateRef.current) {
     const { activeSteps } = drumStateRef.current[sampleType];
     if (activeSteps.has(currentStepRef.current)) {

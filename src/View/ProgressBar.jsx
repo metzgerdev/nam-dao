@@ -1,7 +1,10 @@
 import React, { memo, useEffect, useState } from "react";
 
-const ProgressBar = memo(function ProgressBar({ steps, currentStepRef, isPlaying }) {
-
+const ProgressBar = memo(function ProgressBar({
+  steps,
+  currentStepRef,
+  isPlaying,
+}) {
   const [uiStep, setUiStep] = useState(currentStepRef.current ?? 0);
 
   useEffect(() => {
@@ -12,9 +15,8 @@ const ProgressBar = memo(function ProgressBar({ steps, currentStepRef, isPlaying
     function syncStep() {
       const nextStep = currentStepRef.current ?? 0;
       setUiStep((previousStep) => {
-        return previousStep === nextStep ? previousStep : nextStep
-      }
-      );
+        return previousStep === nextStep ? previousStep : nextStep;
+      });
       animationFrameId = requestAnimationFrame(syncStep);
     }
 
