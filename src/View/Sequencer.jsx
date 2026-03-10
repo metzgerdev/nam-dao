@@ -7,7 +7,6 @@ import {
   handlePatternChange,
   handleStart,
   stopPlayback,
-  triggerSample,
   updateActiveStep,
   scheduler,
 } from "../utils/playback";
@@ -21,10 +20,11 @@ function Sequencer() {
   const steps = new Array(stepCount).fill(false);
   const [drumState, setDrumState] = useState(instruments);
   const [isPlaying, setIsPlaying] = useState(false);
+  // refs are used instead of state to avoid rerender based on audio clock
   const drumStateRef = useRef(instruments);
   const audioContextRef = useRef(null);
-  const nextNoteTime = useRef(0);
-  const currentStep = useRef(0);
+  const nextNoteTimeRef = useRef(0);
+  const currentStepRef = useRef(0);
   const sequencerClockId = useRef(null);
   const audioBufferRefs = useRef(
     instrumentRows.reduce((acc, curr) => {
@@ -45,19 +45,15 @@ function Sequencer() {
     if (isPlaying) {
       scheduler({
         audioContextRef,
-        nextNoteTime,
-        currentStep,
+        nextNoteTimeRef,
+        currentStepRef,
         secondsPerStep,
         stepCount,
         sequencerClockId,
         LOOKAHEAD_MS,
         SCHEDULE_AHEAD_SECONDS,
-        triggerSampleFn: (stepRef, time) =>
-          triggerSample(
-            { drumStateRef, audioBufferRefs, audioContextRef },
-            stepRef,
-            time,
-          ),
+        drumStateRef,
+        audioBufferRefs,
       });
     }
 
@@ -81,14 +77,15 @@ function Sequencer() {
           <div className="tempo-group">
             <label htmlFor="bpm">{`Tempo ${tempo} BPM`}</label>
             <input
-              onInput={(e) => handleBPM(e, setTempo)}
+              onInput={(e) => {
+                return handleBPM(e, setTempo)}}
               name="bpm"
               id="bpm"
               type="range"
               min="60"
               max="200"
               value={tempo}
-              step="5"
+              step="1"
             />
           </div>
           <button
@@ -100,7 +97,7 @@ function Sequencer() {
                 isPlaying,
                 setIsPlaying,
                 secondsPerStep,
-                nextNoteTime,
+                nextNoteTimeRef,
                 stopPlayback: () => stopPlayback(audioContextRef),
               })
             }
@@ -112,7 +109,7 @@ function Sequencer() {
         <section className="tr909-grid">
           <ProgressBar
             steps={steps}
-            currentStepRef={currentStep}
+            currentStepRef={currentStepRef}
             isPlaying={isPlaying}
           />
           {instrumentRows.map((type) => (
@@ -122,7 +119,7 @@ function Sequencer() {
                 className="sequencer-row"
                 onClick={(e) => handlePatternChange(e, type, setDrumState)}
               >
-                {steps.map((value, index) => (
+                {steps.map((_value, index) => (
                   <button
                     type="button"
                     className={updateActiveStep(index, type, drumState)}
