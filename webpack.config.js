@@ -1,8 +1,11 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const packageJson = require('./package.json');
 
 const isProduction = process.env.NODE_ENV === 'production';
+const publicPath = isProduction ? new URL(packageJson.homepage).pathname : '/';
 
 
 const stylesHandler = MiniCssExtractPlugin.loader;
@@ -14,6 +17,8 @@ const config = {
   },
   output: {
     path: path.resolve(__dirname, "dist"),
+    publicPath,
+    clean: true,
   },
   devServer: {
     open: true,
@@ -28,6 +33,14 @@ const config = {
     }),
 
     new MiniCssExtractPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "public",
+          to: ".",
+        },
+      ],
+    }),
 
     // Add your plugins here
     // Learn more about plugins from https://webpack.js.org/configuration/plugins/
