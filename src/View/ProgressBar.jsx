@@ -1,6 +1,6 @@
-import React, { memo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-const ProgressBar = memo(function ProgressBar({
+function ProgressBar({
   steps,
   currentStepRef,
   isPlaying,
@@ -46,6 +46,6 @@ const ProgressBar = memo(function ProgressBar({
       </div>
     </div>
   );
-});
+};
 
 export default ProgressBar;
