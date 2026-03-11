@@ -1,8 +1,8 @@
 # Drum Machine
-
-Webpack-based React drum machine configured for GitHub Pages deployment.
+React based drum machine inspired by the Roland TR 909.  Any one can make EDM, its just a loop!!!
 
 ## Development
+Node and NPM are prereqs. 
 
 ```bash
 npm install
@@ -14,15 +14,8 @@ npm run serve
 ```bash
 npm run build
 ```
+Live here:
+https://metzgerdev.github.io/Drum-Machine/
 
-The production build uses the GitHub Pages base path for this repository:
+![alt text](image.png)
 
-`https://metzgerdev.github.io/Drum-Machine/`
-
-## Deploy to GitHub Pages
-
-```bash
-npm run deploy
-```
-
-That command builds the app and publishes the contents of `dist/` to the `gh-pages` branch.
