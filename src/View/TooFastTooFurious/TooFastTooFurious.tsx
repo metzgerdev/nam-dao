@@ -3,14 +3,14 @@ const CARS = [
     image: "./car-01.png",
     alt: "Silver BMW convertible",
     title: "Machine 01",
-    copy: "2011 BMW M3, currently at 127,000 miles and going strong.",
+    copy: "2011 BMW M3, currently at 127,000 miles and going strong with an epic v8 soundtrack from the legendary s65 motor.",
     position: "center 76%",
   },
   {
     image: "./car-02.png",
     alt: "Matte black Porsche coupe",
     title: "Machine 02",
-    copy: "2001 Porsche 911 Turbo, currently at 108,000 miles, and packs a wallop.",
+    copy: '2001 Porsche 911 Turbo, currently at 108,000 miles, and packs a wallop from the "Metzger" turbo flat 6 derived from the 1998 Le Man wining GT1 race car.',
     position: "center 80%",
   },
 ];
