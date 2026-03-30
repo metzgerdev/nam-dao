@@ -205,7 +205,7 @@ body {
     radial-gradient(circle at top left, rgba(255, 183, 122, 0.1), transparent 28%),
     linear-gradient(180deg, #1a1817 0%, #111111 100%);
   border-radius: 24px;
-  padding: 1.25rem;
+  padding: 0.95rem;
   box-shadow:
     0 32px 70px rgba(0, 0, 0, 0.38),
     inset 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -215,7 +215,7 @@ body {
 .tr909-shell::before {
   content: "";
   position: absolute;
-  inset: 1.15rem;
+  inset: 0.85rem;
   border-radius: 18px;
   background:
     radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0) 34%),
@@ -232,17 +232,16 @@ body {
 }
 
 .tr909-shell {
-  border: 3px solid var(--panel-border);
   box-shadow:
-    0 3px 0 rgba(88, 90, 85, 0.95),
+    0 24px 52px rgba(0, 0, 0, 0.34),
     inset 0 0 0 1px rgba(255, 255, 255, 0.04);
 }
 
 .tr909-shell::after {
   content: "";
   position: absolute;
-  inset: 1.5rem;
-  border: 1px solid rgba(80, 82, 80, 0.42);
+  inset: 1.15rem;
+  border: 1px solid rgba(80, 82, 80, 0.26);
   border-radius: 14px;
   pointer-events: none;
 }
