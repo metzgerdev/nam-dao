@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Daw from "./DAW/Daw";
-import Sequencer from "./View/Sequencer";
+import Daw from "./View/Daw";
+import Sequencer from "./DrumMachine/Sequencer";
 
 function readRoute() {
   const hashRoute = window.location.hash.replace(/^#\/?/, "");
