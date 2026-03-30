@@ -2,7 +2,7 @@ const PROFILE_HIGHLIGHTS = [
   {
     label: "Creative Engineering",
     value:
-      "I like turning ideas into working things, especially interactive tools that feel tactile, musical, and alive.",
+      "I like turning ideas into working things, especially interactive tools that feel tactile, alive, and human centric.",
   },
   {
     label: "Music Under Zynar",
