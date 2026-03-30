@@ -25,7 +25,7 @@ function TooFastTooFurious() {
           <p className="garage-summary">
             Two machines that keep me inspired. I love how car design blends
             proportion, emotion, and engineering into something you can feel at
-            a glance.
+            a glance. 🇩🇪
           </p>
         </div>
 
