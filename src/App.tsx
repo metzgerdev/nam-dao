@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import Daw from "./View/DAW/Daw";
 import Sequencer from "./View/DrumMachine/Sequencer";
 
-function readRoute() {
+type RouteName = "daw" | "sequencer";
+
+function readRoute(): RouteName {
   const hashRoute = window.location.hash.replace(/^#\/?/, "");
-  const pathRoute = window.location.pathname.split("/").filter(Boolean).at(-1);
+  const pathSegments = window.location.pathname.split("/").filter(Boolean);
+  const pathRoute = pathSegments[pathSegments.length - 1];
   const nextRoute = hashRoute || pathRoute;
 
   if (nextRoute === "daw") {
@@ -15,7 +18,7 @@ function readRoute() {
 }
 
 function App() {
-  const [route, setRoute] = useState(readRoute);
+  const [route, setRoute] = useState<RouteName>(readRoute);
 
   useEffect(() => {
     function syncRoute() {
