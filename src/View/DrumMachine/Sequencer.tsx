@@ -29,7 +29,7 @@ function Sequencer() {
           <div className="tempo-group">
             <label htmlFor="bpm">{`Tempo ${tempo} BPM`}</label>
             <input
-              onInput={handleTempoChange}
+              onChange={handleTempoChange}
               name="bpm"
               id="bpm"
               type="range"
@@ -57,9 +57,7 @@ function Sequencer() {
           {instrumentRows.map((type) => (
             <div className="row-block" key={type}>
               <span className="row-name">{type}</span>
-              <div
-                className="sequencer-row"
-              >
+              <div className="sequencer-row">
                 {steps.map((_value, index) => (
                   <button
                     type="button"

@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MutableRefObject } from "react";
+import type { AudioBufferMap, InstrumentName } from "../../data/instruments";
 import { useStepSequencer } from "../../hooks/useStepSequencer";
 
-const TRACK_TINTS = {
+const TRACK_TINTS: Partial<Record<InstrumentName, string>> = {
   arp1: "daw-step-cell--secondary",
   bass: "daw-step-cell--secondary",
   closedHat: "daw-step-cell--cool",
@@ -14,15 +15,25 @@ const TRACK_TINTS = {
   vocal2: "daw-step-cell--secondary",
 };
 
-function formatTrackName(trackName) {
+interface DawTrackProps {
+  activeSteps: Set<number>;
+  audioBuffer: AudioBufferMap[InstrumentName];
+  index: number;
+  isCurrentStep: (stepIndex: number) => boolean;
+  onToggleStep: (trackName: InstrumentName, stepIndex: number) => void;
+  steps: boolean[];
+  trackName: InstrumentName;
+}
+
+function formatTrackName(trackName: InstrumentName): string {
   return trackName.replace(/([A-Z])/g, " $1").trim().toUpperCase();
 }
 
-function formatTrackIndex(index) {
+function formatTrackIndex(index: number): string {
   return String(index + 1).padStart(2, "0");
 }
 
-function buildWaveformPath(audioBuffer, pointCount = 28) {
+function buildWaveformPath(audioBuffer: AudioBuffer | null, pointCount = 28): string {
   if (!audioBuffer || typeof audioBuffer.getChannelData !== "function") {
     return "";
   }
@@ -33,8 +44,8 @@ function buildWaveformPath(audioBuffer, pointCount = 28) {
   }
 
   const bucketSize = Math.max(1, Math.floor(channelData.length / pointCount));
-  const topPoints = [];
-  const bottomPoints = [];
+  const topPoints: string[] = [];
+  const bottomPoints: string[] = [];
 
   for (let pointIndex = 0; pointIndex < pointCount; pointIndex += 1) {
     const start = pointIndex * bucketSize;
@@ -56,7 +67,10 @@ function buildWaveformPath(audioBuffer, pointCount = 28) {
   return `${topPoints.join(" ")} ${bottomPoints.join(" ")} Z`;
 }
 
-function useUiStep(currentStepRef, isPlaying) {
+function useUiStep(
+  currentStepRef: MutableRefObject<number>,
+  isPlaying: boolean,
+): number {
   const [uiStep, setUiStep] = useState(currentStepRef.current ?? 0);
 
   useEffect(() => {
@@ -92,7 +106,7 @@ function DawTrack({
   onToggleStep,
   steps,
   trackName,
-}) {
+}: DawTrackProps) {
   const accentClassName = TRACK_TINTS[trackName] ?? "daw-step-cell--primary";
   const waveformPath = buildWaveformPath(audioBuffer);
 
@@ -124,26 +138,22 @@ function DawTrack({
               onClick={() => onToggleStep(trackName, stepIndex)}
               type="button"
             >
-              {isActive ? (
-                <>
-                  {waveformPath ? (
-                    <svg
-                      aria-hidden="true"
-                      className="daw-clip-waveform"
-                      viewBox="0 0 100 100"
-                      preserveAspectRatio="none"
-                    >
-                      <line
-                        className="daw-clip-waveform-guide"
-                        x1="0"
-                        x2="100"
-                        y1="50"
-                        y2="50"
-                      />
-                      <path className="daw-clip-waveform-fill" d={waveformPath} />
-                    </svg>
-                  ) : null}
-                </>
+              {isActive && waveformPath ? (
+                <svg
+                  aria-hidden="true"
+                  className="daw-clip-waveform"
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                >
+                  <line
+                    className="daw-clip-waveform-guide"
+                    x1="0"
+                    x2="100"
+                    y1="50"
+                    y2="50"
+                  />
+                  <path className="daw-clip-waveform-fill" d={waveformPath} />
+                </svg>
               ) : null}
             </button>
           );
@@ -170,7 +180,7 @@ function Daw() {
   } = useStepSequencer();
   const uiStep = useUiStep(currentStepRef, isPlaying);
 
-  function isCurrentStep(stepIndex) {
+  function isCurrentStep(stepIndex: number): boolean {
     return uiStep === stepIndex;
   }
 
@@ -193,7 +203,7 @@ function Daw() {
                 id="daw-bpm"
                 max="200"
                 min="60"
-                onInput={handleTempoChange}
+                onChange={handleTempoChange}
                 step="1"
                 type="range"
                 value={tempo}

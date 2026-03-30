@@ -1,6 +1,7 @@
 import React from "react";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Daw from "../DAW/Daw";
+import { instrumentRows } from "../../data/instruments";
 import { resetSampleCacheForTests } from "../../utils/sampleLoader";
 
 class MockAudioContext {
@@ -69,6 +70,17 @@ function getTrackButtons(trackLabel) {
   const heading = screen.getByRole("heading", { name: trackLabel });
   const track = heading.closest(".daw-track");
   return track.querySelectorAll(".daw-step-cell");
+}
+
+async function waitForSampleBoot() {
+  await waitFor(() => {
+    expect(global.fetch).toHaveBeenCalledTimes(instrumentRows.length);
+  });
+
+  await act(async () => {
+    await Promise.resolve();
+    await Promise.resolve();
+  });
 }
 
 describe("Daw", () => {
@@ -150,6 +162,7 @@ describe("Daw", () => {
 
   test("schedules active clips during playback", async () => {
     render(<Daw />);
+    await waitForSampleBoot();
     fireEvent.click(screen.getByRole("button", { name: /start/i }));
 
     const context = audioContexts[0];
