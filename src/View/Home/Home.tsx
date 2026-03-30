@@ -35,7 +35,8 @@ function Home() {
             <p className="home-summary">
               I’m a software engineer with a strong maker streak. I have 8+
               years experience as a front end developer, make electronic music
-              as Zynar, and spend time in the garage wrenching on cars.
+              as Zynar, and spend time in the garage wrenching on cars. I’m
+              highly collaborative with strong people skills.
             </p>
             <p className="home-summary">
               Creativity is the through-line for me: code, sound, machines, and
@@ -43,20 +44,21 @@ function Home() {
             </p>
             <p className="home-summary">
               I&apos;ve previously worked at NGINX / F5, Rescale, and Nintendo
-              of America, and I&apos;m currently looking for a new opportunity
-              where I can keep building thoughtful, creative products. I have
-              an MS in Electrical Engineering from University of Washington,
-              and attended the Hack Reactor software accelerator to pivot
-              toward web engineering. I&apos;m currently attending the New Line
-              AI accelerator to control the AI or else be controlled by the AI.
-              😂
+              of America.
+            </p>
+            <p className="home-summary">
+              I have an MS in Electrical Engineering from University of
+              Washington, and attended the Hack Reactor software accelerator to
+              pivot toward web engineering. I&apos;m currently attending the New
+              Line AI accelerator to control the AI or else be controlled by the
+              AI. 😂
             </p>
 
             <div className="home-actions">
-              <a className="home-action home-action--primary" href="#/sequencer">
+              <a className="home-action" href="#/sequencer">
                 Explore Sequencer
               </a>
-              <a className="home-action" href="#/daw">
+              <a className="home-action home-action--primary" href="#/daw">
                 Explore DAW
               </a>
               <a
