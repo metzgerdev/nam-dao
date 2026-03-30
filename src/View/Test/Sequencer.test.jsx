@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
-import Sequencer from "../../DrumMachine/Sequencer";
+import Sequencer from "../DrumMachine/Sequencer";
 import { resetSampleCacheForTests } from "../../utils/sampleLoader";
 
 class MockAudioContext {
