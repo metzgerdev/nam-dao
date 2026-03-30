@@ -118,7 +118,11 @@ describe("Daw", () => {
 
     await waitFor(() => expect(global.fetch).toHaveBeenCalled());
     await waitFor(() => {
-      expect(getTrackButtons("KICK")[0].querySelector(".daw-clip-waveform path")).toBeTruthy();
+      const waveformFill = getTrackButtons("KICK")[0].querySelector(".daw-clip-waveform-fill");
+      const waveformGuide = getTrackButtons("KICK")[0].querySelector(".daw-clip-waveform-guide");
+      expect(waveformFill).toBeTruthy();
+      expect(waveformFill.getAttribute("d")).toContain("Z");
+      expect(waveformGuide).toBeTruthy();
     });
   });
 

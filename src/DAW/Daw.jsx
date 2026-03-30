@@ -37,24 +37,27 @@ function buildWaveformPath(audioBuffer, pointCount = 28) {
   }
 
   const bucketSize = Math.max(1, Math.floor(channelData.length / pointCount));
-  const points = [];
+  const topPoints = [];
+  const bottomPoints = [];
 
   for (let pointIndex = 0; pointIndex < pointCount; pointIndex += 1) {
     const start = pointIndex * bucketSize;
     const end = Math.min(channelData.length, start + bucketSize);
-    let total = 0;
+    let peak = 0;
 
     for (let sampleIndex = start; sampleIndex < end; sampleIndex += 1) {
-      total += channelData[sampleIndex];
+      peak = Math.max(peak, Math.abs(channelData[sampleIndex]));
     }
 
-    const sampleAverage = total / Math.max(1, end - start);
     const x = (pointIndex / Math.max(1, pointCount - 1)) * 100;
-    const y = 50 - (sampleAverage * 32);
-    points.push(`${pointIndex === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`);
+    const amplitude = Math.min(peak, 1) * 34;
+    const topY = 50 - amplitude;
+    const bottomY = 50 + amplitude;
+    topPoints.push(`${pointIndex === 0 ? "M" : "L"} ${x.toFixed(2)} ${topY.toFixed(2)}`);
+    bottomPoints.unshift(`L ${x.toFixed(2)} ${bottomY.toFixed(2)}`);
   }
 
-  return points.join(" ");
+  return `${topPoints.join(" ")} ${bottomPoints.join(" ")} Z`;
 }
 
 function useUiStep(currentStepRef, isPlaying) {
@@ -135,7 +138,14 @@ function DawTrack({
                       viewBox="0 0 100 100"
                       preserveAspectRatio="none"
                     >
-                      <path d={waveformPath} />
+                      <line
+                        className="daw-clip-waveform-guide"
+                        x1="0"
+                        x2="100"
+                        y1="50"
+                        y2="50"
+                      />
+                      <path className="daw-clip-waveform-fill" d={waveformPath} />
                     </svg>
                   ) : null}
                   <span className="daw-clip-label">clip</span>
