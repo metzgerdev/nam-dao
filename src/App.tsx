@@ -47,6 +47,22 @@ function App() {
     };
   }, []);
 
+  function renderRoute() {
+    if (route === "home") {
+      return <Home />;
+    }
+
+    if (route === "sequencer") {
+      return <Sequencer />;
+    }
+
+    if (route === "daw") {
+      return <Daw />;
+    }
+
+    return <TooFastTooFurious />;
+  }
+
   return (
     <div className="app-frame">
       <nav className="app-route-nav" aria-label="Application views">
@@ -75,10 +91,9 @@ function App() {
           Too Fast Too Furious
         </a>
       </nav>
-      {route === "home" ? <Home /> : null}
-      {route === "sequencer" ? <Sequencer /> : null}
-      {route === "daw" ? <Daw /> : null}
-      {route === "too-fast-too-furious" ? <TooFastTooFurious /> : null}
+      <div className="app-route-stage" key={route}>
+        {renderRoute()}
+      </div>
     </div>
   );
 }
