@@ -4,12 +4,14 @@ const CARS = [
     alt: "Silver BMW convertible",
     title: "Machine 01",
     copy: "2011 BMW M3, currently at 127,000 miles and going strong.",
+    position: "center 76%",
   },
   {
     image: "./car-02.png",
     alt: "Matte black Porsche coupe",
     title: "Machine 02",
     copy: "2001 Porsche 911 Turbo, currently at 108,000 miles, and packs a wallop.",
+    position: "center 80%",
   },
 ];
 
@@ -31,7 +33,12 @@ function TooFastTooFurious() {
           {CARS.map((car) => (
             <article className="garage-card" key={car.title}>
               <div className="garage-image-frame">
-                <img alt={car.alt} className="garage-image" src={car.image} />
+                <img
+                  alt={car.alt}
+                  className="garage-image"
+                  src={car.image}
+                  style={{ objectPosition: car.position }}
+                />
               </div>
               <div className="garage-copy">
                 <p className="garage-card-label">{car.title}</p>
