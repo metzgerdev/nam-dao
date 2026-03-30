@@ -148,15 +148,15 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.18em;
   font-size: 0.72rem;
-  color: rgba(229, 226, 225, 0.56);
+  color: rgba(123, 210, 239, 0.72);
   font-weight: 700;
 }
 
 .home-copy h1 {
   margin: 0;
   font-size: clamp(2.4rem, 6vw, 4.6rem);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-transform: none;
   color: #ffb77a;
 }
 
