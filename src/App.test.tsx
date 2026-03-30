@@ -91,4 +91,15 @@ describe("App routes", () => {
     expect(screen.getByText(/1 bar \/ 16 steps/i)).toBeTruthy();
     expect(screen.getByRole("link", { name: /daw/i }).className).toContain("active");
   });
+
+  test("renders the too fast too furious route", () => {
+    setHashRoute("#/too-fast-too-furious");
+
+    render(<App />);
+
+    expect(screen.getByRole("heading", { name: /my cars/i })).toBeTruthy();
+    expect(screen.getByAltText(/silver bmw convertible/i)).toBeTruthy();
+    expect(screen.getByAltText(/matte black porsche coupe/i)).toBeTruthy();
+    expect(screen.getByRole("link", { name: /too fast too furious/i }).className).toContain("active");
+  });
 });
