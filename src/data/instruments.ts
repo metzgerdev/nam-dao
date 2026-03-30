@@ -20,9 +20,19 @@ export const instrumentRows = [
   ARP1,
   VOCAL1,
   VOCAL2,
-];
+] as const;
 
-export const instruments = {
+export type InstrumentName = (typeof instrumentRows)[number];
+
+export interface InstrumentPattern {
+  activeSteps: Set<number>;
+  path: string;
+}
+
+export type DrumState = Record<InstrumentName, InstrumentPattern>;
+export type AudioBufferMap = Record<InstrumentName, AudioBuffer | null>;
+
+export const instruments: DrumState = {
   [KICK]: {
     activeSteps: new Set([0, 4, 8, 12]),
     path: "./kick.wav",
@@ -35,7 +45,6 @@ export const instruments = {
     activeSteps: new Set([0, 3, 6, 9, 12, 15]),
     path: "./bass.wav",
   },
-
   [OPENHAT]: {
     activeSteps: new Set([2, 6, 10, 14]),
     path: "./open.wav",
@@ -62,7 +71,6 @@ export const instruments = {
     activeSteps: new Set(),
     path: "./vocal-1.wav",
   },
-
   [VOCAL2]: {
     activeSteps: new Set(),
     path: "./vocal-2.wav",

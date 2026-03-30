@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import Sequencer from "../DrumMachine/Sequencer";
+import { instrumentRows } from "../../data/instruments";
 import { resetSampleCacheForTests } from "../../utils/sampleLoader";
 
 class MockAudioContext {
@@ -87,6 +88,17 @@ describe("Sequencer", () => {
     return row.querySelectorAll("button.step");
   }
 
+  async function waitForSampleBoot() {
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledTimes(instrumentRows.length);
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+  }
+
   test("renders initial UI with transport, tempo, rows, and 16-step grid", async () => {
     render(<Sequencer />);
     expect(screen.getByRole("button", { name: /start/i })).toBeTruthy();
@@ -168,6 +180,7 @@ describe("Sequencer", () => {
 
   test("schedules only active-step samples for a tick", async () => {
     render(<Sequencer />);
+    await waitForSampleBoot();
     fireEvent.click(screen.getByRole("button", { name: /start/i }));
 
     const context = audioContexts[0];
