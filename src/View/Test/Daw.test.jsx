@@ -1,7 +1,7 @@
 import React from "react";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import Daw from "./Daw";
-import { resetSampleCacheForTests } from "../utils/sampleLoader";
+import Daw from "../Daw";
+import { resetSampleCacheForTests } from "../../utils/sampleLoader";
 
 class MockAudioContext {
   constructor() {
