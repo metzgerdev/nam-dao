@@ -22,10 +22,6 @@ function formatTrackIndex(index) {
   return String(index + 1).padStart(2, "0");
 }
 
-function formatActiveStepCount(activeStepCount) {
-  return `${activeStepCount} active`;
-}
-
 function buildWaveformPath(audioBuffer, pointCount = 28) {
   if (!audioBuffer || typeof audioBuffer.getChannelData !== "function") {
     return "";
@@ -106,7 +102,6 @@ function DawTrack({
         <div className="daw-track-index">{formatTrackIndex(index)}</div>
         <div className="daw-track-copy">
           <h2>{formatTrackName(trackName)}</h2>
-          <p>{formatActiveStepCount(activeSteps.size)}</p>
         </div>
       </header>
       <div className="daw-track-grid" role="grid" aria-label={`${trackName} arrangement`}>
