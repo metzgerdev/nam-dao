@@ -318,7 +318,6 @@ body {
   margin-bottom: 1rem;
 }
 
-.daw-heading p,
 .daw-status span,
 .daw-tempo span,
 .daw-ruler-spacer,
@@ -333,16 +332,10 @@ body {
   font-weight: 700;
 }
 
-.daw-heading h1,
 .daw-track-copy h2 {
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-}
-
-.daw-heading h1 {
-  font-size: clamp(1.45rem, 3vw, 2.4rem);
-  color: #ffb77a;
 }
 
 .daw-transport {
@@ -515,22 +508,11 @@ body {
     inset 0 -12px 20px rgba(0, 0, 0, 0.22);
 }
 
-.daw-clip-label {
-  position: absolute;
-  left: 0.55rem;
-  bottom: 0.5rem;
-  font-size: 0.64rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-weight: 700;
-  color: rgba(229, 226, 225, 0.82);
-}
-
 .daw-clip-waveform {
   position: absolute;
-  inset: 0.45rem 0.35rem 1.05rem;
+  inset: 0.45rem 0.35rem;
   width: calc(100% - 0.7rem);
-  height: calc(100% - 1.5rem);
+  height: calc(100% - 0.9rem);
   overflow: visible;
 }
 

@@ -76,7 +76,8 @@ describe("App routes", () => {
 
     render(<App />);
 
-    expect(screen.getByText(/arrangement view/i)).toBeTruthy();
+    expect(screen.getByRole("button", { name: /start/i })).toBeTruthy();
+    expect(screen.getByText(/1 bar \/ 16 steps/i)).toBeTruthy();
     expect(screen.getByRole("link", { name: /daw/i }).className).toContain("active");
   });
 });
