@@ -44,7 +44,12 @@ function Home() {
             <p className="home-summary">
               I&apos;ve previously worked at NGINX / F5, Rescale, and Nintendo
               of America, and I&apos;m currently looking for a new opportunity
-              where I can keep building thoughtful, creative products.
+              where I can keep building thoughtful, creative products. I have
+              an MS in Electrical Engineering from University of Washington,
+              and attended the Hack Reactor software accelerator to pivot
+              toward web engineering. I&apos;m currently attending the New Line
+              AI accelerator to control the AI or else be controlled by the AI.
+              😂
             </p>
 
             <div className="home-actions">
