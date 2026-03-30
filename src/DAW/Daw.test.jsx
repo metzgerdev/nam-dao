@@ -126,6 +126,7 @@ describe("Daw", () => {
       expect(waveformFill.getAttribute("d")).toContain("Z");
       expect(waveformGuide).toBeTruthy();
       expect(screen.queryByText(/clip/i)).toBeNull();
+      expect(screen.queryByText(/active/i)).toBeNull();
     });
   });
 
