@@ -62,8 +62,18 @@ describe("App routes", () => {
     jest.restoreAllMocks();
   });
 
-  test("renders the sequencer on the default route", () => {
+  test("renders the home page on the default route", () => {
     setHashRoute("");
+
+    render(<App />);
+
+    expect(screen.getByRole("heading", { name: /nam dao/i })).toBeTruthy();
+    expect(screen.getByText(/i release music as zynar/i)).toBeTruthy();
+    expect(screen.getByRole("link", { name: /home/i }).className).toContain("active");
+  });
+
+  test("renders the sequencer on the sequencer route", () => {
+    setHashRoute("#/sequencer");
 
     render(<App />);
 
