@@ -1,6 +1,7 @@
 import React from "react";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Daw from "./Daw";
+import { resetSampleCacheForTests } from "../utils/sampleLoader";
 
 class MockAudioContext {
   constructor() {
@@ -74,6 +75,7 @@ describe("Daw", () => {
   let audioContexts;
 
   beforeEach(() => {
+    resetSampleCacheForTests();
     audioContexts = [];
     jest.useFakeTimers();
 
@@ -98,6 +100,7 @@ describe("Daw", () => {
   });
 
   afterEach(() => {
+    resetSampleCacheForTests();
     jest.clearAllTimers();
     jest.useRealTimers();
     jest.restoreAllMocks();

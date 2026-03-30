@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import Sequencer from "../Sequencer";
+import { resetSampleCacheForTests } from "../../utils/sampleLoader";
 
 class MockAudioContext {
   constructor() {
@@ -29,6 +30,7 @@ describe("Sequencer", () => {
   let audioContexts;
 
   beforeEach(() => {
+    resetSampleCacheForTests();
     sourceInstances = [];
     audioContexts = [];
     jest.useFakeTimers();
@@ -73,6 +75,7 @@ describe("Sequencer", () => {
   });
 
   afterEach(() => {
+    resetSampleCacheForTests();
     jest.clearAllTimers();
     jest.useRealTimers();
     jest.restoreAllMocks();
