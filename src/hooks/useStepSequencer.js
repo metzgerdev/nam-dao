@@ -21,6 +21,7 @@ export function useStepSequencer() {
   const [tempo, setTempo] = useState(123);
   const [drumState, setDrumState] = useState(instruments);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [samplesLoaded, setSamplesLoaded] = useState(false);
   const secondsPerStep = 60 / tempo / 4;
   const drumStateRef = useRef(instruments);
   const audioContextRef = useRef(null);
@@ -35,7 +36,20 @@ export function useStepSequencer() {
   );
 
   useEffect(() => {
-    initDrumMachine({ audioContextRef, audioBufferRefs, drumStateRef });
+    let isMounted = true;
+
+    async function bootDrumMachine() {
+      await initDrumMachine({ audioContextRef, audioBufferRefs, drumStateRef });
+      if (isMounted) {
+        setSamplesLoaded(true);
+      }
+    }
+
+    bootDrumMachine();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -93,11 +107,13 @@ export function useStepSequencer() {
   }
 
   return {
+    audioBuffers: audioBufferRefs.current,
     currentStepRef,
     drumState,
     handleTempoChange,
     isPlaying,
     instrumentRows,
+    samplesLoaded,
     setDrumState,
     stepCount: STEP_COUNT,
     steps: STEP_GRID,

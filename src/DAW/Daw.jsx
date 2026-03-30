@@ -26,6 +26,37 @@ function formatClipCount(activeStepCount) {
   return `${activeStepCount} ${activeStepCount === 1 ? "clip" : "clips"}`;
 }
 
+function buildWaveformPath(audioBuffer, pointCount = 28) {
+  if (!audioBuffer || typeof audioBuffer.getChannelData !== "function") {
+    return "";
+  }
+
+  const channelData = audioBuffer.getChannelData(0);
+  if (!channelData?.length) {
+    return "";
+  }
+
+  const bucketSize = Math.max(1, Math.floor(channelData.length / pointCount));
+  const points = [];
+
+  for (let pointIndex = 0; pointIndex < pointCount; pointIndex += 1) {
+    const start = pointIndex * bucketSize;
+    const end = Math.min(channelData.length, start + bucketSize);
+    let total = 0;
+
+    for (let sampleIndex = start; sampleIndex < end; sampleIndex += 1) {
+      total += channelData[sampleIndex];
+    }
+
+    const sampleAverage = total / Math.max(1, end - start);
+    const x = (pointIndex / Math.max(1, pointCount - 1)) * 100;
+    const y = 50 - (sampleAverage * 32);
+    points.push(`${pointIndex === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`);
+  }
+
+  return points.join(" ");
+}
+
 function useUiStep(currentStepRef, isPlaying) {
   const [uiStep, setUiStep] = useState(currentStepRef.current ?? 0);
 
@@ -56,6 +87,7 @@ function useUiStep(currentStepRef, isPlaying) {
 
 function DawTrack({
   activeSteps,
+  audioBuffer,
   index,
   isCurrentStep,
   onToggleStep,
@@ -63,6 +95,7 @@ function DawTrack({
   trackName,
 }) {
   const accentClassName = TRACK_TINTS[trackName] ?? "daw-step-cell--primary";
+  const waveformPath = buildWaveformPath(audioBuffer);
 
   return (
     <article className="daw-track">
@@ -93,7 +126,21 @@ function DawTrack({
               onClick={() => onToggleStep(trackName, stepIndex)}
               type="button"
             >
-              {isActive ? <span className="daw-clip-label">clip</span> : null}
+              {isActive ? (
+                <>
+                  {waveformPath ? (
+                    <svg
+                      aria-hidden="true"
+                      className="daw-clip-waveform"
+                      viewBox="0 0 100 100"
+                      preserveAspectRatio="none"
+                    >
+                      <path d={waveformPath} />
+                    </svg>
+                  ) : null}
+                  <span className="daw-clip-label">clip</span>
+                </>
+              ) : null}
             </button>
           );
         })}
@@ -104,11 +151,13 @@ function DawTrack({
 
 function Daw() {
   const {
+    audioBuffers,
     currentStepRef,
     drumState,
     handleTempoChange,
     instrumentRows,
     isPlaying,
+    samplesLoaded,
     stepCount,
     steps,
     tempo,
@@ -173,6 +222,7 @@ function Daw() {
             {instrumentRows.map((trackName, index) => (
               <DawTrack
                 activeSteps={drumState[trackName].activeSteps}
+                audioBuffer={samplesLoaded ? audioBuffers[trackName] : null}
                 index={index}
                 isCurrentStep={isCurrentStep}
                 key={trackName}
