@@ -22,8 +22,8 @@ function formatTrackIndex(index) {
   return String(index + 1).padStart(2, "0");
 }
 
-function formatClipCount(activeStepCount) {
-  return `${activeStepCount} ${activeStepCount === 1 ? "clip" : "clips"}`;
+function formatActiveStepCount(activeStepCount) {
+  return `${activeStepCount} active`;
 }
 
 function buildWaveformPath(audioBuffer, pointCount = 28) {
@@ -106,7 +106,7 @@ function DawTrack({
         <div className="daw-track-index">{formatTrackIndex(index)}</div>
         <div className="daw-track-copy">
           <h2>{formatTrackName(trackName)}</h2>
-          <p>{formatClipCount(activeSteps.size)}</p>
+          <p>{formatActiveStepCount(activeSteps.size)}</p>
         </div>
       </header>
       <div className="daw-track-grid" role="grid" aria-label={`${trackName} arrangement`}>
@@ -148,7 +148,6 @@ function DawTrack({
                       <path className="daw-clip-waveform-fill" d={waveformPath} />
                     </svg>
                   ) : null}
-                  <span className="daw-clip-label">clip</span>
                 </>
               ) : null}
             </button>
@@ -184,10 +183,6 @@ function Daw() {
     <main className="daw">
       <section className="daw-shell">
         <header className="daw-topbar">
-          <div className="daw-heading">
-            <p>Studio Heirloom</p>
-            <h1>Arrangement View</h1>
-          </div>
           <div className="daw-transport">
             <button
               className="daw-transport-button"

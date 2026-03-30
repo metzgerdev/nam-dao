@@ -109,7 +109,6 @@ describe("Daw", () => {
   test("renders the arrangement with the sequencer default pattern", async () => {
     render(<Daw />);
 
-    expect(screen.getByText(/studio heirloom/i)).toBeTruthy();
     expect(screen.getByRole("button", { name: /start/i })).toBeTruthy();
     expect(getTrackButtons("KICK")).toHaveLength(16);
     expect(getTrackButtons("KICK")[0].className).toContain("active");
@@ -126,6 +125,7 @@ describe("Daw", () => {
       expect(waveformFill).toBeTruthy();
       expect(waveformFill.getAttribute("d")).toContain("Z");
       expect(waveformGuide).toBeTruthy();
+      expect(screen.queryByText(/clip/i)).toBeNull();
     });
   });
 
