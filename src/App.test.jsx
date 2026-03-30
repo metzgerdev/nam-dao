@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import App from "./App";
+import { resetSampleCacheForTests } from "./utils/sampleLoader";
 
 class MockAudioContext {
   constructor() {
@@ -30,6 +31,7 @@ function setHashRoute(route) {
 
 describe("App routes", () => {
   beforeEach(() => {
+    resetSampleCacheForTests();
     global.AudioContext = jest.fn(() => new MockAudioContext());
     global.fetch = jest.fn(() =>
       Promise.resolve({
@@ -55,6 +57,7 @@ describe("App routes", () => {
   });
 
   afterEach(() => {
+    resetSampleCacheForTests();
     window.location.hash = "";
     jest.restoreAllMocks();
   });
