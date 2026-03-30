@@ -20,8 +20,29 @@ class MockAudioContext {
   }
 
   decodeAudioData() {
-    return Promise.resolve({ sample: true });
+    return Promise.resolve(createMockAudioBuffer());
   }
+}
+
+function createMockAudioBuffer() {
+  return {
+    getChannelData() {
+      return new Float32Array([
+        0,
+        0.35,
+        -0.2,
+        0.55,
+        -0.65,
+        0.25,
+        0.18,
+        -0.42,
+        0.72,
+        -0.3,
+        0.12,
+        -0.08,
+      ]);
+    },
+  };
 }
 
 function installStructuredClone() {
@@ -96,6 +117,9 @@ describe("Daw", () => {
     expect(getTrackButtons("ARP1")[0].className).toContain("active");
 
     await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+    await waitFor(() => {
+      expect(getTrackButtons("KICK")[0].querySelector(".daw-clip-waveform path")).toBeTruthy();
+    });
   });
 
   test("toggles an arrangement step on click", () => {
