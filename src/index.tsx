@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./Style/index.css";
+import { registerAssetCache } from "./utils/registerAssetCache";
 
 const container = document.getElementById("root");
 
@@ -16,3 +17,5 @@ root.render(
     <App />
   </React.StrictMode>,
 );
+
+void registerAssetCache();
