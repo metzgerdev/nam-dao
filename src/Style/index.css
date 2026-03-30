@@ -183,11 +183,11 @@ body {
   padding: 0 1rem;
   border-radius: 999px;
   text-decoration: none;
-  color: #f1eee8;
-  background: #131313;
+  color: #d9edf4;
+  background: linear-gradient(180deg, #15191b 0%, #101315 100%);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-    inset 0 8px 14px rgba(255, 255, 255, 0.02);
+    inset 0 0 0 1px rgba(123, 210, 239, 0.18),
+    inset 0 8px 14px rgba(123, 210, 239, 0.03);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.72rem;
