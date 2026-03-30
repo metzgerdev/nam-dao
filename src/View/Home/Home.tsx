@@ -7,7 +7,7 @@ const PROFILE_HIGHLIGHTS = [
   {
     label: "Music Under Zynar",
     value:
-      "I release music as Zynar, and that same instinct for rhythm and texture shows up in the products I build.",
+      "I release music as Zynar, obessing over what the user experiences, with extreme attention to detail.",
   },
   {
     label: "Maker Mentality",
