@@ -448,8 +448,9 @@ body {
 }
 
 .daw-track-copy {
-  display: grid;
-  gap: 0.28rem;
+  display: flex;
+  align-items: center;
+  min-height: 100%;
 }
 
 .daw-track-copy h2 {
