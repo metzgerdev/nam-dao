@@ -33,13 +33,13 @@ function Home() {
             <p className="home-kicker">Home</p>
             <h1>Nam Dao</h1>
             <p className="home-summary">
-              I’m a software engineer with a strong maker streak. I build
-              playful, polished tools, make music as Zynar, and spend time in
-              the garage working on my own cars.
+              I’m a software engineer with a strong maker streak. I have 8+
+              years experience as a front end developer, make electronic music
+              as Zynar, and spend time in the garage wrenching on cars.
             </p>
             <p className="home-summary">
-              Creativity is the through-line for me: code, sound, mechanical
-              work, and the satisfaction of making something real.
+              Creativity is the through-line for me: code, sound, machines, and
+              the satisfaction of delivering high impact products.
             </p>
             <p className="home-summary">
               I&apos;ve previously worked at NGINX / F5, Rescale, and Nintendo
