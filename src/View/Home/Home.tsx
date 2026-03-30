@@ -41,6 +41,11 @@ function Home() {
               Creativity is the through-line for me: code, sound, mechanical
               work, and the satisfaction of making something real.
             </p>
+            <p className="home-summary">
+              I&apos;ve previously worked at NGINX / F5, Rescale, and Nintendo
+              of America, and I&apos;m currently looking for a new opportunity
+              where I can keep building thoughtful, creative products.
+            </p>
 
             <div className="home-actions">
               <a className="home-action home-action--primary" href="#/sequencer">
