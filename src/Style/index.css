@@ -251,7 +251,7 @@ body {
   justify-content: space-between;
   align-items: baseline;
   border-bottom: 2px solid #8b8f8c;
-  margin-bottom: 1rem;
+  margin: 1rem;
   padding: 0.1rem 0 0.8rem;
 }
 
@@ -280,6 +280,7 @@ body {
   grid-template-columns: 1fr auto;
   gap: 0.8rem;
   align-items: end;
+  margin: 1rem;
   padding: 0.72rem;
   border: 1px solid #888c89;
   border-radius: 6px;
@@ -329,7 +330,7 @@ body {
 }
 
 .tr909-grid {
-  margin-top: 1rem;
+  margin: 1rem;
   display: grid;
   gap: 0.55rem;
 }
