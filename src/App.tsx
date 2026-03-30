@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import Daw from "./View/DAW/Daw";
 import Home from "./View/Home/Home";
 import Sequencer from "./View/DrumMachine/Sequencer";
+import TooFastTooFurious from "./View/TooFastTooFurious/TooFastTooFurious";
 
-type RouteName = "daw" | "home" | "sequencer";
+type RouteName = "daw" | "home" | "sequencer" | "too-fast-too-furious";
 
 function readRoute(): RouteName {
   const hashRoute = window.location.hash.replace(/^#\/?/, "");
@@ -21,6 +22,10 @@ function readRoute(): RouteName {
 
   if (nextRoute === "sequencer") {
     return "sequencer";
+  }
+
+  if (nextRoute === "too-fast-too-furious") {
+    return "too-fast-too-furious";
   }
 
   return "home";
@@ -63,10 +68,17 @@ function App() {
         >
           DAW
         </a>
+        <a
+          className={route === "too-fast-too-furious" ? "active" : ""}
+          href="#/too-fast-too-furious"
+        >
+          Too Fast Too Furious
+        </a>
       </nav>
       {route === "home" ? <Home /> : null}
       {route === "sequencer" ? <Sequencer /> : null}
       {route === "daw" ? <Daw /> : null}
+      {route === "too-fast-too-furious" ? <TooFastTooFurious /> : null}
     </div>
   );
 }
