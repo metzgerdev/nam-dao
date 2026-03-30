@@ -12,7 +12,7 @@ const PROFILE_HIGHLIGHTS = [
   {
     label: "Maker Mentality",
     value:
-      "Outside software, I wrench on my own cars. I’m happiest making, fixing, and refining with my hands.",
+      "Outside of software and music, I wrench on my own cars, and draw inspiration from car design. I’m happiest making, fixing, and refining with my hands.",
   },
 ];
 
