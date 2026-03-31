@@ -1,6 +1,9 @@
 # Drum Machine
 React based drum machine inspired by the Roland TR 909.  Any one can make EDM, its just a loop!!!
 
+# DAW
+Development of Drum Machine into a Daw (think a simplified Ableton)
+
 ## Setup
 
 This project requires Node.js and npm.
