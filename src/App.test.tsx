@@ -118,9 +118,9 @@ describe("App routes", () => {
 
     render(<App />);
 
-    expect(screen.getByRole("heading", { name: /my cars/i })).toBeTruthy();
+    expect(screen.getByText(/two machines that keep me inspired/i)).toBeTruthy();
     expect(screen.getByAltText(/silver bmw convertible/i)).toBeTruthy();
     expect(screen.getByAltText(/matte black porsche coupe/i)).toBeTruthy();
-    expect(screen.getByRole("link", { name: /too fast too furious/i }).className).toContain("active");
+    expect(screen.getByRole("link", { name: /machines/i }).className).toContain("active");
   });
 });
