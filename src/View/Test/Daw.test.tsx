@@ -73,14 +73,13 @@ function getTrackButtons(trackLabel) {
 }
 
 async function waitForSampleBoot() {
-  await waitFor(() => {
-    expect(global.fetch).toHaveBeenCalledTimes(instrumentRows.length);
-  });
-
   await act(async () => {
     await Promise.resolve();
     await Promise.resolve();
+    await Promise.resolve();
   });
+
+  expect(global.fetch).toHaveBeenCalledTimes(instrumentRows.length);
 }
 
 describe("Daw", () => {
@@ -130,7 +129,7 @@ describe("Daw", () => {
     expect(getTrackButtons("CLOSED HAT")[15].className).toContain("active");
     expect(getTrackButtons("ARP1")[0].className).toContain("active");
 
-    await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+    await waitForSampleBoot();
     await waitFor(() => {
       const waveformFill = getTrackButtons("KICK")[0].querySelector(".daw-clip-waveform-fill");
       const waveformGuide = getTrackButtons("KICK")[0].querySelector(".daw-clip-waveform-guide");
@@ -142,8 +141,9 @@ describe("Daw", () => {
     });
   });
 
-  test("toggles an arrangement step on click", () => {
+  test("toggles an arrangement step on click", async () => {
     render(<Daw />);
+    await waitForSampleBoot();
     const kickStep = getTrackButtons("KICK")[1];
     expect(kickStep.className).toBe("daw-step-cell");
 
@@ -152,8 +152,9 @@ describe("Daw", () => {
     expect(kickStep.className).toContain("active");
   });
 
-  test("starts playback from the daw transport", () => {
+  test("starts playback from the daw transport", async () => {
     render(<Daw />);
+    await waitForSampleBoot();
 
     fireEvent.click(screen.getByRole("button", { name: /start/i }));
 
