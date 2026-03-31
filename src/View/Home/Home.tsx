@@ -41,9 +41,9 @@ function Home() {
             <h1>Nam Dao</h1>
             <p className="home-summary">
               I’m a software engineer with a strong maker streak. I have 8+
-              years experience as a front end developer I’m highly collaborative
-              with strong people skills. Obessive over details that matter,
-              which I cultivate also as a music producer and car enthusist.
+              years experience as a front end developer. I’m highly collaborative
+              with strong people skills. Obsessive over details that matter,
+              which I cultivate also as a music producer and car enthusiast.
             </p>
 
             <p className="home-summary">
