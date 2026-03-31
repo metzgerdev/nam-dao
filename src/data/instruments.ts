@@ -20,39 +20,48 @@ export const instrumentRows = [
   ARP1,
   VOCAL1,
   VOCAL2,
-];
+] as const;
 
-export const instruments = {
+export type InstrumentName = (typeof instrumentRows)[number];
+
+export interface InstrumentPattern {
+  activeSteps: Set<number>;
+  path: string;
+}
+
+export type DrumState = Record<InstrumentName, InstrumentPattern>;
+export type AudioBufferMap = Record<InstrumentName, AudioBuffer | null>;
+
+export const instruments: DrumState = {
   [KICK]: {
     activeSteps: new Set([0, 4, 8, 12]),
-    path: "./drum machine 123 bpm kick.wav",
+    path: "./kick.wav",
   },
   [SNARE]: {
     activeSteps: new Set([4, 12]),
-    path: "./one shot snare.wav",
+    path: "./snare.wav",
   },
   [BASS]: {
     activeSteps: new Set([0, 3, 6, 9, 12, 15]),
-    path: "./drum machine 123 bpm bass.wav",
+    path: "./bass.wav",
   },
-
   [OPENHAT]: {
     activeSteps: new Set([2, 6, 10, 14]),
-    path: "./drum machine 123 bpm open.wav",
+    path: "./open.wav",
   },
   [CLOSEDHAT]: {
     activeSteps: new Set([
       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
     ]),
-    path: "./drum machine 123 bpm closed hat.wav",
+    path: "./closed-hat.wav",
   },
   [RIDE]: {
     activeSteps: new Set(),
-    path: "./drum machine 123 bpm ride.wav",
+    path: "./ride.wav",
   },
   [PIANO]: {
     activeSteps: new Set(),
-    path: "./drum machine 123 bpm rev piano.wav",
+    path: "./rev-piano.wav",
   },
   [ARP1]: {
     activeSteps: new Set([0]),
@@ -60,11 +69,10 @@ export const instruments = {
   },
   [VOCAL1]: {
     activeSteps: new Set(),
-    path: "./drum machine 123 bpm vocal 1.wav",
+    path: "./vocal-1.wav",
   },
-
   [VOCAL2]: {
     activeSteps: new Set(),
-    path: "./drum machine 123 bpm vocal 2.wav",
+    path: "./vocal-2.wav",
   },
 };
