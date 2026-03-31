@@ -73,6 +73,8 @@ npm run typecheck
 - Create a git commit after each completed change.
 - Treat playback regressions as higher priority than cosmetic changes.
 - Keep clip visuals tied to decoded audio data, not placeholder shapes.
+- Favor small modular functions with semantic names
+- After a complete change, commit and write a succinct message
 
 ## DAW Notes
 

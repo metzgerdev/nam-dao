@@ -1,21 +1,3 @@
-const PROFILE_HIGHLIGHTS = [
-  {
-    label: "Creative Engineering",
-    value:
-      "I like turning ideas into working things, especially interactive tools that feel tactile, alive, and human centric.",
-  },
-  {
-    label: "Music Under Zynar",
-    value:
-      "I release music as Zynar, obessing over what the user experiences, with extreme attention to detail.",
-  },
-  {
-    label: "Maker Mentality",
-    value:
-      "Outside of software and music, I wrench on my own cars, and draw inspiration from car design.",
-  },
-];
-
 const PROJECTS = [
   {
     name: "Sequencer",
@@ -31,7 +13,8 @@ const PROJECTS = [
   {
     name: "Zynar",
     href: "https://open.spotify.com/artist/3lKDd5smaYVrRmawXlWn7O",
-    description: "Electronic music",
+    description:
+      "A stranger on the internet described my music as not terrible",
   },
   {
     name: "Cars",
@@ -58,10 +41,11 @@ function Home() {
             <h1>Nam Dao</h1>
             <p className="home-summary">
               I’m a software engineer with a strong maker streak. I have 8+
-              years experience as a front end developer I’m
-              highly collaborative with strong people skills.  I like turning ideas into working things, 
-              especially interactive tools that feel tactile, alive, and human centric.
+              years experience as a front end developer I’m highly collaborative
+              with strong people skills. Obessive over details that matter,
+              which I cultivate also as a music producer and car enthusist.
             </p>
+
             <p className="home-summary">
               I previously worked at NGINX (F5 Networks), Rescale, and Nintendo
               of America.
@@ -70,26 +54,9 @@ function Home() {
               I have an MS in Electrical Engineering from University of
               Washington, and attended the Hack Reactor software accelerator to
               pivot toward web engineering. I&apos;m currently attending the New
-              Line AI accelerator to control the AI or risk being controlled by the
-              AI. 😂
+              Line AI accelerator to control the AI or risk being controlled by
+              the AI. 😂
             </p>
-
-            <div className="home-actions">
-              <a className="home-action" href="#/sequencer">
-                Explore Sequencer
-              </a>
-              <a className="home-action" href="#/daw">
-                Explore DAW
-              </a>
-              <a
-                className="home-action"
-                href="https://open.spotify.com/artist/3lKDd5smaYVrRmawXlWn7O"
-                rel="noreferrer"
-                target="_blank"
-              >
-                Listen to Zynar
-              </a>
-            </div>
           </div>
 
           <aside className="home-projects" aria-label="Projects">
@@ -117,15 +84,6 @@ function Home() {
             </div>
           </aside>
         </div>
-
-        <section className="home-highlights" aria-label="Profile highlights">
-          {PROFILE_HIGHLIGHTS.map((highlight) => (
-            <article className="home-highlight-card" key={highlight.label}>
-              <p className="home-highlight-label">{highlight.label}</p>
-              <p className="home-highlight-value">{highlight.value}</p>
-            </article>
-          ))}
-        </section>
       </section>
     </main>
   );
