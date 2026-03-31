@@ -1,6 +1,7 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import App from "./App";
+import { instrumentRows } from "./data/instruments";
 import { resetSampleCacheForTests } from "./utils/sampleLoader";
 
 class MockAudioContext {
@@ -27,6 +28,16 @@ class MockAudioContext {
 
 function setHashRoute(route) {
   window.location.hash = route;
+}
+
+async function waitForSampleBoot() {
+  await act(async () => {
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+  });
+
+  expect(global.fetch).toHaveBeenCalledTimes(instrumentRows.length);
 }
 
 describe("App routes", () => {
@@ -81,19 +92,21 @@ describe("App routes", () => {
     expect(screen.getByRole("link", { name: /home/i }).className).toContain("active");
   });
 
-  test("renders the sequencer on the sequencer route", () => {
+  test("renders the sequencer on the sequencer route", async () => {
     setHashRoute("#/sequencer");
 
     render(<App />);
+    await waitForSampleBoot();
 
     expect(screen.getByText(/rhythm composer/i)).toBeTruthy();
     expect(screen.getByRole("link", { name: /sequencer/i }).className).toContain("active");
   });
 
-  test("renders the daw on the daw route", () => {
+  test("renders the daw on the daw route", async () => {
     setHashRoute("#/daw");
 
     render(<App />);
+    await waitForSampleBoot();
 
     expect(screen.getByRole("button", { name: /start/i })).toBeTruthy();
     expect(screen.getByText(/1 bar \/ 16 steps/i)).toBeTruthy();

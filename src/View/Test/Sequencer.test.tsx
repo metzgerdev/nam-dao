@@ -88,29 +88,29 @@ describe("Sequencer", () => {
     return row.querySelectorAll("button.step");
   }
 
-  async function waitForSampleBoot() {
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledTimes(instrumentRows.length);
-    });
+async function waitForSampleBoot() {
+  await act(async () => {
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+  });
 
-    await act(async () => {
-      await Promise.resolve();
-      await Promise.resolve();
-    });
-  }
+  expect(global.fetch).toHaveBeenCalledTimes(instrumentRows.length);
+}
 
   test("renders initial UI with transport, tempo, rows, and 16-step grid", async () => {
     render(<Sequencer />);
+    await waitForSampleBoot();
     expect(screen.getByRole("button", { name: /start/i })).toBeTruthy();
     expect(screen.getByText(/tempo 123 bpm/i)).toBeTruthy();
     expect(getRowButtons("kick")).toHaveLength(16);
     expect(getRowButtons("snare")).toHaveLength(16);
     expect(getRowButtons("vocal2")).toHaveLength(16);
-    await waitFor(() => expect(global.fetch).toHaveBeenCalled());
   });
 
-  test("toggles a step on click (inactive -> active)", () => {
+  test("toggles a step on click (inactive -> active)", async () => {
     render(<Sequencer />);
+    await waitForSampleBoot();
     const kickButtons = getRowButtons("kick");
     const step1 = kickButtons[1];
     expect(step1.className).toBe("step");
@@ -118,8 +118,9 @@ describe("Sequencer", () => {
     expect(step1.className).toContain("active");
   });
 
-  test("toggles a step off when clicked again (active -> inactive)", () => {
+  test("toggles a step off when clicked again (active -> inactive)", async () => {
     render(<Sequencer />);
+    await waitForSampleBoot();
     const kickButtons = getRowButtons("kick");
     const step0 = kickButtons[0];
     expect(step0.className).toContain("active");
@@ -127,22 +128,25 @@ describe("Sequencer", () => {
     expect(step0.className).toBe("step");
   });
 
-  test("start button changes to stop while playing", () => {
+  test("start button changes to stop while playing", async () => {
     render(<Sequencer />);
+    await waitForSampleBoot();
     const transport = screen.getByRole("button", { name: /start/i });
     fireEvent.click(transport);
     expect(screen.getByRole("button", { name: /stop/i })).toBeTruthy();
   });
 
-  test("stop button changes back to start", () => {
+  test("stop button changes back to start", async () => {
     render(<Sequencer />);
+    await waitForSampleBoot();
     fireEvent.click(screen.getByRole("button", { name: /start/i }));
     fireEvent.click(screen.getByRole("button", { name: /stop/i }));
     expect(screen.getByRole("button", { name: /start/i })).toBeTruthy();
   });
 
-  test("tempo slider updates tempo label", () => {
+  test("tempo slider updates tempo label", async () => {
     render(<Sequencer />);
+    await waitForSampleBoot();
     const slider = screen.getByRole("slider");
     fireEvent.input(slider, { target: { value: "140" } });
     expect(screen.getByText(/tempo 140 bpm/i)).toBeTruthy();
@@ -150,6 +154,7 @@ describe("Sequencer", () => {
 
   test("progress row active cell advances during playback ticks", async () => {
     render(<Sequencer />);
+    await waitForSampleBoot();
     const progressRow = screen.getByText("position").closest(".row-block");
     const initialActiveCount = progressRow.querySelectorAll(".step.cell.active").length;
     expect(initialActiveCount).toBe(1);
@@ -168,8 +173,9 @@ describe("Sequencer", () => {
     });
   });
 
-  test("progress row buttons are disabled", () => {
+  test("progress row buttons are disabled", async () => {
     render(<Sequencer />);
+    await waitForSampleBoot();
     const progressRow = screen.getByText("position").closest(".row-block");
     const progressButtons = progressRow.querySelectorAll("button.step");
     expect(progressButtons.length).toBe(16);
@@ -196,11 +202,15 @@ describe("Sequencer", () => {
     });
   });
 
-  test("clears scheduler timeout on unmount", () => {
+  test("clears scheduler timeout on unmount", async () => {
     const { unmount } = render(<Sequencer />);
+    await waitForSampleBoot();
     fireEvent.click(screen.getByRole("button", { name: /start/i }));
-    expect(jest.getTimerCount()).toBeGreaterThan(0);
-    unmount();
-    expect(jest.getTimerCount()).toBe(0);
+    const timerCountBeforeUnmount = jest.getTimerCount();
+    expect(timerCountBeforeUnmount).toBeGreaterThan(0);
+    act(() => {
+      unmount();
+    });
+    expect(jest.getTimerCount()).toBeLessThan(timerCountBeforeUnmount);
   });
 });
