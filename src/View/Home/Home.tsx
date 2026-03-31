@@ -55,7 +55,7 @@ function Home() {
               Washington, and attended the Hack Reactor software accelerator to
               pivot toward web engineering. I&apos;m currently attending the New
               Line AI accelerator to control the AI or risk being controlled by
-              the AI. 😂
+              the AI. 🤖
             </p>
           </div>
 
