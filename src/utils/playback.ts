@@ -1,5 +1,9 @@
-import type { ChangeEvent, Dispatch, MutableRefObject, SetStateAction } from "react";
-import type { AudioBufferMap, DrumState, InstrumentName } from "../data/instruments";
+import type { ChangeEvent, Dispatch, RefObject, SetStateAction } from "react";
+import type {
+  AudioBufferMap,
+  DrumState,
+  InstrumentName,
+} from "../data/instruments";
 
 interface NumberRef {
   current: number;
@@ -50,11 +54,16 @@ function triggerSample(
     drumStateRef,
     audioBufferRefs,
     audioContextRef,
-  }: Pick<SchedulerContext, "audioBufferRefs" | "audioContextRef" | "drumStateRef">,
+  }: Pick<
+    SchedulerContext,
+    "audioBufferRefs" | "audioContextRef" | "drumStateRef"
+  >,
   currentStepRef: NumberRef,
   time: number,
 ): void {
-  for (const sampleType of Object.keys(drumStateRef.current) as InstrumentName[]) {
+  for (const sampleType of Object.keys(
+    drumStateRef.current,
+  ) as InstrumentName[]) {
     const { activeSteps } = drumStateRef.current[sampleType];
     if (activeSteps.has(currentStepRef.current)) {
       const audioBuffer = audioBufferRefs.current[sampleType];
