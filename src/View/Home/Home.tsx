@@ -52,8 +52,7 @@ function Home() {
             </p>
             <p className="home-summary">
               I have an MS in Electrical Engineering from University of
-              Washington, and attended the Hack Reactor software accelerator to
-              pivot toward web engineering. I&apos;m currently attending the New
+              Washington, and attended the Hack Reactor software accelerator.  I&apos;m currently attending the New
               Line AI accelerator to control the AI or risk being controlled by
               the AI. 🤖
             </p>

@@ -1,3 +1,6 @@
+Deployed:
+https://metzgerdev.github.io/Drum-Machine/
+
 # Drum Machine
 React based drum machine inspired by the Roland TR 909.  Any one can make EDM, its just a loop!!!
 
@@ -50,7 +53,5 @@ npm run serve
 ```bash
 npm run build
 ```
-Live here:
-https://metzgerdev.github.io/Drum-Machine/
 
 ![alt text](image.png)
