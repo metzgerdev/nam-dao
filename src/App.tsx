@@ -88,7 +88,7 @@ function App() {
           className={route === "too-fast-too-furious" ? "active" : ""}
           href="#/too-fast-too-furious"
         >
-          Too Fast Too Furious
+          Machines
         </a>
       </nav>
       <div className="app-route-stage" key={route}>
