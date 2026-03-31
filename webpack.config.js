@@ -11,9 +11,9 @@ const publicPath = isProduction ? new URL(packageJson.homepage).pathname : '/';
 const stylesHandler = MiniCssExtractPlugin.loader;
 
 const config = {
-  entry: "./src/index.js",
+  entry: "./src/index.tsx",
   resolve: {
-    extensions: [".js", ".jsx", ".json"],
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -48,7 +48,7 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/i,
+        test: /\.(js|jsx|ts|tsx)$/i,
         loader: "babel-loader",
       },
       {
