@@ -213,8 +213,10 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  text-decoration: none;
-  color: #d9edf4;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.28em;
+  color: #8edcf3;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.72rem;
@@ -254,12 +256,14 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  color: #d9edf4;
+  color: #8edcf3;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.72rem;
   font-weight: 800;
-  text-decoration: none;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.28em;
 }
 
 .home-project-name:hover,

@@ -68,7 +68,9 @@ describe("App routes", () => {
     render(<App />);
 
     expect(screen.getByRole("heading", { name: /nam dao/i })).toBeTruthy();
-    expect(screen.getByText(/i release music as zynar/i)).toBeTruthy();
+    expect(
+      screen.getByText(/i’m a software engineer with a strong maker streak/i),
+    ).toBeTruthy();
     expect(screen.getByText(/projects/i)).toBeTruthy();
     expect(screen.getByText(/roland 909 inspired drum machine/i)).toBeTruthy();
     expect(
