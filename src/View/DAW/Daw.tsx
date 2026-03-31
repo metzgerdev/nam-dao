@@ -1,19 +1,12 @@
-import { useEffect, useState, type MutableRefObject } from "react";
+import { useEffect, useState, type RefObject } from "react";
 import type { AudioBufferMap, InstrumentName } from "../../data/instruments";
 import { useStepSequencer } from "../../hooks/useStepSequencer";
-
-const TRACK_TINTS: Partial<Record<InstrumentName, string>> = {
-  arp1: "daw-step-cell--secondary",
-  bass: "daw-step-cell--secondary",
-  closedHat: "daw-step-cell--cool",
-  kick: "daw-step-cell--primary",
-  openHat: "daw-step-cell--cool",
-  piano: "daw-step-cell--secondary",
-  ride: "daw-step-cell--cool",
-  snare: "daw-step-cell--primary",
-  vocal1: "daw-step-cell--secondary",
-  vocal2: "daw-step-cell--secondary",
-};
+import {
+  buildWaveformPath,
+  formatTrackIndex,
+  formatTrackName,
+  TRACK_TINTS,
+} from "./dawHelpers";
 
 interface DawTrackProps {
   activeSteps: Set<number>;
@@ -25,50 +18,8 @@ interface DawTrackProps {
   trackName: InstrumentName;
 }
 
-function formatTrackName(trackName: InstrumentName): string {
-  return trackName.replace(/([A-Z])/g, " $1").trim().toUpperCase();
-}
-
-function formatTrackIndex(index: number): string {
-  return String(index + 1).padStart(2, "0");
-}
-
-function buildWaveformPath(audioBuffer: AudioBuffer | null, pointCount = 28): string {
-  if (!audioBuffer || typeof audioBuffer.getChannelData !== "function") {
-    return "";
-  }
-
-  const channelData = audioBuffer.getChannelData(0);
-  if (!channelData?.length) {
-    return "";
-  }
-
-  const bucketSize = Math.max(1, Math.floor(channelData.length / pointCount));
-  const topPoints: string[] = [];
-  const bottomPoints: string[] = [];
-
-  for (let pointIndex = 0; pointIndex < pointCount; pointIndex += 1) {
-    const start = pointIndex * bucketSize;
-    const end = Math.min(channelData.length, start + bucketSize);
-    let peak = 0;
-
-    for (let sampleIndex = start; sampleIndex < end; sampleIndex += 1) {
-      peak = Math.max(peak, Math.abs(channelData[sampleIndex]));
-    }
-
-    const x = (pointIndex / Math.max(1, pointCount - 1)) * 100;
-    const amplitude = Math.min(peak, 1) * 34;
-    const topY = 50 - amplitude;
-    const bottomY = 50 + amplitude;
-    topPoints.push(`${pointIndex === 0 ? "M" : "L"} ${x.toFixed(2)} ${topY.toFixed(2)}`);
-    bottomPoints.unshift(`L ${x.toFixed(2)} ${bottomY.toFixed(2)}`);
-  }
-
-  return `${topPoints.join(" ")} ${bottomPoints.join(" ")} Z`;
-}
-
 function useUiStep(
-  currentStepRef: MutableRefObject<number>,
+  currentStepRef: RefObject<number>,
   isPlaying: boolean,
 ): number {
   const [uiStep, setUiStep] = useState(currentStepRef.current ?? 0);
@@ -118,7 +69,11 @@ function DawTrack({
           <h2>{formatTrackName(trackName)}</h2>
         </div>
       </header>
-      <div className="daw-track-grid" role="grid" aria-label={`${trackName} arrangement`}>
+      <div
+        className="daw-track-grid"
+        role="grid"
+        aria-label={`${trackName} arrangement`}
+      >
         {steps.map((_value, stepIndex) => {
           const isActive = activeSteps.has(stepIndex);
           const className = [
@@ -216,7 +171,10 @@ function Daw() {
           </div>
         </header>
 
-        <section className="daw-arrangement" aria-label="Digital audio workstation arrangement">
+        <section
+          className="daw-arrangement"
+          aria-label="Digital audio workstation arrangement"
+        >
           <div className="daw-ruler">
             <div className="daw-ruler-spacer">Tracks</div>
             <div className="daw-ruler-grid" aria-hidden="true">
