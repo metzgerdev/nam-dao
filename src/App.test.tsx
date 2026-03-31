@@ -69,7 +69,11 @@ describe("App routes", () => {
 
     expect(screen.getByRole("heading", { name: /nam dao/i })).toBeTruthy();
     expect(screen.getByText(/i release music as zynar/i)).toBeTruthy();
-    expect(screen.getByText(/nginx \/ f5, rescale, and nintendo of america/i)).toBeTruthy();
+    expect(
+      screen.getByText(
+        /i previously worked at nginx \(f5 networks\), rescale, and nintendo of america/i,
+      ),
+    ).toBeTruthy();
     expect(screen.getByRole("link", { name: /home/i }).className).toContain("active");
   });
 
