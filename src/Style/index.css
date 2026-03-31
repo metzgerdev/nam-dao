@@ -70,6 +70,9 @@ body {
 }
 
 .app-route-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   color: rgba(229, 226, 225, 0.76);
   text-decoration: none;
   text-transform: uppercase;
@@ -79,6 +82,18 @@ body {
   padding: 0.6rem 0.95rem;
   border-radius: 999px;
   transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.app-route-nav a::after,
+.home-action::after {
+  content: "";
+  width: 0.36rem;
+  height: 0.36rem;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(1px);
+  opacity: 0.52;
+  flex: 0 0 auto;
 }
 
 .app-route-nav a.active {
@@ -197,6 +212,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   min-height: 46px;
   padding: 0 1rem;
   border-radius: 999px;
