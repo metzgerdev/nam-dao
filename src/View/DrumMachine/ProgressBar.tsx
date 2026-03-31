@@ -1,16 +1,12 @@
-import { useEffect, useState, type MutableRefObject } from "react";
+import { useEffect, useState, type RefObject } from "react";
 
 interface ProgressBarProps {
   steps: boolean[];
-  currentStepRef: MutableRefObject<number>;
+  currentStepRef: RefObject<number>;
   isPlaying: boolean;
 }
 
-function ProgressBar({
-  steps,
-  currentStepRef,
-  isPlaying,
-}: ProgressBarProps) {
+function ProgressBar({ steps, currentStepRef, isPlaying }: ProgressBarProps) {
   const [uiStep, setUiStep] = useState(currentStepRef.current ?? 0);
 
   useEffect(() => {

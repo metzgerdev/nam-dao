@@ -16,7 +16,7 @@
   "exclude": [
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
-    "src/View/Shared/**/*",
+    "src/utils/Shared/**/*",
     "src/View/DAW/waveform.test.ts"
   ]
 }
