@@ -135,13 +135,14 @@ body {
 
 .home-hero {
   display: grid;
-  grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+  grid-template-columns: minmax(240px, 320px) minmax(0, 1fr) minmax(260px, 320px);
   gap: 1rem;
   align-items: stretch;
 }
 
 .home-portrait-panel,
-.home-highlight-card {
+.home-highlight-card,
+.home-projects {
   background: #0d0d0d;
   border-radius: 22px;
   box-shadow:
@@ -204,33 +205,63 @@ body {
 .home-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 1rem;
   margin-top: 0.2rem;
 }
 
 .home-action {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 0.5rem;
-  min-height: 46px;
-  padding: 0 1rem;
-  border-radius: 999px;
   text-decoration: none;
   color: #d9edf4;
-  background: linear-gradient(180deg, #15191b 0%, #101315 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(123, 210, 239, 0.18),
-    inset 0 8px 14px rgba(123, 210, 239, 0.03);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.home-action:hover,
+.home-action:focus-visible {
+  color: #edf8fb;
+}
+
+.home-projects {
+  display: grid;
+  align-content: start;
+  gap: 0.9rem;
+  padding: 1.05rem 1.1rem;
+}
+
+.home-project-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.home-project-card {
+  display: grid;
+  gap: 0.28rem;
+  padding: 0.8rem 0.85rem;
+  background: #090909;
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.home-project-name {
+  margin: 0;
+  color: #d9edf4;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.72rem;
   font-weight: 800;
 }
 
-.home-action--primary {
-  color: #111111;
-  background: linear-gradient(180deg, #ffbf86 0%, #c88242 100%);
+.home-project-description {
+  margin: 0;
+  color: rgba(229, 226, 225, 0.76);
+  line-height: 1.5;
 }
 
 .home-highlights {
@@ -805,7 +836,7 @@ body {
 
 @media (max-width: 980px) {
   .home-hero {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
   }
 
   .home-highlights {
@@ -865,6 +896,10 @@ body {
 
   .home-copy {
     padding: 1rem;
+  }
+
+  .home-hero {
+    grid-template-columns: 1fr;
   }
 
   .garage-intro {
