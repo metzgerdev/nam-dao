@@ -12,7 +12,27 @@ const PROFILE_HIGHLIGHTS = [
   {
     label: "Maker Mentality",
     value:
-      "Outside of software and music, I wrench on my own cars, and draw inspiration from car design. I’m happiest making, fixing, and refining with my hands.",
+      "Outside of software and music, I wrench on my own cars, and draw inspiration from car design.",
+  },
+];
+
+const PROJECTS = [
+  {
+    name: "Sequencer",
+    description: "Roland 909 inspired drum machine",
+  },
+  {
+    name: "DAW",
+    description:
+      "Digital Audio Workstation inspired by Ableton and vintage hi fi speakers",
+  },
+  {
+    name: "Zynar",
+    description: "Electronic music",
+  },
+  {
+    name: "Cars",
+    description: "Restore and modify classic german cars",
   },
 ];
 
@@ -39,18 +59,14 @@ function Home() {
               highly collaborative with strong people skills.
             </p>
             <p className="home-summary">
-              Creativity is the through-line for me: code, sound, machines, and
-              the satisfaction of delivering high impact products.
-            </p>
-            <p className="home-summary">
-              I&apos;ve previously worked at NGINX / F5, Rescale, and Nintendo
+              I previously worked at NGINX (F5 Networks), Rescale, and Nintendo
               of America.
             </p>
             <p className="home-summary">
               I have an MS in Electrical Engineering from University of
               Washington, and attended the Hack Reactor software accelerator to
               pivot toward web engineering. I&apos;m currently attending the New
-              Line AI accelerator to control the AI or else be controlled by the
+              Line AI accelerator to control the AI or risk being controlled by the
               AI. 😂
             </p>
 
@@ -58,7 +74,7 @@ function Home() {
               <a className="home-action" href="#/sequencer">
                 Explore Sequencer
               </a>
-              <a className="home-action home-action--primary" href="#/daw">
+              <a className="home-action" href="#/daw">
                 Explore DAW
               </a>
               <a
@@ -71,6 +87,20 @@ function Home() {
               </a>
             </div>
           </div>
+
+          <aside className="home-projects" aria-label="Projects">
+            <p className="home-kicker">Projects</p>
+            <div className="home-project-list">
+              {PROJECTS.map((project) => (
+                <article className="home-project-card" key={project.name}>
+                  <p className="home-project-name">{project.name}</p>
+                  <p className="home-project-description">
+                    {project.description}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </aside>
         </div>
 
         <section className="home-highlights" aria-label="Profile highlights">
