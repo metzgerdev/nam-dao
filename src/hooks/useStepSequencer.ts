@@ -4,7 +4,7 @@ import {
   useState,
   type ChangeEvent,
   type Dispatch,
-  type MutableRefObject,
+  type RefObject,
   type SetStateAction,
 } from "react";
 import {
@@ -40,7 +40,7 @@ function createAudioBufferMap(): AudioBufferMap {
 
 interface StepSequencerState {
   audioBuffers: AudioBufferMap;
-  currentStepRef: MutableRefObject<number>;
+  currentStepRef: RefObject<number>;
   drumState: DrumState;
   handleTempoChange: (event: ChangeEvent<HTMLInputElement>) => void;
   instrumentRows: readonly InstrumentName[];
