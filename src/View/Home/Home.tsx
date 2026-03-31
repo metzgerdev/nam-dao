@@ -19,19 +19,23 @@ const PROFILE_HIGHLIGHTS = [
 const PROJECTS = [
   {
     name: "Sequencer",
+    href: "#/sequencer",
     description: "Roland 909 inspired drum machine",
   },
   {
     name: "DAW",
+    href: "#/daw",
     description:
       "Digital Audio Workstation inspired by Ableton and vintage hi fi speakers",
   },
   {
     name: "Zynar",
+    href: "https://open.spotify.com/artist/3lKDd5smaYVrRmawXlWn7O",
     description: "Electronic music",
   },
   {
     name: "Cars",
+    href: "#/too-fast-too-furious",
     description: "Restore and modify classic german cars",
   },
 ];
@@ -54,9 +58,9 @@ function Home() {
             <h1>Nam Dao</h1>
             <p className="home-summary">
               I’m a software engineer with a strong maker streak. I have 8+
-              years experience as a front end developer, make electronic music
-              as Zynar, and spend time in the garage wrenching on cars. I’m
-              highly collaborative with strong people skills.
+              years experience as a front end developer I’m
+              highly collaborative with strong people skills.  I like turning ideas into working things, 
+              especially interactive tools that feel tactile, alive, and human centric.
             </p>
             <p className="home-summary">
               I previously worked at NGINX (F5 Networks), Rescale, and Nintendo
@@ -93,7 +97,18 @@ function Home() {
             <div className="home-project-list">
               {PROJECTS.map((project) => (
                 <article className="home-project-card" key={project.name}>
-                  <p className="home-project-name">{project.name}</p>
+                  <a
+                    className="home-project-name"
+                    href={project.href}
+                    rel={
+                      project.href.startsWith("http") ? "noreferrer" : undefined
+                    }
+                    target={
+                      project.href.startsWith("http") ? "_blank" : undefined
+                    }
+                  >
+                    {project.name}
+                  </a>
                   <p className="home-project-description">
                     {project.description}
                   </p>

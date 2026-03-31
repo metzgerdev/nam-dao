@@ -251,11 +251,20 @@ body {
 
 .home-project-name {
   margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   color: #d9edf4;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.72rem;
   font-weight: 800;
+  text-decoration: none;
+}
+
+.home-project-name:hover,
+.home-project-name:focus-visible {
+  color: #edf8fb;
 }
 
 .home-project-description {
