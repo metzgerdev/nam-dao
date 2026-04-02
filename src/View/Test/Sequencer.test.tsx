@@ -203,14 +203,20 @@ async function waitForSampleBoot() {
   });
 
   test("clears scheduler timeout on unmount", async () => {
+    const clearTimeoutSpy = jest.spyOn(global, "clearTimeout");
     const { unmount } = render(<Sequencer />);
     await waitForSampleBoot();
     fireEvent.click(screen.getByRole("button", { name: /start/i }));
-    const timerCountBeforeUnmount = jest.getTimerCount();
-    expect(timerCountBeforeUnmount).toBeGreaterThan(0);
+    const scheduledCallsBeforeUnmount = global.AudioBufferSourceNode.mock.calls.length;
+
     act(() => {
       unmount();
+      jest.advanceTimersByTime(100);
     });
-    expect(jest.getTimerCount()).toBeLessThan(timerCountBeforeUnmount);
+
+    expect(clearTimeoutSpy).toHaveBeenCalled();
+    expect(global.AudioBufferSourceNode.mock.calls.length).toBe(
+      scheduledCallsBeforeUnmount,
+    );
   });
 });
