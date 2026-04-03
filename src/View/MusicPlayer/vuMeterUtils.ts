@@ -7,6 +7,23 @@ export const METER_FFT_SIZE = 2048;
 
 const METER_GAIN = 3.5;
 const VU_RESPONSE_TIME_MS = 300;
+const K_WEIGHTING_SHELVING_FEEDFORWARD = [
+  1.53512485958697,
+  -2.69169618940638,
+  1.19839281085285,
+];
+const K_WEIGHTING_SHELVING_FEEDBACK = [
+  1,
+  -1.69065929318241,
+  0.73248077421585,
+];
+const K_WEIGHTING_HIGH_PASS_FEEDFORWARD = [1, -2, 1];
+const K_WEIGHTING_HIGH_PASS_FEEDBACK = [1, -1.99004745483398, 0.99007225036621];
+
+export interface KWeightingFilterChain {
+  highPassFilter: IIRFilterNode;
+  shelvingFilter: IIRFilterNode;
+}
 
 export function computeRms(buffer: Float32Array): number {
   let sum = 0;
@@ -34,4 +51,23 @@ export function smoothMeterLevel(
 ): number {
   const smoothing = calculateVuBlend(deltaTimeMs);
   return previous + (next - previous) * smoothing;
+}
+
+export function createKWeightingFilterChain(
+  context: AudioContext,
+): KWeightingFilterChain | null {
+  if (typeof context.createIIRFilter !== "function") {
+    return null;
+  }
+
+  return {
+    highPassFilter: context.createIIRFilter(
+      K_WEIGHTING_HIGH_PASS_FEEDFORWARD,
+      K_WEIGHTING_HIGH_PASS_FEEDBACK,
+    ),
+    shelvingFilter: context.createIIRFilter(
+      K_WEIGHTING_SHELVING_FEEDFORWARD,
+      K_WEIGHTING_SHELVING_FEEDBACK,
+    ),
+  };
 }
