@@ -1,9 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import FeedbackCard from "./components/FeedbackCard";
 import LibrarySidebar from "./components/LibrarySidebar";
 import MeterStrip from "./components/MeterStrip";
@@ -50,7 +45,9 @@ async function loadTrackDuration(track: MusicTrack): Promise<number> {
 
     function resolveDuration() {
       const nextDuration =
-        Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : 0;
+        Number.isFinite(audio.duration) && audio.duration > 0
+          ? audio.duration
+          : 0;
       cleanup();
       resolve(nextDuration);
     }
@@ -90,7 +87,9 @@ function MusicPlayer() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [library, setLibrary] = useState<MusicLibrary | null>(null);
-  const [trackDurations, setTrackDurations] = useState<Record<string, number>>({});
+  const [trackDurations, setTrackDurations] = useState<Record<string, number>>(
+    {},
+  );
   const [meterLevels, setMeterLevels] = useState({
     left: IDLE_METER_LEVEL,
     right: IDLE_METER_LEVEL,
@@ -218,7 +217,7 @@ function MusicPlayer() {
     };
   }, []);
 
-  const ensureAudioAnalysisGraph = useCallback(
+  const generateAudioAnalysisGraph = useCallback(
     (audio: HTMLAudioElement): AudioContext | null => {
       if (audioContextRef.current && audioSourceNodeRef.current) {
         if (gainNodeRef.current) {
@@ -274,7 +273,9 @@ function MusicPlayer() {
 
         if (rightKWeighting) {
           splitter.connect(rightKWeighting.shelvingFilter, 1);
-          rightKWeighting.shelvingFilter.connect(rightKWeighting.highPassFilter);
+          rightKWeighting.shelvingFilter.connect(
+            rightKWeighting.highPassFilter,
+          );
           rightKWeighting.highPassFilter.connect(rightAnalyser);
         } else {
           splitter.connect(rightAnalyser, 1);
@@ -302,7 +303,7 @@ function MusicPlayer() {
 
   const beginPlayback = useCallback(
     async (audio: HTMLAudioElement): Promise<void> => {
-      const audioContext = ensureAudioAnalysisGraph(audio);
+      const audioContext = generateAudioAnalysisGraph(audio);
 
       if (audioContext?.state === "suspended") {
         await audioContext.resume();
@@ -310,7 +311,7 @@ function MusicPlayer() {
 
       await audio.play();
     },
-    [ensureAudioAnalysisGraph],
+    [generateAudioAnalysisGraph],
   );
 
   const {
@@ -343,7 +344,9 @@ function MusicPlayer() {
     tracks: library?.tracks ?? [],
   });
 
-  const fallbackDuration = activeTrack ? (trackDurations[activeTrack.id] ?? 0) : 0;
+  const fallbackDuration = activeTrack
+    ? (trackDurations[activeTrack.id] ?? 0)
+    : 0;
   const effectiveDuration = duration > 0 ? duration : fallbackDuration;
 
   useEffect(() => {
