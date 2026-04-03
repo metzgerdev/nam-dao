@@ -30,9 +30,19 @@ export interface MeterLevels {
   right: number;
 }
 
+interface MeterSignalBuffers {
+  leftBuffer: Float32Array<ArrayBufferLike>;
+  rightBuffer: Float32Array<ArrayBufferLike>;
+}
+
+interface MeterSignalOptions {
+  leftAnalyser: AnalyserNode | null;
+  rightAnalyser: AnalyserNode | null;
+}
+
 const METER_SETTLE_EPSILON = 0.001;
 
-export function computeRms(buffer: Float32Array): number {
+export function computeRms(buffer: Float32Array<ArrayBufferLike>): number {
   let sum = 0;
 
   for (let index = 0; index < buffer.length; index += 1) {
@@ -75,6 +85,34 @@ export function shouldKeepMeterAnimationActive(levels: MeterLevels): boolean {
     Math.abs(levels.left - IDLE_METER_LEVEL) > METER_SETTLE_EPSILON ||
     Math.abs(levels.right - IDLE_METER_LEVEL) > METER_SETTLE_EPSILON
   );
+}
+
+export function readMeterLevels(
+  { leftAnalyser, rightAnalyser }: MeterSignalOptions,
+  { leftBuffer, rightBuffer }: MeterSignalBuffers,
+): MeterLevels {
+  if (!leftAnalyser) {
+    return {
+      left: IDLE_METER_LEVEL,
+      right: IDLE_METER_LEVEL,
+    };
+  }
+
+  leftAnalyser.getFloatTimeDomainData(leftBuffer as Float32Array<ArrayBuffer>);
+  if (rightAnalyser) {
+    rightAnalyser.getFloatTimeDomainData(rightBuffer as Float32Array<ArrayBuffer>);
+  } else {
+    rightBuffer.set(leftBuffer);
+  }
+
+  const left = normalizeMeterLevel(computeRms(leftBuffer));
+  const rawRightLevel = normalizeMeterLevel(computeRms(rightBuffer));
+  const right =
+    rawRightLevel <= IDLE_METER_LEVEL + 0.01 && left > IDLE_METER_LEVEL + 0.03
+      ? left
+      : rawRightLevel;
+
+  return { left, right };
 }
 
 export function createKWeightingFilterChain(
