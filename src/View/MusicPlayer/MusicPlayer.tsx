@@ -3,7 +3,6 @@ import {
   useEffect,
   useRef,
   useState,
-  type ChangeEvent,
 } from "react";
 import FeedbackCard from "./components/FeedbackCard";
 import LibrarySidebar from "./components/LibrarySidebar";
@@ -19,11 +18,14 @@ import {
 import {
   createKWeightingFilterChain,
   computeRms,
+  hasMeterSettled,
   IDLE_METER_LEVEL,
   METER_FFT_SIZE,
   normalizeMeterLevel,
+  shouldKeepMeterAnimationActive,
   smoothMeterLevel,
 } from "./vuMeterUtils";
+import { usePlayback } from "./usePlayback";
 import { useVolume } from "./useVolume";
 
 function formatPlaybackTime(value: number): string {
@@ -85,13 +87,9 @@ function MusicPlayer() {
   const leftAnalyserRef = useRef<AnalyserNode | null>(null);
   const meterFilterNodesRef = useRef<AudioNode[]>([]);
   const rightAnalyserRef = useRef<AnalyserNode | null>(null);
-  const pendingAutoplayRef = useRef(false);
   const [activeTrackId, setActiveTrackId] = useState<string | null>(null);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [library, setLibrary] = useState<MusicLibrary | null>(null);
   const [trackDurations, setTrackDurations] = useState<Record<string, number>>({});
   const [meterLevels, setMeterLevels] = useState({
@@ -106,6 +104,12 @@ function MusicPlayer() {
     handleVolumePointerRelease,
     volume,
   } = useVolume();
+  const resetMeterLevels = useCallback(() => {
+    setMeterLevels({
+      left: IDLE_METER_LEVEL,
+      right: IDLE_METER_LEVEL,
+    });
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -151,8 +155,6 @@ function MusicPlayer() {
   const activeTrackIndex = library?.tracks.findIndex(
     (track) => track.id === activeTrackId,
   );
-  const fallbackDuration = activeTrack ? (trackDurations[activeTrack.id] ?? 0) : 0;
-  const effectiveDuration = duration > 0 ? duration : fallbackDuration;
   const meterReadouts: MeterReadout[] = [
     {
       id: "left",
@@ -216,85 +218,6 @@ function MusicPlayer() {
       void audioContext?.close();
     };
   }, []);
-
-  useEffect(() => {
-    const analyserSize = leftAnalyserRef.current?.fftSize ?? METER_FFT_SIZE;
-    const leftBuffer = new Float32Array(analyserSize);
-    const rightBuffer = new Float32Array(
-      rightAnalyserRef.current?.fftSize ?? analyserSize,
-    );
-    let animationFrameId = 0;
-    let previousTimestamp: number | null = null;
-
-    function updateMeters(timestamp: number) {
-      const leftAnalyser = leftAnalyserRef.current;
-      const rightAnalyser = rightAnalyserRef.current;
-      const deltaTimeMs =
-        previousTimestamp === null ? 16.67 : timestamp - previousTimestamp;
-      previousTimestamp = timestamp;
-      let nextLeftLevel = IDLE_METER_LEVEL;
-      let nextRightLevel = IDLE_METER_LEVEL;
-
-      if (isPlaying && leftAnalyser) {
-        leftAnalyser.getFloatTimeDomainData(leftBuffer);
-        if (rightAnalyser) {
-          rightAnalyser.getFloatTimeDomainData(rightBuffer);
-        } else {
-          rightBuffer.set(leftBuffer);
-        }
-
-        nextLeftLevel = normalizeMeterLevel(computeRms(leftBuffer));
-        const rawRightLevel = normalizeMeterLevel(computeRms(rightBuffer));
-        nextRightLevel =
-          rawRightLevel <= IDLE_METER_LEVEL + 0.01 &&
-          nextLeftLevel > IDLE_METER_LEVEL + 0.03
-            ? nextLeftLevel
-            : rawRightLevel;
-      }
-
-      let shouldContinue = isPlaying;
-
-      setMeterLevels((previousLevels) => {
-        const left = smoothMeterLevel(
-          previousLevels.left,
-          nextLeftLevel,
-          deltaTimeMs,
-        );
-        const right = smoothMeterLevel(
-          previousLevels.right,
-          nextRightLevel,
-          deltaTimeMs,
-        );
-
-        if (
-          Math.abs(left - previousLevels.left) < 0.001 &&
-          Math.abs(right - previousLevels.right) < 0.001
-        ) {
-          shouldContinue =
-            shouldContinue ||
-            Math.abs(previousLevels.left - IDLE_METER_LEVEL) > 0.001 ||
-            Math.abs(previousLevels.right - IDLE_METER_LEVEL) > 0.001;
-          return previousLevels;
-        }
-
-        shouldContinue =
-          shouldContinue ||
-          Math.abs(left - IDLE_METER_LEVEL) > 0.001 ||
-          Math.abs(right - IDLE_METER_LEVEL) > 0.001;
-        return { left, right };
-      });
-
-      if (shouldContinue) {
-        animationFrameId = requestAnimationFrame(updateMeters);
-      }
-    }
-
-    animationFrameId = requestAnimationFrame(updateMeters);
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [isPlaying]);
 
   const ensureAudioAnalysisGraph = useCallback(
     (audio: HTMLAudioElement): AudioContext | null => {
@@ -391,71 +314,115 @@ function MusicPlayer() {
     [ensureAudioAnalysisGraph],
   );
 
-  const syncTransportState = useCallback((audio: HTMLAudioElement) => {
-    setCurrentTime(audio.currentTime);
-    setDuration(
-      Number.isFinite(audio.duration) && audio.duration > 0
-        ? audio.duration
-        : 0,
+  const {
+    currentTime,
+    duration,
+    handleAudioCanPlay,
+    handleAudioDurationChange,
+    handleAudioEnded,
+    handleAudioError,
+    handleAudioLoadedData,
+    handleAudioLoadedMetadata,
+    handleAudioPause,
+    handleAudioPlay,
+    handleAudioSeeked,
+    handleAudioSeeking,
+    handleAudioTimeUpdate,
+    handlePlaybackToggle,
+    handleSeekChange,
+    isPlaying,
+    selectAdjacentTrack,
+    selectTrack,
+  } = usePlayback({
+    activeTrack,
+    activeTrackIndex: activeTrackIndex ?? -1,
+    audioRef,
+    beginPlayback,
+    onResetMeters: resetMeterLevels,
+    onSetErrorMessage: setErrorMessage,
+    onSetTrackId: setActiveTrackId,
+    tracks: library?.tracks ?? [],
+  });
+
+  const fallbackDuration = activeTrack ? (trackDurations[activeTrack.id] ?? 0) : 0;
+  const effectiveDuration = duration > 0 ? duration : fallbackDuration;
+
+  useEffect(() => {
+    const analyserSize = leftAnalyserRef.current?.fftSize ?? METER_FFT_SIZE;
+    const leftBuffer = new Float32Array(analyserSize);
+    const rightBuffer = new Float32Array(
+      rightAnalyserRef.current?.fftSize ?? analyserSize,
     );
-  }, []);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-
-    if (!audio || !activeTrack) {
-      return;
-    }
-
-    setCurrentTime(0);
-    setDuration(0);
-    setErrorMessage(null);
-    setMeterLevels({
-      left: IDLE_METER_LEVEL,
-      right: IDLE_METER_LEVEL,
-    });
-    audio.currentTime = 0;
-    audio.load();
-    syncTransportState(audio);
-
-    if (pendingAutoplayRef.current) {
-      pendingAutoplayRef.current = false;
-      void beginPlayback(audio).then(
-        () => setIsPlaying(true),
-        () => {
-          setIsPlaying(false);
-          setErrorMessage(
-            "Playback is blocked until the browser allows audio for this page.",
-          );
-        },
-      );
-      return;
-    }
-
-    audio.pause();
-    setIsPlaying(false);
-  }, [activeTrack, beginPlayback, syncTransportState]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-
-    if (!audio || !isPlaying) {
-      return undefined;
-    }
-
     let animationFrameId = 0;
+    let previousTimestamp: number | null = null;
 
-    function syncPlaybackPosition() {
-      syncTransportState(audio);
-      animationFrameId = requestAnimationFrame(syncPlaybackPosition);
+    function updateMeters(timestamp: number) {
+      const leftAnalyser = leftAnalyserRef.current;
+      const rightAnalyser = rightAnalyserRef.current;
+      const deltaTimeMs =
+        previousTimestamp === null ? 16.67 : timestamp - previousTimestamp;
+      previousTimestamp = timestamp;
+      let nextLeftLevel = IDLE_METER_LEVEL;
+      let nextRightLevel = IDLE_METER_LEVEL;
+
+      if (isPlaying && leftAnalyser) {
+        leftAnalyser.getFloatTimeDomainData(leftBuffer);
+        if (rightAnalyser) {
+          rightAnalyser.getFloatTimeDomainData(rightBuffer);
+        } else {
+          rightBuffer.set(leftBuffer);
+        }
+
+        nextLeftLevel = normalizeMeterLevel(computeRms(leftBuffer));
+        const rawRightLevel = normalizeMeterLevel(computeRms(rightBuffer));
+        nextRightLevel =
+          rawRightLevel <= IDLE_METER_LEVEL + 0.01 &&
+          nextLeftLevel > IDLE_METER_LEVEL + 0.03
+            ? nextLeftLevel
+            : rawRightLevel;
+      }
+
+      let shouldContinue = isPlaying;
+
+      setMeterLevels((previousLevels) => {
+        const left = smoothMeterLevel(
+          previousLevels.left,
+          nextLeftLevel,
+          deltaTimeMs,
+        );
+        const right = smoothMeterLevel(
+          previousLevels.right,
+          nextRightLevel,
+          deltaTimeMs,
+        );
+
+        if (
+          hasMeterSettled(previousLevels, {
+            left,
+            right,
+          })
+        ) {
+          shouldContinue =
+            shouldContinue || shouldKeepMeterAnimationActive(previousLevels);
+          return previousLevels;
+        }
+
+        shouldContinue =
+          shouldContinue || shouldKeepMeterAnimationActive({ left, right });
+        return { left, right };
+      });
+
+      if (shouldContinue) {
+        animationFrameId = requestAnimationFrame(updateMeters);
+      }
     }
 
-    animationFrameId = requestAnimationFrame(syncPlaybackPosition);
+    animationFrameId = requestAnimationFrame(updateMeters);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isPlaying, syncTransportState]);
+  }, [isPlaying]);
 
   useEffect(() => {
     if (gainNodeRef.current) {
@@ -466,81 +433,6 @@ function MusicPlayer() {
       audioRef.current.volume = gainNodeRef.current ? 1 : volume;
     }
   }, [volume]);
-
-  function selectTrack(trackId: string) {
-    pendingAutoplayRef.current = isPlaying;
-    setActiveTrackId(trackId);
-  }
-
-  function selectAdjacentTrack(direction: -1 | 1) {
-    if (!library?.tracks.length) {
-      return;
-    }
-
-    const currentIndex =
-      typeof activeTrackIndex === "number" && activeTrackIndex >= 0
-        ? activeTrackIndex
-        : 0;
-    const nextIndex =
-      (currentIndex + direction + library.tracks.length) % library.tracks.length;
-
-    pendingAutoplayRef.current = isPlaying;
-    setActiveTrackId(library.tracks[nextIndex]?.id ?? null);
-  }
-
-  function handlePlaybackToggle() {
-    const audio = audioRef.current;
-
-    if (!audio || !activeTrack) {
-      return;
-    }
-
-    if (isPlaying) {
-      pendingAutoplayRef.current = false;
-      audio.pause();
-      setIsPlaying(false);
-      return;
-    }
-
-    void beginPlayback(audio).then(
-      () => {
-        setErrorMessage(null);
-        setIsPlaying(true);
-      },
-      () => {
-        setIsPlaying(false);
-        setErrorMessage(
-          "Playback is blocked until the browser allows audio for this page.",
-        );
-      },
-    );
-  }
-
-  function handleSeekChange(event: ChangeEvent<HTMLInputElement>) {
-    const audio = audioRef.current;
-    const nextTime = Number(event.currentTarget.value);
-
-    setCurrentTime(nextTime);
-
-    if (audio) {
-      audio.currentTime = nextTime;
-    }
-  }
-
-  function handleTrackEnded() {
-    if (!library?.tracks.length) {
-      setIsPlaying(false);
-      return;
-    }
-
-    const nextIndex =
-      typeof activeTrackIndex === "number" && activeTrackIndex >= 0
-        ? (activeTrackIndex + 1) % library.tracks.length
-        : 0;
-
-    pendingAutoplayRef.current = true;
-    setActiveTrackId(library.tracks[nextIndex]?.id ?? null);
-  }
 
   const [leftMeter, rightMeter] = meterReadouts;
 
@@ -610,24 +502,17 @@ function MusicPlayer() {
               />
 
               <audio
-                onCanPlay={(event) => syncTransportState(event.currentTarget)}
-                onDurationChange={(event) => {
-                  syncTransportState(event.currentTarget);
-                }}
-                onEnded={handleTrackEnded}
-                onError={() => {
-                  setIsPlaying(false);
-                  setErrorMessage("This audio file could not be played.");
-                }}
-                onLoadedData={(event) => syncTransportState(event.currentTarget)}
-                onLoadedMetadata={(event) =>
-                  syncTransportState(event.currentTarget)
-                }
-                onPause={() => setIsPlaying(false)}
-                onPlay={() => setIsPlaying(true)}
-                onSeeked={(event) => syncTransportState(event.currentTarget)}
-                onSeeking={(event) => syncTransportState(event.currentTarget)}
-                onTimeUpdate={(event) => syncTransportState(event.currentTarget)}
+                onCanPlay={handleAudioCanPlay}
+                onDurationChange={handleAudioDurationChange}
+                onEnded={handleAudioEnded}
+                onError={handleAudioError}
+                onLoadedData={handleAudioLoadedData}
+                onLoadedMetadata={handleAudioLoadedMetadata}
+                onPause={handleAudioPause}
+                onPlay={handleAudioPlay}
+                onSeeked={handleAudioSeeked}
+                onSeeking={handleAudioSeeking}
+                onTimeUpdate={handleAudioTimeUpdate}
                 preload="metadata"
                 ref={audioRef}
                 src={activeTrack.audio.src}

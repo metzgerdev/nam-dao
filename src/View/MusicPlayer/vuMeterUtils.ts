@@ -25,6 +25,13 @@ export interface KWeightingFilterChain {
   shelvingFilter: IIRFilterNode;
 }
 
+export interface MeterLevels {
+  left: number;
+  right: number;
+}
+
+const METER_SETTLE_EPSILON = 0.001;
+
 export function computeRms(buffer: Float32Array): number {
   let sum = 0;
 
@@ -51,6 +58,23 @@ export function smoothMeterLevel(
 ): number {
   const smoothing = calculateVuBlend(deltaTimeMs);
   return previous + (next - previous) * smoothing;
+}
+
+export function hasMeterSettled(
+  previousLevels: MeterLevels,
+  nextLevels: MeterLevels,
+): boolean {
+  return (
+    Math.abs(nextLevels.left - previousLevels.left) < METER_SETTLE_EPSILON &&
+    Math.abs(nextLevels.right - previousLevels.right) < METER_SETTLE_EPSILON
+  );
+}
+
+export function shouldKeepMeterAnimationActive(levels: MeterLevels): boolean {
+  return (
+    Math.abs(levels.left - IDLE_METER_LEVEL) > METER_SETTLE_EPSILON ||
+    Math.abs(levels.right - IDLE_METER_LEVEL) > METER_SETTLE_EPSILON
+  );
 }
 
 export function createKWeightingFilterChain(
