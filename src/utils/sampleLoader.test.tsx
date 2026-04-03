@@ -1,11 +1,11 @@
-import {
-  initDrumMachine,
-  resetSampleCacheForTests,
-} from "./sampleLoader";
+import { initDrumMachine, resetSampleCacheForTests } from "./sampleLoader";
 
 class MockAudioContext {
   decodeAudioData(arrayBuffer) {
-    return Promise.resolve({ byteLength: arrayBuffer.byteLength, decoded: true });
+    return Promise.resolve({
+      byteLength: arrayBuffer.byteLength,
+      decoded: true,
+    });
   }
 }
 

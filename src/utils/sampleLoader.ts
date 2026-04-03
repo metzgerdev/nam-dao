@@ -47,10 +47,15 @@ async function decodeSampleBank({
   drumStateRef,
 }: LoaderContext): Promise<AudioBufferMap> {
   const sampleEntries = await Promise.all(
-    Object.entries(drumStateRef.current).map(async ([sampleType, sampleConfig]) => {
-      const audioBuffer = await fetchDecodeSample(sampleConfig.path, audioContextRef);
-      return [sampleType, audioBuffer] as const;
-    }),
+    Object.entries(drumStateRef.current).map(
+      async ([sampleType, sampleConfig]) => {
+        const audioBuffer = await fetchDecodeSample(
+          sampleConfig.path,
+          audioContextRef,
+        );
+        return [sampleType, audioBuffer] as const;
+      },
+    ),
   );
 
   return Object.fromEntries(sampleEntries) as AudioBufferMap;
@@ -65,12 +70,13 @@ export async function loadSamples({
   }
 
   if (!sharedSampleBankPromise) {
-    sharedSampleBankPromise = decodeSampleBank({ audioContextRef, drumStateRef }).then(
-      (sampleBank) => {
-        sharedSampleBank = sampleBank;
-        return sampleBank;
-      },
-    );
+    sharedSampleBankPromise = decodeSampleBank({
+      audioContextRef,
+      drumStateRef,
+    }).then((sampleBank) => {
+      sharedSampleBank = sampleBank;
+      return sampleBank;
+    });
   }
 
   return sharedSampleBankPromise;

@@ -1,5 +1,11 @@
 import React from "react";
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import Daw from "../DAW/Daw";
 import { instrumentRows } from "../../data/instruments";
 import { resetSampleCacheForTests } from "../../utils/sampleLoader";
@@ -30,18 +36,7 @@ function createMockAudioBuffer() {
   return {
     getChannelData() {
       return new Float32Array([
-        0,
-        0.35,
-        -0.2,
-        0.55,
-        -0.65,
-        0.25,
-        0.18,
-        -0.42,
-        0.72,
-        -0.3,
-        0.12,
-        -0.08,
+        0, 0.35, -0.2, 0.55, -0.65, 0.25, 0.18, -0.42, 0.72, -0.3, 0.12, -0.08,
       ]);
     },
   };
@@ -131,8 +126,12 @@ describe("Daw", () => {
 
     await waitForSampleBoot();
     await waitFor(() => {
-      const waveformFill = getTrackButtons("KICK")[0].querySelector(".daw-clip-waveform-fill");
-      const waveformGuide = getTrackButtons("KICK")[0].querySelector(".daw-clip-waveform-guide");
+      const waveformFill = getTrackButtons("KICK")[0].querySelector(
+        ".daw-clip-waveform-fill",
+      );
+      const waveformGuide = getTrackButtons("KICK")[0].querySelector(
+        ".daw-clip-waveform-guide",
+      );
       expect(waveformFill).toBeTruthy();
       expect(waveformFill.getAttribute("d")).toContain("Z");
       expect(waveformGuide).toBeTruthy();
