@@ -70,7 +70,7 @@ function App() {
       return <Daw />;
     }
 
-     if (route === "music-player") {
+    if (route === "music-player") {
       return <MusicPlayer />;
     }
 
@@ -80,29 +80,20 @@ function App() {
   return (
     <div className="app-frame">
       <nav className="app-route-nav" aria-label="Application views">
-        <a
-          className={route === "home" ? "active" : ""}
-          href="#/home"
-        >
+        <a className={route === "home" ? "active" : ""} href="#/home">
           Home
         </a>
-        <a
-          className={route === "sequencer" ? "active" : ""}
-          href="#/sequencer"
-        >
+        <a className={route === "sequencer" ? "active" : ""} href="#/sequencer">
           Sequencer
+        </a>
+        <a className={route === "daw" ? "active" : ""} href="#/daw">
+          DAW
         </a>
         <a
           className={route === "music-player" ? "active" : ""}
           href="#/music-player"
         >
           Music Player
-        </a>
-        <a
-          className={route === "daw" ? "active" : ""}
-          href="#/daw"
-        >
-          DAW
         </a>
         <a
           className={route === "too-fast-too-furious" ? "active" : ""}

@@ -1,5 +1,11 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import Sequencer from "../DrumMachine/Sequencer";
 import { instrumentRows } from "../../data/instruments";
 import { resetSampleCacheForTests } from "../../utils/sampleLoader";
@@ -88,15 +94,15 @@ describe("Sequencer", () => {
     return row.querySelectorAll("button.step");
   }
 
-async function waitForSampleBoot() {
-  await act(async () => {
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-  });
+  async function waitForSampleBoot() {
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
 
-  expect(global.fetch).toHaveBeenCalledTimes(instrumentRows.length);
-}
+    expect(global.fetch).toHaveBeenCalledTimes(instrumentRows.length);
+  }
 
   test("renders initial UI with transport, tempo, rows, and 16-step grid", async () => {
     render(<Sequencer />);
@@ -156,7 +162,8 @@ async function waitForSampleBoot() {
     render(<Sequencer />);
     await waitForSampleBoot();
     const progressRow = screen.getByText("position").closest(".row-block");
-    const initialActiveCount = progressRow.querySelectorAll(".step.cell.active").length;
+    const initialActiveCount =
+      progressRow.querySelectorAll(".step.cell.active").length;
     expect(initialActiveCount).toBe(1);
 
     fireEvent.click(screen.getByRole("button", { name: /start/i }));
@@ -207,7 +214,8 @@ async function waitForSampleBoot() {
     const { unmount } = render(<Sequencer />);
     await waitForSampleBoot();
     fireEvent.click(screen.getByRole("button", { name: /start/i }));
-    const scheduledCallsBeforeUnmount = global.AudioBufferSourceNode.mock.calls.length;
+    const scheduledCallsBeforeUnmount =
+      global.AudioBufferSourceNode.mock.calls.length;
 
     act(() => {
       unmount();

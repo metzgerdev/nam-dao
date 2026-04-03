@@ -1,356 +1,686 @@
-<!DOCTYPE html>
+<!doctype html>
 
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Studio Heirloom - Mixer</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "on-surface-variant": "#d7c3b4",
-                        "secondary-container": "#494c4b",
-                        "secondary-fixed-dim": "#c4c7c5",
-                        "on-secondary-container": "#babcba",
-                        "surface-container-highest": "#353534",
-                        "inverse-on-surface": "#313030",
-                        "tertiary": "#7bd2ef",
-                        "surface-bright": "#393939",
-                        "on-secondary-fixed-variant": "#444746",
-                        "primary-fixed-dim": "#ffb77a",
-                        "on-error-container": "#ffdad6",
-                        "on-secondary-fixed": "#191c1b",
-                        "on-error": "#690005",
-                        "tertiary-fixed-dim": "#7bd2ef",
-                        "on-secondary": "#2e3130",
-                        "on-background": "#e5e2e1",
-                        "background": "#131313",
-                        "surface-container-high": "#2a2a2a",
-                        "secondary-fixed": "#e1e3e1",
-                        "on-primary-fixed": "#2e1500",
-                        "surface-tint": "#ffb77a",
-                        "on-primary-container": "#442200",
-                        "on-tertiary-fixed": "#001f28",
-                        "surface-container-low": "#1c1b1b",
-                        "surface": "#131313",
-                        "surface-container-lowest": "#0e0e0e",
-                        "surface-container": "#201f1f",
-                        "error": "#ffb4ab",
-                        "primary-fixed": "#ffdcc2",
-                        "surface-variant": "#353534",
-                        "surface-dim": "#131313",
-                        "primary": "#ffb77a",
-                        "inverse-surface": "#e5e2e1",
-                        "on-surface": "#e5e2e1",
-                        "inverse-primary": "#8b5013",
-                        "on-tertiary": "#003542",
-                        "on-primary": "#4c2700",
-                        "error-container": "#93000a",
-                        "secondary": "#c4c7c5",
-                        "on-tertiary-container": "#00303b",
-                        "on-tertiary-fixed-variant": "#004e5f",
-                        "primary-container": "#c88242",
-                        "tertiary-container": "#419db8",
-                        "outline-variant": "#524439",
-                        "outline": "#a08d80",
-                        "tertiary-fixed": "#b4ebff",
-                        "on-primary-fixed-variant": "#6d3a00"
-                    },
-                    fontFamily: {
-                        "headline": ["Space Grotesk"],
-                        "body": ["Inter"],
-                        "label": ["Inter"]
-                    },
-                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
-                },
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Studio Heirloom - Mixer</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface-variant": "#d7c3b4",
+              "secondary-container": "#494c4b",
+              "secondary-fixed-dim": "#c4c7c5",
+              "on-secondary-container": "#babcba",
+              "surface-container-highest": "#353534",
+              "inverse-on-surface": "#313030",
+              tertiary: "#7bd2ef",
+              "surface-bright": "#393939",
+              "on-secondary-fixed-variant": "#444746",
+              "primary-fixed-dim": "#ffb77a",
+              "on-error-container": "#ffdad6",
+              "on-secondary-fixed": "#191c1b",
+              "on-error": "#690005",
+              "tertiary-fixed-dim": "#7bd2ef",
+              "on-secondary": "#2e3130",
+              "on-background": "#e5e2e1",
+              background: "#131313",
+              "surface-container-high": "#2a2a2a",
+              "secondary-fixed": "#e1e3e1",
+              "on-primary-fixed": "#2e1500",
+              "surface-tint": "#ffb77a",
+              "on-primary-container": "#442200",
+              "on-tertiary-fixed": "#001f28",
+              "surface-container-low": "#1c1b1b",
+              surface: "#131313",
+              "surface-container-lowest": "#0e0e0e",
+              "surface-container": "#201f1f",
+              error: "#ffb4ab",
+              "primary-fixed": "#ffdcc2",
+              "surface-variant": "#353534",
+              "surface-dim": "#131313",
+              primary: "#ffb77a",
+              "inverse-surface": "#e5e2e1",
+              "on-surface": "#e5e2e1",
+              "inverse-primary": "#8b5013",
+              "on-tertiary": "#003542",
+              "on-primary": "#4c2700",
+              "error-container": "#93000a",
+              secondary: "#c4c7c5",
+              "on-tertiary-container": "#00303b",
+              "on-tertiary-fixed-variant": "#004e5f",
+              "primary-container": "#c88242",
+              "tertiary-container": "#419db8",
+              "outline-variant": "#524439",
+              outline: "#a08d80",
+              "tertiary-fixed": "#b4ebff",
+              "on-primary-fixed-variant": "#6d3a00",
             },
-        }
+            fontFamily: {
+              headline: ["Space Grotesk"],
+              body: ["Inter"],
+              label: ["Inter"],
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+          },
+        },
+      };
     </script>
-<style>.material-symbols-outlined {
-    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
-    }
-.wood-grain-overlay {
-    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBK0WyMc4ddF2_1b3C3GVwYQ9KIqkyV27dNyx_1hAMjK3gf1DKC9Dos1i8H4RMNKhhxJK_-kk2dAxGeOrb_RGE7VvgRktdVYIn3-fuvfo2RpkeGLQp-9dBvDiNGC-Hlg_charZu69VAfKTOARQf7gtNhIe5wI_uCo4Wh4l3Y1AekWA7-Jmr51cAXKGWIs_QVbFF-XCt6qOm1gaP9gt5JRracxr_MiIS2Je7gmGJv6m_3gP2Xh6RQk8QlxhVB6p48yxhs9fhChfMPBY);
-    opacity: 0.15
-    }
-.v-meter-gradient {
-    background: linear-gradient(to top, #4ade80 0%, #4ade80 60%, #facc15 80%, #f87171 100%)
-    }
-.brushed-metal {
-    background: linear-gradient(135deg, #444746 0%, #2a2a2a 50%, #444746 100%)
-    }
-.tactile-inset {
-    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.6)
-    }</style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .wood-grain-overlay {
+        background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBK0WyMc4ddF2_1b3C3GVwYQ9KIqkyV27dNyx_1hAMjK3gf1DKC9Dos1i8H4RMNKhhxJK_-kk2dAxGeOrb_RGE7VvgRktdVYIn3-fuvfo2RpkeGLQp-9dBvDiNGC-Hlg_charZu69VAfKTOARQf7gtNhIe5wI_uCo4Wh4l3Y1AekWA7-Jmr51cAXKGWIs_QVbFF-XCt6qOm1gaP9gt5JRracxr_MiIS2Je7gmGJv6m_3gP2Xh6RQk8QlxhVB6p48yxhs9fhChfMPBY);
+        opacity: 0.15;
+      }
+      .v-meter-gradient {
+        background: linear-gradient(
+          to top,
+          #4ade80 0%,
+          #4ade80 60%,
+          #facc15 80%,
+          #f87171 100%
+        );
+      }
+      .brushed-metal {
+        background: linear-gradient(
+          135deg,
+          #444746 0%,
+          #2a2a2a 50%,
+          #444746 100%
+        );
+      }
+      .tactile-inset {
+        box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.6);
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
   </head>
-<body class="bg-background text-on-surface font-body selection:bg-primary/30 min-h-screen">
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#131313] border-b border-[#2a2a2a]">
-<div class="flex items-center gap-4">
-<button class="text-[#ffb77a] hover:bg-[#2a2a2a] transition-colors p-2 rounded-lg active:scale-95 duration-100">
-<span class="material-symbols-outlined">menu</span>
-</button>
-<h1 class="text-lg font-black text-[#ffb77a] tracking-widest font-['Space_Grotesk'] uppercase">STUDIO HEIRLOOM</h1>
-</div>
-<div class="flex items-center gap-4">
-<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center overflow-hidden">
-<img alt="User Profile" class="w-full h-full object-cover" data-alt="professional studio engineer headshot portrait with warm studio lighting and dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRo4q-sqtcIGpT4X2kK8NyMhM0gIf9MA8bGPUjlAqtc7hSEzDoyAsu5Z0VH_2BtqLpYCng9NtcN-4EhSEF2zVSJ2_oHLOawKlAAlPNy4UKs5Yu00oIQmwaa6zF5Tj7D6C0aZauAfLlJtvrx-SIG1uZyxqf68mc5MiVnFvmHJGLCLznHJFvsWl6ykz9mXwfeosY7IGdscQgjTa5ySPl6kUn7ytqUqxBGOEsqiJh2i8WWnFzl2eJMesE8nLRVUmMZmst_OV1LVxnuH4"/>
-</div>
-</div>
-</header>
-<main class="pt-20 pb-32 px-4 md:px-8 max-w-7xl mx-auto">
-<!-- Dashboard Header -->
-<div class="mb-8 flex justify-between items-end">
-<div>
-<p class="font-label text-xs uppercase tracking-[0.2em] text-on-surface-variant mb-1">Session</p>
-<h2 class="font-headline text-3xl font-bold tracking-tight text-on-surface">Main Output</h2>
-</div>
-<div class="flex items-center gap-3 bg-surface-container-lowest px-4 py-2 rounded-xl border border-outline-variant/10">
-<div class="text-right">
-<p class="font-label text-[10px] text-on-surface-variant uppercase">BPM</p>
-<p class="font-headline font-bold text-primary">124.00</p>
-</div>
-<div class="w-px h-8 bg-outline-variant/20 mx-2"></div>
-<div class="text-right">
-<p class="font-label text-[10px] text-on-surface-variant uppercase">Bar</p>
-<p class="font-headline font-bold text-on-surface">32 . 1 . 0</p>
-</div>
-</div>
-</div>
-<!-- Mixer Grid -->
-<div class="grid grid-cols-4 gap-3 h-[600px]">
-<!-- Track 1: Drums -->
-<div class="bg-surface-container-low rounded-xl flex flex-col relative overflow-hidden group">
-<div class="absolute inset-0 wood-grain-overlay pointer-events-none"></div>
-<!-- Track Info -->
-<div class="p-3 border-b border-outline-variant/10 relative z-10">
-<span class="text-[10px] font-bold text-primary uppercase tracking-widest">01</span>
-<h3 class="font-headline font-bold text-sm tracking-tight text-on-surface truncate">DRUMS</h3>
-</div>
-<!-- Controls Area -->
-<div class="flex-1 p-3 flex flex-col items-center justify-between relative z-10">
-<!-- Gain & Pan Knobs -->
-<div class="flex flex-col items-center gap-6 w-full py-4">
-<div class="flex flex-col items-center gap-2">
-<span class="text-[9px] font-medium text-on-surface-variant uppercase">Gain</span>
-<div class="w-12 h-12 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20">
-<div class="absolute top-1 w-1 h-3 bg-primary rounded-full rotate-45"></div>
-<div class="w-8 h-8 rounded-full bg-surface-container-lowest shadow-inner border border-black/20"></div>
-</div>
-<span class="text-[10px] font-headline font-medium text-on-surface">+1.2 dB</span>
-</div>
-<div class="flex flex-col items-center gap-2">
-<span class="text-[9px] font-medium text-on-surface-variant uppercase">Pan</span>
-<div class="w-10 h-10 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20">
-<div class="absolute top-1 w-1 h-2 bg-on-surface-variant/50 rounded-full"></div>
-<div class="w-6 h-6 rounded-full bg-surface-container-lowest shadow-inner"></div>
-</div>
-<span class="text-[10px] font-headline font-medium text-on-surface">C</span>
-</div>
-</div>
-<!-- Fader Track -->
-<div class="flex-1 w-full flex justify-center gap-4 relative py-4">
-<!-- VU Meter -->
-<div class="w-2 h-full bg-surface-container-lowest rounded-full overflow-hidden tactile-inset relative">
-<div class="v-meter-gradient w-full h-[75%] absolute bottom-0 rounded-full opacity-90 shadow-[0_0_8px_rgba(74,222,128,0.4)]"></div>
-</div>
-<!-- Fader -->
-<div class="w-8 h-full bg-surface-container-lowest rounded-full tactile-inset relative group/fader cursor-pointer">
-<div class="absolute bottom-[40%] left-1/2 -translate-x-1/2 w-10 h-6 bg-[#8b5013] rounded-lg shadow-xl flex flex-col items-center justify-center overflow-hidden border border-[#4c2700]/30 transition-transform hover:scale-105 active:scale-95">
-<div class="absolute inset-0 wood-grain-overlay opacity-40"></div>
-<div class="w-full h-px bg-white/10 absolute top-1"></div>
-<div class="w-6 h-px bg-primary/40"></div>
-<div class="w-full h-px bg-black/30 absolute bottom-1"></div>
-</div>
-</div>
-</div>
-<!-- Bottom Buttons -->
-<div class="grid grid-cols-2 gap-2 w-full mt-4">
-<button class="h-10 rounded bg-surface-container-high border border-outline-variant/20 font-headline font-bold text-xs text-on-surface active:bg-primary/20 active:text-primary active:border-primary/50 transition-all flex items-center justify-center shadow-md">M</button>
-<button class="h-10 rounded bg-primary-container/20 border border-primary/40 font-headline font-bold text-xs text-primary shadow-[0_0_12px_rgba(255,183,122,0.15)] flex items-center justify-center">S</button>
-</div>
-</div>
-</div>
-<!-- Track 2: Bass -->
-<div class="bg-surface-container-low rounded-xl flex flex-col relative overflow-hidden group">
-<div class="absolute inset-0 wood-grain-overlay pointer-events-none"></div>
-<div class="p-3 border-b border-outline-variant/10 relative z-10">
-<span class="text-[10px] font-bold text-primary uppercase tracking-widest">02</span>
-<h3 class="font-headline font-bold text-sm tracking-tight text-on-surface truncate">BASS</h3>
-</div>
-<div class="flex-1 p-3 flex flex-col items-center justify-between relative z-10">
-<div class="flex flex-col items-center gap-6 w-full py-4">
-<div class="flex flex-col items-center gap-2">
-<span class="text-[9px] font-medium text-on-surface-variant uppercase">Gain</span>
-<div class="w-12 h-12 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20">
-<div class="absolute top-1 w-1 h-3 bg-primary rounded-full -rotate-12"></div>
-<div class="w-8 h-8 rounded-full bg-surface-container-lowest shadow-inner border border-black/20"></div>
-</div>
-<span class="text-[10px] font-headline font-medium text-on-surface">-4.5 dB</span>
-</div>
-<div class="flex flex-col items-center gap-2">
-<span class="text-[9px] font-medium text-on-surface-variant uppercase">Pan</span>
-<div class="w-10 h-10 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20">
-<div class="absolute top-1 w-1 h-2 bg-on-surface-variant/50 rounded-full -rotate-45"></div>
-<div class="w-6 h-6 rounded-full bg-surface-container-lowest shadow-inner"></div>
-</div>
-<span class="text-[10px] font-headline font-medium text-on-surface">L12</span>
-</div>
-</div>
-<div class="flex-1 w-full flex justify-center gap-4 relative py-4">
-<div class="w-2 h-full bg-surface-container-lowest rounded-full overflow-hidden tactile-inset relative">
-<div class="v-meter-gradient w-full h-[45%] absolute bottom-0 rounded-full opacity-90"></div>
-</div>
-<div class="w-8 h-full bg-surface-container-lowest rounded-full tactile-inset relative group/fader cursor-pointer">
-<div class="absolute bottom-[25%] left-1/2 -translate-x-1/2 w-10 h-6 bg-[#8b5013] rounded-lg shadow-xl flex flex-col items-center justify-center overflow-hidden border border-[#4c2700]/30 transition-transform hover:scale-105">
-<div class="absolute inset-0 wood-grain-overlay opacity-40"></div>
-<div class="w-6 h-px bg-primary/40"></div>
-</div>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-2 w-full mt-4">
-<button class="h-10 rounded bg-surface-container-high border border-outline-variant/20 font-headline font-bold text-xs text-on-surface transition-all flex items-center justify-center">M</button>
-<button class="h-10 rounded bg-surface-container-high border border-outline-variant/20 font-headline font-bold text-xs text-on-surface transition-all flex items-center justify-center">S</button>
-</div>
-</div>
-</div>
-<!-- Track 3: Synth -->
-<div class="bg-surface-container-low rounded-xl flex flex-col relative overflow-hidden group">
-<div class="absolute inset-0 wood-grain-overlay pointer-events-none"></div>
-<div class="p-3 border-b border-outline-variant/10 relative z-10">
-<span class="text-[10px] font-bold text-primary uppercase tracking-widest">03</span>
-<h3 class="font-headline font-bold text-sm tracking-tight text-on-surface truncate">SYNTH</h3>
-</div>
-<div class="flex-1 p-3 flex flex-col items-center justify-between relative z-10">
-<div class="flex flex-col items-center gap-6 w-full py-4">
-<div class="flex flex-col items-center gap-2">
-<span class="text-[9px] font-medium text-on-surface-variant uppercase">Gain</span>
-<div class="w-12 h-12 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20">
-<div class="absolute top-1 w-1 h-3 bg-primary rounded-full rotate-90"></div>
-<div class="w-8 h-8 rounded-full bg-surface-container-lowest shadow-inner border border-black/20"></div>
-</div>
-<span class="text-[10px] font-headline font-medium text-on-surface">+6.0 dB</span>
-</div>
-<div class="flex flex-col items-center gap-2">
-<span class="text-[9px] font-medium text-on-surface-variant uppercase">Pan</span>
-<div class="w-10 h-10 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20">
-<div class="absolute top-1 w-1 h-2 bg-on-surface-variant/50 rounded-full rotate-12"></div>
-<div class="w-6 h-6 rounded-full bg-surface-container-lowest shadow-inner"></div>
-</div>
-<span class="text-[10px] font-headline font-medium text-on-surface">R4</span>
-</div>
-</div>
-<div class="flex-1 w-full flex justify-center gap-4 relative py-4">
-<div class="w-2 h-full bg-surface-container-lowest rounded-full overflow-hidden tactile-inset relative">
-<div class="v-meter-gradient w-full h-[95%] absolute bottom-0 rounded-full opacity-90 shadow-[0_0_12px_rgba(248,113,113,0.3)]"></div>
-</div>
-<div class="w-8 h-full bg-surface-container-lowest rounded-full tactile-inset relative group/fader cursor-pointer">
-<div class="absolute bottom-[80%] left-1/2 -translate-x-1/2 w-10 h-6 bg-[#8b5013] rounded-lg shadow-xl flex flex-col items-center justify-center overflow-hidden border border-[#4c2700]/30 transition-transform hover:scale-105">
-<div class="absolute inset-0 wood-grain-overlay opacity-40"></div>
-<div class="w-6 h-px bg-primary/40"></div>
-</div>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-2 w-full mt-4">
-<button class="h-10 rounded bg-surface-container-high border border-outline-variant/20 font-headline font-bold text-xs text-on-surface transition-all flex items-center justify-center">M</button>
-<button class="h-10 rounded bg-surface-container-high border border-outline-variant/20 font-headline font-bold text-xs text-on-surface transition-all flex items-center justify-center">S</button>
-</div>
-</div>
-</div>
-<!-- Track 4: FX -->
-<div class="bg-surface-container-low rounded-xl flex flex-col relative overflow-hidden group">
-<div class="absolute inset-0 wood-grain-overlay pointer-events-none"></div>
-<div class="p-3 border-b border-outline-variant/10 relative z-10">
-<span class="text-[10px] font-bold text-primary uppercase tracking-widest">04</span>
-<h3 class="font-headline font-bold text-sm tracking-tight text-on-surface truncate">FX RETURN</h3>
-</div>
-<div class="flex-1 p-3 flex flex-col items-center justify-between relative z-10">
-<div class="flex flex-col items-center gap-6 w-full py-4">
-<div class="flex flex-col items-center gap-2">
-<span class="text-[9px] font-medium text-on-surface-variant uppercase">Gain</span>
-<div class="w-12 h-12 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20">
-<div class="absolute top-1 w-1 h-3 bg-primary rounded-full rotate-0"></div>
-<div class="w-8 h-8 rounded-full bg-surface-container-lowest shadow-inner border border-black/20"></div>
-</div>
-<span class="text-[10px] font-headline font-medium text-on-surface">0.0 dB</span>
-</div>
-<div class="flex flex-col items-center gap-2">
-<span class="text-[9px] font-medium text-on-surface-variant uppercase">Pan</span>
-<div class="w-10 h-10 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20">
-<div class="absolute top-1 w-1 h-2 bg-on-surface-variant/50 rounded-full"></div>
-<div class="w-6 h-6 rounded-full bg-surface-container-lowest shadow-inner"></div>
-</div>
-<span class="text-[10px] font-headline font-medium text-on-surface">C</span>
-</div>
-</div>
-<div class="flex-1 w-full flex justify-center gap-4 relative py-4">
-<div class="w-2 h-full bg-surface-container-lowest rounded-full overflow-hidden tactile-inset relative">
-<div class="v-meter-gradient w-full h-[20%] absolute bottom-0 rounded-full opacity-90"></div>
-</div>
-<div class="w-8 h-full bg-surface-container-lowest rounded-full tactile-inset relative group/fader cursor-pointer">
-<div class="absolute bottom-[55%] left-1/2 -translate-x-1/2 w-10 h-6 bg-[#8b5013] rounded-lg shadow-xl flex flex-col items-center justify-center overflow-hidden border border-[#4c2700]/30 transition-transform hover:scale-105">
-<div class="absolute inset-0 wood-grain-overlay opacity-40"></div>
-<div class="w-6 h-px bg-primary/40"></div>
-</div>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-2 w-full mt-4">
-<button class="h-10 rounded bg-error-container/20 border border-error/40 font-headline font-bold text-xs text-error transition-all flex items-center justify-center shadow-[0_0_12px_rgba(248,113,113,0.15)]">M</button>
-<button class="h-10 rounded bg-surface-container-high border border-outline-variant/20 font-headline font-bold text-xs text-on-surface transition-all flex items-center justify-center">S</button>
-</div>
-</div>
-</div>
-</div>
-<!-- Master Section -->
-<div class="mt-8 bg-surface-container rounded-xl p-4 flex items-center justify-between border border-outline-variant/10 relative overflow-hidden shadow-2xl">
-<div class="absolute inset-0 wood-grain-overlay pointer-events-none opacity-10"></div>
-<div class="relative z-10">
-<p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Master</p>
-<p class="font-headline font-bold text-lg text-primary">0.0 dB</p>
-</div>
-<div class="relative z-10 flex-1 px-8">
-<div class="h-4 w-full bg-surface-container-lowest rounded-full tactile-inset p-1 overflow-hidden relative">
-<div class="v-meter-gradient absolute inset-1 rounded-full w-[88%] transform rotate-180 origin-right"></div>
-</div>
-</div>
-<div class="relative z-10 flex gap-4">
-<button class="w-12 h-12 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg active:scale-90 transition-transform">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
-</button>
-<button class="w-12 h-12 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center shadow-lg active:scale-90 transition-transform border border-outline-variant/20">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">stop</span>
-</button>
-</div>
-</div>
-</main>
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#0e0e0e] shadow-[0_-4px_24px_rgba(0,0,0,0.4)] border-t border-[#2a2a2a]">
-<div class="flex flex-col items-center justify-center bg-[#c88242]/20 text-[#ffb77a] rounded-xl px-3 py-1 brightness-125 transition-all">
-<span class="material-symbols-outlined">tune</span>
-<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1">Mixer</span>
-</div>
-<div class="flex flex-col items-center justify-center text-[#e5e2e1]/60 px-3 py-1 hover:text-[#ffb77a] transition-colors">
-<span class="material-symbols-outlined">grid_view</span>
-<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1">Session</span>
-</div>
-<div class="flex flex-col items-center justify-center text-[#e5e2e1]/60 px-3 py-1 hover:text-[#ffb77a] transition-colors">
-<span class="material-symbols-outlined">piano</span>
-<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1">Synth</span>
-</div>
-<div class="flex flex-col items-center justify-center text-[#e5e2e1]/60 px-3 py-1 hover:text-[#ffb77a] transition-colors">
-<span class="material-symbols-outlined">folder_open</span>
-<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1">Library</span>
-</div>
-</nav>
-</body></html>
+  <body
+    class="bg-background text-on-surface font-body selection:bg-primary/30 min-h-screen"
+  >
+    <!-- TopAppBar -->
+    <header
+      class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#131313] border-b border-[#2a2a2a]"
+    >
+      <div class="flex items-center gap-4">
+        <button
+          class="text-[#ffb77a] hover:bg-[#2a2a2a] transition-colors p-2 rounded-lg active:scale-95 duration-100"
+        >
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <h1
+          class="text-lg font-black text-[#ffb77a] tracking-widest font-['Space_Grotesk'] uppercase"
+        >
+          STUDIO HEIRLOOM
+        </h1>
+      </div>
+      <div class="flex items-center gap-4">
+        <div
+          class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center overflow-hidden"
+        >
+          <img
+            alt="User Profile"
+            class="w-full h-full object-cover"
+            data-alt="professional studio engineer headshot portrait with warm studio lighting and dark background"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRo4q-sqtcIGpT4X2kK8NyMhM0gIf9MA8bGPUjlAqtc7hSEzDoyAsu5Z0VH_2BtqLpYCng9NtcN-4EhSEF2zVSJ2_oHLOawKlAAlPNy4UKs5Yu00oIQmwaa6zF5Tj7D6C0aZauAfLlJtvrx-SIG1uZyxqf68mc5MiVnFvmHJGLCLznHJFvsWl6ykz9mXwfeosY7IGdscQgjTa5ySPl6kUn7ytqUqxBGOEsqiJh2i8WWnFzl2eJMesE8nLRVUmMZmst_OV1LVxnuH4"
+          />
+        </div>
+      </div>
+    </header>
+    <main class="pt-20 pb-32 px-4 md:px-8 max-w-7xl mx-auto">
+      <!-- Dashboard Header -->
+      <div class="mb-8 flex justify-between items-end">
+        <div>
+          <p
+            class="font-label text-xs uppercase tracking-[0.2em] text-on-surface-variant mb-1"
+          >
+            Session
+          </p>
+          <h2
+            class="font-headline text-3xl font-bold tracking-tight text-on-surface"
+          >
+            Main Output
+          </h2>
+        </div>
+        <div
+          class="flex items-center gap-3 bg-surface-container-lowest px-4 py-2 rounded-xl border border-outline-variant/10"
+        >
+          <div class="text-right">
+            <p class="font-label text-[10px] text-on-surface-variant uppercase">
+              BPM
+            </p>
+            <p class="font-headline font-bold text-primary">124.00</p>
+          </div>
+          <div class="w-px h-8 bg-outline-variant/20 mx-2"></div>
+          <div class="text-right">
+            <p class="font-label text-[10px] text-on-surface-variant uppercase">
+              Bar
+            </p>
+            <p class="font-headline font-bold text-on-surface">32 . 1 . 0</p>
+          </div>
+        </div>
+      </div>
+      <!-- Mixer Grid -->
+      <div class="grid grid-cols-4 gap-3 h-[600px]">
+        <!-- Track 1: Drums -->
+        <div
+          class="bg-surface-container-low rounded-xl flex flex-col relative overflow-hidden group"
+        >
+          <div
+            class="absolute inset-0 wood-grain-overlay pointer-events-none"
+          ></div>
+          <!-- Track Info -->
+          <div class="p-3 border-b border-outline-variant/10 relative z-10">
+            <span
+              class="text-[10px] font-bold text-primary uppercase tracking-widest"
+              >01</span
+            >
+            <h3
+              class="font-headline font-bold text-sm tracking-tight text-on-surface truncate"
+            >
+              DRUMS
+            </h3>
+          </div>
+          <!-- Controls Area -->
+          <div
+            class="flex-1 p-3 flex flex-col items-center justify-between relative z-10"
+          >
+            <!-- Gain & Pan Knobs -->
+            <div class="flex flex-col items-center gap-6 w-full py-4">
+              <div class="flex flex-col items-center gap-2">
+                <span
+                  class="text-[9px] font-medium text-on-surface-variant uppercase"
+                  >Gain</span
+                >
+                <div
+                  class="w-12 h-12 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20"
+                >
+                  <div
+                    class="absolute top-1 w-1 h-3 bg-primary rounded-full rotate-45"
+                  ></div>
+                  <div
+                    class="w-8 h-8 rounded-full bg-surface-container-lowest shadow-inner border border-black/20"
+                  ></div>
+                </div>
+                <span
+                  class="text-[10px] font-headline font-medium text-on-surface"
+                  >+1.2 dB</span
+                >
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <span
+                  class="text-[9px] font-medium text-on-surface-variant uppercase"
+                  >Pan</span
+                >
+                <div
+                  class="w-10 h-10 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20"
+                >
+                  <div
+                    class="absolute top-1 w-1 h-2 bg-on-surface-variant/50 rounded-full"
+                  ></div>
+                  <div
+                    class="w-6 h-6 rounded-full bg-surface-container-lowest shadow-inner"
+                  ></div>
+                </div>
+                <span
+                  class="text-[10px] font-headline font-medium text-on-surface"
+                  >C</span
+                >
+              </div>
+            </div>
+            <!-- Fader Track -->
+            <div class="flex-1 w-full flex justify-center gap-4 relative py-4">
+              <!-- VU Meter -->
+              <div
+                class="w-2 h-full bg-surface-container-lowest rounded-full overflow-hidden tactile-inset relative"
+              >
+                <div
+                  class="v-meter-gradient w-full h-[75%] absolute bottom-0 rounded-full opacity-90 shadow-[0_0_8px_rgba(74,222,128,0.4)]"
+                ></div>
+              </div>
+              <!-- Fader -->
+              <div
+                class="w-8 h-full bg-surface-container-lowest rounded-full tactile-inset relative group/fader cursor-pointer"
+              >
+                <div
+                  class="absolute bottom-[40%] left-1/2 -translate-x-1/2 w-10 h-6 bg-[#8b5013] rounded-lg shadow-xl flex flex-col items-center justify-center overflow-hidden border border-[#4c2700]/30 transition-transform hover:scale-105 active:scale-95"
+                >
+                  <div
+                    class="absolute inset-0 wood-grain-overlay opacity-40"
+                  ></div>
+                  <div class="w-full h-px bg-white/10 absolute top-1"></div>
+                  <div class="w-6 h-px bg-primary/40"></div>
+                  <div class="w-full h-px bg-black/30 absolute bottom-1"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Bottom Buttons -->
+            <div class="grid grid-cols-2 gap-2 w-full mt-4">
+              <button
+                class="h-10 rounded bg-surface-container-high border border-outline-variant/20 font-headline font-bold text-xs text-on-surface active:bg-primary/20 active:text-primary active:border-primary/50 transition-all flex items-center justify-center shadow-md"
+              >
+                M
+              </button>
+              <button
+                class="h-10 rounded bg-primary-container/20 border border-primary/40 font-headline font-bold text-xs text-primary shadow-[0_0_12px_rgba(255,183,122,0.15)] flex items-center justify-center"
+              >
+                S
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Track 2: Bass -->
+        <div
+          class="bg-surface-container-low rounded-xl flex flex-col relative overflow-hidden group"
+        >
+          <div
+            class="absolute inset-0 wood-grain-overlay pointer-events-none"
+          ></div>
+          <div class="p-3 border-b border-outline-variant/10 relative z-10">
+            <span
+              class="text-[10px] font-bold text-primary uppercase tracking-widest"
+              >02</span
+            >
+            <h3
+              class="font-headline font-bold text-sm tracking-tight text-on-surface truncate"
+            >
+              BASS
+            </h3>
+          </div>
+          <div
+            class="flex-1 p-3 flex flex-col items-center justify-between relative z-10"
+          >
+            <div class="flex flex-col items-center gap-6 w-full py-4">
+              <div class="flex flex-col items-center gap-2">
+                <span
+                  class="text-[9px] font-medium text-on-surface-variant uppercase"
+                  >Gain</span
+                >
+                <div
+                  class="w-12 h-12 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20"
+                >
+                  <div
+                    class="absolute top-1 w-1 h-3 bg-primary rounded-full -rotate-12"
+                  ></div>
+                  <div
+                    class="w-8 h-8 rounded-full bg-surface-container-lowest shadow-inner border border-black/20"
+                  ></div>
+                </div>
+                <span
+                  class="text-[10px] font-headline font-medium text-on-surface"
+                  >-4.5 dB</span
+                >
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <span
+                  class="text-[9px] font-medium text-on-surface-variant uppercase"
+                  >Pan</span
+                >
+                <div
+                  class="w-10 h-10 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20"
+                >
+                  <div
+                    class="absolute top-1 w-1 h-2 bg-on-surface-variant/50 rounded-full -rotate-45"
+                  ></div>
+                  <div
+                    class="w-6 h-6 rounded-full bg-surface-container-lowest shadow-inner"
+                  ></div>
+                </div>
+                <span
+                  class="text-[10px] font-headline font-medium text-on-surface"
+                  >L12</span
+                >
+              </div>
+            </div>
+            <div class="flex-1 w-full flex justify-center gap-4 relative py-4">
+              <div
+                class="w-2 h-full bg-surface-container-lowest rounded-full overflow-hidden tactile-inset relative"
+              >
+                <div
+                  class="v-meter-gradient w-full h-[45%] absolute bottom-0 rounded-full opacity-90"
+                ></div>
+              </div>
+              <div
+                class="w-8 h-full bg-surface-container-lowest rounded-full tactile-inset relative group/fader cursor-pointer"
+              >
+                <div
+                  class="absolute bottom-[25%] left-1/2 -translate-x-1/2 w-10 h-6 bg-[#8b5013] rounded-lg shadow-xl flex flex-col items-center justify-center overflow-hidden border border-[#4c2700]/30 transition-transform hover:scale-105"
+                >
+                  <div
+                    class="absolute inset-0 wood-grain-overlay opacity-40"
+                  ></div>
+                  <div class="w-6 h-px bg-primary/40"></div>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 w-full mt-4">
+              <button
+                class="h-10 rounded bg-surface-container-high border border-outline-variant/20 font-headline font-bold text-xs text-on-surface transition-all flex items-center justify-center"
+              >
+                M
+              </button>
+              <button
+                class="h-10 rounded bg-surface-container-high border border-outline-variant/20 font-headline font-bold text-xs text-on-surface transition-all flex items-center justify-center"
+              >
+                S
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Track 3: Synth -->
+        <div
+          class="bg-surface-container-low rounded-xl flex flex-col relative overflow-hidden group"
+        >
+          <div
+            class="absolute inset-0 wood-grain-overlay pointer-events-none"
+          ></div>
+          <div class="p-3 border-b border-outline-variant/10 relative z-10">
+            <span
+              class="text-[10px] font-bold text-primary uppercase tracking-widest"
+              >03</span
+            >
+            <h3
+              class="font-headline font-bold text-sm tracking-tight text-on-surface truncate"
+            >
+              SYNTH
+            </h3>
+          </div>
+          <div
+            class="flex-1 p-3 flex flex-col items-center justify-between relative z-10"
+          >
+            <div class="flex flex-col items-center gap-6 w-full py-4">
+              <div class="flex flex-col items-center gap-2">
+                <span
+                  class="text-[9px] font-medium text-on-surface-variant uppercase"
+                  >Gain</span
+                >
+                <div
+                  class="w-12 h-12 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20"
+                >
+                  <div
+                    class="absolute top-1 w-1 h-3 bg-primary rounded-full rotate-90"
+                  ></div>
+                  <div
+                    class="w-8 h-8 rounded-full bg-surface-container-lowest shadow-inner border border-black/20"
+                  ></div>
+                </div>
+                <span
+                  class="text-[10px] font-headline font-medium text-on-surface"
+                  >+6.0 dB</span
+                >
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <span
+                  class="text-[9px] font-medium text-on-surface-variant uppercase"
+                  >Pan</span
+                >
+                <div
+                  class="w-10 h-10 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20"
+                >
+                  <div
+                    class="absolute top-1 w-1 h-2 bg-on-surface-variant/50 rounded-full rotate-12"
+                  ></div>
+                  <div
+                    class="w-6 h-6 rounded-full bg-surface-container-lowest shadow-inner"
+                  ></div>
+                </div>
+                <span
+                  class="text-[10px] font-headline font-medium text-on-surface"
+                  >R4</span
+                >
+              </div>
+            </div>
+            <div class="flex-1 w-full flex justify-center gap-4 relative py-4">
+              <div
+                class="w-2 h-full bg-surface-container-lowest rounded-full overflow-hidden tactile-inset relative"
+              >
+                <div
+                  class="v-meter-gradient w-full h-[95%] absolute bottom-0 rounded-full opacity-90 shadow-[0_0_12px_rgba(248,113,113,0.3)]"
+                ></div>
+              </div>
+              <div
+                class="w-8 h-full bg-surface-container-lowest rounded-full tactile-inset relative group/fader cursor-pointer"
+              >
+                <div
+                  class="absolute bottom-[80%] left-1/2 -translate-x-1/2 w-10 h-6 bg-[#8b5013] rounded-lg shadow-xl flex flex-col items-center justify-center overflow-hidden border border-[#4c2700]/30 transition-transform hover:scale-105"
+                >
+                  <div
+                    class="absolute inset-0 wood-grain-overlay opacity-40"
+                  ></div>
+                  <div class="w-6 h-px bg-primary/40"></div>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 w-full mt-4">
+              <button
+                class="h-10 rounded bg-surface-container-high border border-outline-variant/20 font-headline font-bold text-xs text-on-surface transition-all flex items-center justify-center"
+              >
+                M
+              </button>
+              <button
+                class="h-10 rounded bg-surface-container-high border border-outline-variant/20 font-headline font-bold text-xs text-on-surface transition-all flex items-center justify-center"
+              >
+                S
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Track 4: FX -->
+        <div
+          class="bg-surface-container-low rounded-xl flex flex-col relative overflow-hidden group"
+        >
+          <div
+            class="absolute inset-0 wood-grain-overlay pointer-events-none"
+          ></div>
+          <div class="p-3 border-b border-outline-variant/10 relative z-10">
+            <span
+              class="text-[10px] font-bold text-primary uppercase tracking-widest"
+              >04</span
+            >
+            <h3
+              class="font-headline font-bold text-sm tracking-tight text-on-surface truncate"
+            >
+              FX RETURN
+            </h3>
+          </div>
+          <div
+            class="flex-1 p-3 flex flex-col items-center justify-between relative z-10"
+          >
+            <div class="flex flex-col items-center gap-6 w-full py-4">
+              <div class="flex flex-col items-center gap-2">
+                <span
+                  class="text-[9px] font-medium text-on-surface-variant uppercase"
+                  >Gain</span
+                >
+                <div
+                  class="w-12 h-12 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20"
+                >
+                  <div
+                    class="absolute top-1 w-1 h-3 bg-primary rounded-full rotate-0"
+                  ></div>
+                  <div
+                    class="w-8 h-8 rounded-full bg-surface-container-lowest shadow-inner border border-black/20"
+                  ></div>
+                </div>
+                <span
+                  class="text-[10px] font-headline font-medium text-on-surface"
+                  >0.0 dB</span
+                >
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <span
+                  class="text-[9px] font-medium text-on-surface-variant uppercase"
+                  >Pan</span
+                >
+                <div
+                  class="w-10 h-10 rounded-full brushed-metal shadow-lg relative flex items-center justify-center border border-outline/20"
+                >
+                  <div
+                    class="absolute top-1 w-1 h-2 bg-on-surface-variant/50 rounded-full"
+                  ></div>
+                  <div
+                    class="w-6 h-6 rounded-full bg-surface-container-lowest shadow-inner"
+                  ></div>
+                </div>
+                <span
+                  class="text-[10px] font-headline font-medium text-on-surface"
+                  >C</span
+                >
+              </div>
+            </div>
+            <div class="flex-1 w-full flex justify-center gap-4 relative py-4">
+              <div
+                class="w-2 h-full bg-surface-container-lowest rounded-full overflow-hidden tactile-inset relative"
+              >
+                <div
+                  class="v-meter-gradient w-full h-[20%] absolute bottom-0 rounded-full opacity-90"
+                ></div>
+              </div>
+              <div
+                class="w-8 h-full bg-surface-container-lowest rounded-full tactile-inset relative group/fader cursor-pointer"
+              >
+                <div
+                  class="absolute bottom-[55%] left-1/2 -translate-x-1/2 w-10 h-6 bg-[#8b5013] rounded-lg shadow-xl flex flex-col items-center justify-center overflow-hidden border border-[#4c2700]/30 transition-transform hover:scale-105"
+                >
+                  <div
+                    class="absolute inset-0 wood-grain-overlay opacity-40"
+                  ></div>
+                  <div class="w-6 h-px bg-primary/40"></div>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 w-full mt-4">
+              <button
+                class="h-10 rounded bg-error-container/20 border border-error/40 font-headline font-bold text-xs text-error transition-all flex items-center justify-center shadow-[0_0_12px_rgba(248,113,113,0.15)]"
+              >
+                M
+              </button>
+              <button
+                class="h-10 rounded bg-surface-container-high border border-outline-variant/20 font-headline font-bold text-xs text-on-surface transition-all flex items-center justify-center"
+              >
+                S
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Master Section -->
+      <div
+        class="mt-8 bg-surface-container rounded-xl p-4 flex items-center justify-between border border-outline-variant/10 relative overflow-hidden shadow-2xl"
+      >
+        <div
+          class="absolute inset-0 wood-grain-overlay pointer-events-none opacity-10"
+        ></div>
+        <div class="relative z-10">
+          <p
+            class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant"
+          >
+            Master
+          </p>
+          <p class="font-headline font-bold text-lg text-primary">0.0 dB</p>
+        </div>
+        <div class="relative z-10 flex-1 px-8">
+          <div
+            class="h-4 w-full bg-surface-container-lowest rounded-full tactile-inset p-1 overflow-hidden relative"
+          >
+            <div
+              class="v-meter-gradient absolute inset-1 rounded-full w-[88%] transform rotate-180 origin-right"
+            ></div>
+          </div>
+        </div>
+        <div class="relative z-10 flex gap-4">
+          <button
+            class="w-12 h-12 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg active:scale-90 transition-transform"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="font-variation-settings: &quot;FILL&quot; 1"
+              >play_arrow</span
+            >
+          </button>
+          <button
+            class="w-12 h-12 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center shadow-lg active:scale-90 transition-transform border border-outline-variant/20"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="font-variation-settings: &quot;FILL&quot; 1"
+              >stop</span
+            >
+          </button>
+        </div>
+      </div>
+    </main>
+    <!-- BottomNavBar -->
+    <nav
+      class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#0e0e0e] shadow-[0_-4px_24px_rgba(0,0,0,0.4)] border-t border-[#2a2a2a]"
+    >
+      <div
+        class="flex flex-col items-center justify-center bg-[#c88242]/20 text-[#ffb77a] rounded-xl px-3 py-1 brightness-125 transition-all"
+      >
+        <span class="material-symbols-outlined">tune</span>
+        <span
+          class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1"
+          >Mixer</span
+        >
+      </div>
+      <div
+        class="flex flex-col items-center justify-center text-[#e5e2e1]/60 px-3 py-1 hover:text-[#ffb77a] transition-colors"
+      >
+        <span class="material-symbols-outlined">grid_view</span>
+        <span
+          class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1"
+          >Session</span
+        >
+      </div>
+      <div
+        class="flex flex-col items-center justify-center text-[#e5e2e1]/60 px-3 py-1 hover:text-[#ffb77a] transition-colors"
+      >
+        <span class="material-symbols-outlined">piano</span>
+        <span
+          class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1"
+          >Synth</span
+        >
+      </div>
+      <div
+        class="flex flex-col items-center justify-center text-[#e5e2e1]/60 px-3 py-1 hover:text-[#ffb77a] transition-colors"
+      >
+        <span class="material-symbols-outlined">folder_open</span>
+        <span
+          class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1"
+          >Library</span
+        >
+      </div>
+    </nav>
+  </body>
+</html>
