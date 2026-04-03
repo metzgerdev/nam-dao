@@ -19,8 +19,8 @@ import {
   shouldKeepMeterAnimationActive,
   smoothMeterLevel,
 } from "./vuMeterUtils";
-import { usePlayback } from "./usePlayback";
-import { useVolume } from "./useVolume";
+import { usePlayback } from "./hooks/usePlayback";
+import { useVolume } from "./hooks/useVolume";
 
 function formatPlaybackTime(value: number): string {
   if (!Number.isFinite(value) || value < 0) {

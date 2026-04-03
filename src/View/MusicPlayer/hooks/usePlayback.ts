@@ -7,7 +7,7 @@ import {
   type RefObject,
   type SyntheticEvent,
 } from "react";
-import type { MusicTrack } from "./mockMusicPlayerApi";
+import type { MusicTrack } from "../mockMusicPlayerApi";
 
 const AUDIO_FILE_ERROR_MESSAGE = "This audio file could not be played.";
 const PLAYBACK_BLOCKED_MESSAGE =
