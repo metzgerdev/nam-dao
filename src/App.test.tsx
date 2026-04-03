@@ -113,6 +113,19 @@ describe("App routes", () => {
     expect(screen.getByRole("link", { name: /daw/i }).className).toContain("active");
   });
 
+  test("renders the music player on the music-player route", () => {
+    setHashRoute("#/music-player");
+
+    render(<App />);
+
+    expect(
+      screen.getByRole("heading", { name: /built for rough mixes and repeat listens/i }),
+    ).toBeTruthy();
+    expect(screen.getByRole("button", { name: /play/i })).toBeTruthy();
+    expect(screen.getByText(/night drive through fremont/i)).toBeTruthy();
+    expect(screen.getByRole("link", { name: /music player/i }).className).toContain("active");
+  });
+
   test("renders the too fast too furious route", () => {
     setHashRoute("#/too-fast-too-furious");
 

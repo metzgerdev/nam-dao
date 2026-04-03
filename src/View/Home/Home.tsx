@@ -11,6 +11,11 @@ const PROJECTS = [
       "Digital Audio Workstation inspired by Ableton and vintage hi fi speakers",
   },
   {
+    name: "Music Player",
+    href: "#/music-player",
+    description: "A playback-focused route for demos, queues, and listening sessions",
+  },
+  {
     name: "Zynar",
     href: "https://open.spotify.com/artist/3lKDd5smaYVrRmawXlWn7O",
     description:
