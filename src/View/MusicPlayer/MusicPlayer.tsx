@@ -660,7 +660,7 @@ function MusicPlayer() {
               kicker="Booting"
               live
               summary="Pulling artwork and WAV sources from the local session assets."
-              title="Loading GraphQL library…"
+              title="Loading music library…"
             />
           ) : errorMessage && !library ? (
             <FeedbackCard
