@@ -10,6 +10,14 @@ function wait(durationMs: number): Promise<void> {
   });
 }
 
+function getGraphqlEndpointUrl(): string {
+  if (typeof window === "undefined") {
+    return `http://localhost${GRAPHQL_ENDPOINT_PATH}`;
+  }
+
+  return new URL(GRAPHQL_ENDPOINT_PATH, window.location.origin).href;
+}
+
 export interface MusicAsset {
   alt?: string;
   fileName?: string;
@@ -247,7 +255,7 @@ async function handleGraphqlRequest(init?: RequestInit): Promise<Response> {
 }
 
 function installMockGraphqlFetch(): void {
-  if (typeof window === "undefined" || typeof window.fetch !== "function") {
+  if (typeof window === "undefined" || typeof globalThis.fetch !== "function") {
     return;
   }
 
@@ -259,15 +267,17 @@ function installMockGraphqlFetch(): void {
     return;
   }
 
-  const originalFetch = window.fetch.bind(window);
-
-  window.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+  const originalFetch = globalThis.fetch.bind(globalThis);
+  const mockFetch = async (input: RequestInfo | URL, init?: RequestInit) => {
     if (isGraphqlEndpoint(input)) {
       return handleGraphqlRequest(init);
     }
 
     return originalFetch(input, init);
-  }) as typeof window.fetch;
+  };
+
+  globalThis.fetch = mockFetch as typeof globalThis.fetch;
+  window.fetch = mockFetch as typeof window.fetch;
 
   fetchState[MOCK_FETCH_INSTALLED] = true;
 }
@@ -275,7 +285,7 @@ function installMockGraphqlFetch(): void {
 export async function executeMusicLibraryQuery<TData>(source: string) {
   installMockGraphqlFetch();
 
-  const response = await fetch(GRAPHQL_ENDPOINT_PATH, {
+  const response = await fetch(getGraphqlEndpointUrl(), {
     body: JSON.stringify({
       query: source,
     }),
