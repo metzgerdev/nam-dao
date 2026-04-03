@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import Daw from "./View/DAW/Daw";
 import Home from "./View/Home/Home";
+import MusicPlayer from "./View/MusicPlayer/MusicPlayer";
 import Sequencer from "./View/DrumMachine/Sequencer";
 import TooFastTooFurious from "./View/TooFastTooFurious/TooFastTooFurious";
 
-type RouteName = "daw" | "home" | "sequencer" | "too-fast-too-furious";
+type RouteName =
+  | "daw"
+  | "home"
+  | "music-player"
+  | "sequencer"
+  | "too-fast-too-furious";
 
 function readRoute(): RouteName {
   const hashRoute = window.location.hash.replace(/^#\/?/, "");
@@ -18,6 +24,10 @@ function readRoute(): RouteName {
 
   if (nextRoute === "daw") {
     return "daw";
+  }
+
+  if (nextRoute === "music-player") {
+    return "music-player";
   }
 
   if (nextRoute === "sequencer") {
@@ -60,6 +70,10 @@ function App() {
       return <Daw />;
     }
 
+     if (route === "music-player") {
+      return <MusicPlayer />;
+    }
+
     return <TooFastTooFurious />;
   }
 
@@ -77,6 +91,12 @@ function App() {
           href="#/sequencer"
         >
           Sequencer
+        </a>
+        <a
+          className={route === "music-player" ? "active" : ""}
+          href="#/music-player"
+        >
+          Music Player
         </a>
         <a
           className={route === "daw" ? "active" : ""}
