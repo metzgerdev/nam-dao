@@ -89,7 +89,9 @@ describe("App routes", () => {
         /i previously worked at nginx \(f5 networks\), rescale, and nintendo of america/i,
       ),
     ).toBeTruthy();
-    expect(screen.getByRole("link", { name: /home/i }).className).toContain("active");
+    expect(screen.getByRole("link", { name: /home/i }).className).toContain(
+      "active",
+    );
   });
 
   test("renders the sequencer on the sequencer route", async () => {
@@ -99,7 +101,9 @@ describe("App routes", () => {
     await waitForSampleBoot();
 
     expect(screen.getByText(/rhythm composer/i)).toBeTruthy();
-    expect(screen.getByRole("link", { name: /sequencer/i }).className).toContain("active");
+    expect(
+      screen.getByRole("link", { name: /sequencer/i }).className,
+    ).toContain("active");
   });
 
   test("renders the daw on the daw route", async () => {
@@ -110,7 +114,20 @@ describe("App routes", () => {
 
     expect(screen.getByRole("button", { name: /start/i })).toBeTruthy();
     expect(screen.getByText(/1 bar \/ 16 steps/i)).toBeTruthy();
-    expect(screen.getByRole("link", { name: /daw/i }).className).toContain("active");
+    expect(screen.getByRole("link", { name: /daw/i }).className).toContain(
+      "active",
+    );
+  });
+
+  test("renders the music player on the music-player route", () => {
+    setHashRoute("#/music-player");
+
+    render(<App />);
+
+    expect(screen.getByRole("heading", { name: /coming soon/i })).toBeTruthy();
+    expect(
+      screen.getByRole("link", { name: /music player/i }).className,
+    ).toContain("active");
   });
 
   test("renders the too fast too furious route", () => {
@@ -118,9 +135,13 @@ describe("App routes", () => {
 
     render(<App />);
 
-    expect(screen.getByText(/two machines that keep me inspired/i)).toBeTruthy();
+    expect(
+      screen.getByText(/two machines that keep me inspired/i),
+    ).toBeTruthy();
     expect(screen.getByAltText(/silver bmw convertible/i)).toBeTruthy();
     expect(screen.getByAltText(/matte black porsche coupe/i)).toBeTruthy();
-    expect(screen.getByRole("link", { name: /machines/i }).className).toContain("active");
+    expect(screen.getByRole("link", { name: /machines/i }).className).toContain(
+      "active",
+    );
   });
 });

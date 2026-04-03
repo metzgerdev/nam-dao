@@ -1,4 +1,4 @@
-import { useEffect, useState, type RefObject } from "react";
+import { Fragment, useEffect, useState, type RefObject } from "react";
 import type { AudioBufferMap, InstrumentName } from "../../data/instruments";
 import { useStepSequencer } from "../../hooks/useStepSequencer";
 import {
@@ -188,16 +188,17 @@ function Daw() {
 
           <div className="daw-track-list">
             {instrumentRows.map((trackName, index) => (
-              <DawTrack
-                activeSteps={drumState[trackName].activeSteps}
-                audioBuffer={samplesLoaded ? audioBuffers[trackName] : null}
-                index={index}
-                isCurrentStep={isCurrentStep}
-                key={trackName}
-                onToggleStep={toggleStep}
-                steps={steps}
-                trackName={trackName}
-              />
+              <Fragment key={trackName}>
+                <DawTrack
+                  activeSteps={drumState[trackName].activeSteps}
+                  audioBuffer={samplesLoaded ? audioBuffers[trackName] : null}
+                  index={index}
+                  isCurrentStep={isCurrentStep}
+                  onToggleStep={toggleStep}
+                  steps={steps}
+                  trackName={trackName}
+                />
+              </Fragment>
             ))}
           </div>
         </section>
