@@ -17,12 +17,6 @@ const PROJECTS = [
       "A playback-focused route for demos, queues, and listening sessions",
   },
   {
-    name: "Zynar",
-    href: "https://open.spotify.com/artist/3lKDd5smaYVrRmawXlWn7O",
-    description:
-      "A stranger on the internet described my music as not terrible",
-  },
-  {
     name: "Cars",
     href: "#/too-fast-too-furious",
     description: "Restore and modify classic german cars",
