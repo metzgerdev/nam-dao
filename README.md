@@ -2,9 +2,11 @@ Deployed:
 https://metzgerdev.github.io/Drum-Machine/
 
 # Drum Machine
-React based drum machine inspired by the Roland TR 909.  Any one can make EDM, its just a loop!!!
+
+React based drum machine inspired by the Roland TR 909. Any one can make EDM, its just a loop!!!
 
 # DAW
+
 Development of Drum Machine into a Daw (think a simplified Ableton)
 
 ## Setup
@@ -50,6 +52,18 @@ bun run build
 
 ```bash
 bun test
+```
+
+## Formatting
+
+```bash
+bun run format
+```
+
+To check formatting without rewriting files:
+
+```bash
+bun run format:check
 ```
 
 ![alt text](image.png)

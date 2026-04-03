@@ -1,256 +1,459 @@
-<!DOCTYPE html>
+<!doctype html>
 
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Studio Heirloom - Synth Editor</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "on-surface-variant": "#d7c3b4",
-                        "secondary-container": "#494c4b",
-                        "secondary-fixed-dim": "#c4c7c5",
-                        "on-secondary-container": "#babcba",
-                        "surface-container-highest": "#353534",
-                        "inverse-on-surface": "#313030",
-                        "tertiary": "#7bd2ef",
-                        "surface-bright": "#393939",
-                        "on-secondary-fixed-variant": "#444746",
-                        "primary-fixed-dim": "#ffb77a",
-                        "on-error-container": "#ffdad6",
-                        "on-secondary-fixed": "#191c1b",
-                        "on-error": "#690005",
-                        "tertiary-fixed-dim": "#7bd2ef",
-                        "on-secondary": "#2e3130",
-                        "on-background": "#e5e2e1",
-                        "background": "#131313",
-                        "surface-container-high": "#2a2a2a",
-                        "secondary-fixed": "#e1e3e1",
-                        "on-primary-fixed": "#2e1500",
-                        "surface-tint": "#ffb77a",
-                        "on-primary-container": "#442200",
-                        "on-tertiary-fixed": "#001f28",
-                        "surface-container-low": "#1c1b1b",
-                        "surface": "#131313",
-                        "surface-container-lowest": "#0e0e0e",
-                        "surface-container": "#201f1f",
-                        "error": "#ffb4ab",
-                        "primary-fixed": "#ffdcc2",
-                        "surface-variant": "#353534",
-                        "surface-dim": "#131313",
-                        "primary": "#ffb77a",
-                        "inverse-surface": "#e5e2e1",
-                        "on-surface": "#e5e2e1",
-                        "inverse-primary": "#8b5013",
-                        "on-tertiary": "#003542",
-                        "on-primary": "#4c2700",
-                        "error-container": "#93000a",
-                        "secondary": "#c4c7c5",
-                        "on-tertiary-container": "#00303b",
-                        "on-tertiary-fixed-variant": "#004e5f",
-                        "primary-container": "#c88242",
-                        "tertiary-container": "#419db8",
-                        "outline-variant": "#524439",
-                        "outline": "#a08d80",
-                        "tertiary-fixed": "#b4ebff",
-                        "on-primary-fixed-variant": "#6d3a00"
-                    },
-                    fontFamily: {
-                        "headline": ["Space Grotesk"],
-                        "body": ["Inter"],
-                        "label": ["Inter"]
-                    },
-                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
-                },
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Studio Heirloom - Synth Editor</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface-variant": "#d7c3b4",
+              "secondary-container": "#494c4b",
+              "secondary-fixed-dim": "#c4c7c5",
+              "on-secondary-container": "#babcba",
+              "surface-container-highest": "#353534",
+              "inverse-on-surface": "#313030",
+              tertiary: "#7bd2ef",
+              "surface-bright": "#393939",
+              "on-secondary-fixed-variant": "#444746",
+              "primary-fixed-dim": "#ffb77a",
+              "on-error-container": "#ffdad6",
+              "on-secondary-fixed": "#191c1b",
+              "on-error": "#690005",
+              "tertiary-fixed-dim": "#7bd2ef",
+              "on-secondary": "#2e3130",
+              "on-background": "#e5e2e1",
+              background: "#131313",
+              "surface-container-high": "#2a2a2a",
+              "secondary-fixed": "#e1e3e1",
+              "on-primary-fixed": "#2e1500",
+              "surface-tint": "#ffb77a",
+              "on-primary-container": "#442200",
+              "on-tertiary-fixed": "#001f28",
+              "surface-container-low": "#1c1b1b",
+              surface: "#131313",
+              "surface-container-lowest": "#0e0e0e",
+              "surface-container": "#201f1f",
+              error: "#ffb4ab",
+              "primary-fixed": "#ffdcc2",
+              "surface-variant": "#353534",
+              "surface-dim": "#131313",
+              primary: "#ffb77a",
+              "inverse-surface": "#e5e2e1",
+              "on-surface": "#e5e2e1",
+              "inverse-primary": "#8b5013",
+              "on-tertiary": "#003542",
+              "on-primary": "#4c2700",
+              "error-container": "#93000a",
+              secondary: "#c4c7c5",
+              "on-tertiary-container": "#00303b",
+              "on-tertiary-fixed-variant": "#004e5f",
+              "primary-container": "#c88242",
+              "tertiary-container": "#419db8",
+              "outline-variant": "#524439",
+              outline: "#a08d80",
+              "tertiary-fixed": "#b4ebff",
+              "on-primary-fixed-variant": "#6d3a00",
             },
-        }
+            fontFamily: {
+              headline: ["Space Grotesk"],
+              body: ["Inter"],
+              label: ["Inter"],
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+          },
+        },
+      };
     </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .knurl-texture {
-            background-image: radial-gradient(#353534 1px, transparent 1px);
-            background-size: 4px 4px;
-        }
-        .wood-grain {
-            background: linear-gradient(90deg, #442200 0%, #6d3a00 50%, #442200 100%);
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
-        }
-        .fader-track {
-            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.8), inset -1px -1px 2px rgba(255,255,255,0.05);
-        }
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .knurl-texture {
+        background-image: radial-gradient(#353534 1px, transparent 1px);
+        background-size: 4px 4px;
+      }
+      .wood-grain {
+        background: linear-gradient(
+          90deg,
+          #442200 0%,
+          #6d3a00 50%,
+          #442200 100%
+        );
+        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+      }
+      .fader-track {
+        box-shadow:
+          inset 2px 2px 4px rgba(0, 0, 0, 0.8),
+          inset -1px -1px 2px rgba(255, 255, 255, 0.05);
+      }
     </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
   </head>
-<body class="bg-background text-on-surface font-body selection:bg-primary/30 min-h-screen pb-32">
-<!-- Top Navigation -->
-<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#131313] dark:bg-[#131313] border-b border-[#2a2a2a] flat no-shadows">
-<div class="flex items-center gap-4">
-<span class="material-symbols-outlined text-[#ffb77a] cursor-pointer" data-icon="menu">menu</span>
-<h1 class="font-['Space_Grotesk'] font-bold tracking-tight uppercase text-lg font-black text-[#ffb77a] tracking-widest">STUDIO HEIRLOOM</h1>
-</div>
-<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="Close up of vintage computer hardware and circuit boards in warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2Pu5W9vfvEZWXa5F1Ba04Q_hq7R8y3ZSmGQ_RQCbRaOsNgS-n3HO2WuTX4akVz6EUFSemB7S7PaxYetfGCSv1r8cShZSRRW03uhtEguvoNh8ywExJXkeCH-SYcXWIpq6Arz2Yt2PZpjLPhtMx-Pl8RPm05OrE9OKodSZeGzR70U2A9SQTRjUrNhrqKCHkvrtdn_S124j6roiVAsZclBF8fGJlKrG7J2d-oZA_TkSAQoEp5s2qZ4SonehEXBsgvr_AnY-WeeX-83g"/>
-</div>
-</header>
-<main class="pt-20 px-4 max-w-lg mx-auto space-y-6">
-<!-- Header Info -->
-<section class="flex justify-between items-end mb-8">
-<div>
-<span class="font-label text-on-surface-variant text-[10px] uppercase tracking-[0.2em]">Current Patch</span>
-<h2 class="font-headline text-3xl font-bold text-on-surface">WARM_CELLULOID</h2>
-</div>
-<div class="text-right">
-<span class="font-label text-on-surface-variant text-[10px] uppercase tracking-[0.2em]">BPM</span>
-<p class="font-headline text-2xl font-medium text-primary">112.0</p>
-</div>
-</section>
-<!-- Oscillator Waveform Toggles (Small Toggle Switches) -->
-<section class="bg-surface-container-low p-5 rounded-xl flex items-center justify-between">
-<div class="space-y-1">
-<p class="font-headline text-xs font-bold text-on-surface-variant uppercase tracking-widest">Oscillator 1</p>
-<p class="font-label text-[10px] text-outline italic">Analog Drift Enabled</p>
-</div>
-<div class="flex gap-2">
-<button class="w-12 h-12 flex flex-col items-center justify-center bg-surface-container-highest rounded-lg border border-outline-variant hover:border-primary transition-colors">
-<span class="material-symbols-outlined text-sm text-on-surface-variant" data-icon="water_drop">water_drop</span>
-<span class="font-label text-[8px] mt-1">SINE</span>
-</button>
-<button class="w-12 h-12 flex flex-col items-center justify-center bg-surface-container-high rounded-lg border border-primary text-primary shadow-[0_0_10px_rgba(255,183,122,0.2)]">
-<span class="material-symbols-outlined text-sm" data-icon="show_chart">show_chart</span>
-<span class="font-label text-[8px] mt-1">SAW</span>
-</button>
-<button class="w-12 h-12 flex flex-col items-center justify-center bg-surface-container-highest rounded-lg border border-outline-variant hover:border-primary transition-colors">
-<span class="material-symbols-outlined text-sm text-on-surface-variant" data-icon="stop">stop</span>
-<span class="font-label text-[8px] mt-1">SQR</span>
-</button>
-</div>
-</section>
-<!-- Main Filter Section (Big Knurled Knob) -->
-<section class="grid grid-cols-1 gap-4">
-<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 flex flex-col items-center justify-center relative overflow-hidden">
-<!-- Wood Accent Panel -->
-<div class="absolute top-0 left-0 w-1 h-full wood-grain"></div>
-<h3 class="font-headline text-sm font-bold text-on-surface mb-8 tracking-[0.3em] uppercase">VCF Frequency</h3>
-<!-- The Big Knob -->
-<div class="relative w-48 h-48 rounded-full bg-surface-container-highest shadow-2xl flex items-center justify-center border-4 border-surface-container-high group">
-<!-- Value Glow -->
-<div class="absolute inset-0 rounded-full border-[6px] border-primary/20 blur-sm"></div>
-<div class="absolute inset-0 rounded-full border-t-[6px] border-l-[6px] border-primary rotate-[135deg]"></div>
-<!-- Knurled Surface -->
-<div class="w-40 h-40 rounded-full bg-[#2a2a2a] knurl-texture border border-black flex items-center justify-center relative shadow-inner">
-<!-- Indicator -->
-<div class="absolute top-4 w-1.5 h-6 bg-primary rounded-full shadow-[0_0_8px_rgba(255,183,122,0.8)]"></div>
-<!-- Center Cap -->
-<div class="w-16 h-16 rounded-full bg-gradient-to-br from-surface-container-high to-surface-container-lowest border border-outline-variant/20 flex items-center justify-center">
-<span class="font-headline text-xs font-bold text-on-surface-variant">2.4k</span>
-</div>
-</div>
-</div>
-<div class="mt-8 flex w-full justify-between items-center font-label text-[10px] text-outline uppercase tracking-widest px-4">
-<span>20 Hz</span>
-<span>Resonance: 42%</span>
-<span>20 kHz</span>
-</div>
-</div>
-</section>
-<!-- ADSR Section (Wood Cap Faders) -->
-<section class="bg-surface-container-low p-6 rounded-xl">
-<div class="flex justify-between items-center mb-6">
-<h3 class="font-headline text-xs font-bold text-on-surface tracking-widest uppercase">Envelope Generator</h3>
-<span class="material-symbols-outlined text-outline-variant" data-icon="settings_input_component">settings_input_component</span>
-</div>
-<div class="flex justify-around items-end h-48">
-<!-- Attack -->
-<div class="flex flex-col items-center h-full gap-3">
-<div class="w-2 h-full bg-surface-container-lowest rounded-full fader-track relative flex flex-col justify-end p-0.5">
-<div class="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-8 h-12 wood-grain rounded-sm border border-black/40 flex items-center justify-center shadow-lg cursor-pointer">
-<div class="w-6 h-[1px] bg-white/10 mb-1"></div>
-<div class="w-6 h-[1px] bg-white/10"></div>
-<div class="w-6 h-[1px] bg-white/10 mt-1"></div>
-</div>
-</div>
-<span class="font-label text-[10px] text-on-surface-variant font-bold">A</span>
-</div>
-<!-- Decay -->
-<div class="flex flex-col items-center h-full gap-3">
-<div class="w-2 h-full bg-surface-container-lowest rounded-full fader-track relative flex flex-col justify-end p-0.5">
-<div class="absolute bottom-[45%] left-1/2 -translate-x-1/2 w-8 h-12 wood-grain rounded-sm border border-black/40 shadow-lg cursor-pointer"></div>
-</div>
-<span class="font-label text-[10px] text-on-surface-variant font-bold">D</span>
-</div>
-<!-- Sustain -->
-<div class="flex flex-col items-center h-full gap-3">
-<div class="w-2 h-full bg-surface-container-lowest rounded-full fader-track relative flex flex-col justify-end p-0.5">
-<div class="absolute bottom-[60%] left-1/2 -translate-x-1/2 w-8 h-12 wood-grain rounded-sm border border-black/40 shadow-lg cursor-pointer"></div>
-</div>
-<span class="font-label text-[10px] text-on-surface-variant font-bold">S</span>
-</div>
-<!-- Release -->
-<div class="flex flex-col items-center h-full gap-3">
-<div class="w-2 h-full bg-surface-container-lowest rounded-full fader-track relative flex flex-col justify-end p-0.5">
-<div class="absolute bottom-[30%] left-1/2 -translate-x-1/2 w-8 h-12 wood-grain rounded-sm border border-black/40 shadow-lg cursor-pointer"></div>
-</div>
-<span class="font-label text-[10px] text-on-surface-variant font-bold">R</span>
-</div>
-</div>
-</section>
-<!-- Mini Keyboard Section -->
-<section class="pt-4">
-<div class="relative bg-surface-container-lowest p-2 rounded-t-xl overflow-hidden border-t border-x border-outline-variant/20">
-<!-- Wood End Cheeks -->
-<div class="absolute left-0 top-0 bottom-0 w-3 wood-grain z-10"></div>
-<div class="absolute right-0 top-0 bottom-0 w-3 wood-grain z-10"></div>
-<div class="flex h-32 pl-3 pr-3">
-<!-- White Keys -->
-<div class="flex-1 border-r border-surface-container-highest bg-on-surface rounded-b-sm shadow-inner active:bg-primary transition-colors flex items-end justify-center pb-2">
-<span class="font-label text-[8px] text-background font-bold">C3</span>
-</div>
-<div class="flex-1 border-r border-surface-container-highest bg-on-surface rounded-b-sm active:bg-primary transition-colors"></div>
-<div class="flex-1 border-r border-surface-container-highest bg-on-surface rounded-b-sm active:bg-primary transition-colors"></div>
-<div class="flex-1 border-r border-surface-container-highest bg-on-surface rounded-b-sm active:bg-primary transition-colors"></div>
-<div class="flex-1 border-r border-surface-container-highest bg-on-surface rounded-b-sm active:bg-primary transition-colors"></div>
-<div class="flex-1 border-r border-surface-container-highest bg-on-surface rounded-b-sm active:bg-primary transition-colors"></div>
-<div class="flex-1 bg-on-surface rounded-b-sm active:bg-primary transition-colors"></div>
-<!-- Black Keys (Floating via absolute or relative offsets) -->
-<div class="absolute left-[12%] top-2 w-[8%] h-20 bg-surface-container-lowest rounded-b-md shadow-lg border-x border-b border-surface-container-high active:bg-primary-container"></div>
-<div class="absolute left-[24%] top-2 w-[8%] h-20 bg-surface-container-lowest rounded-b-md shadow-lg border-x border-b border-surface-container-high active:bg-primary-container"></div>
-<div class="absolute left-[50%] top-2 w-[8%] h-20 bg-surface-container-lowest rounded-b-md shadow-lg border-x border-b border-surface-container-high active:bg-primary-container"></div>
-<div class="absolute left-[63%] top-2 w-[8%] h-20 bg-surface-container-lowest rounded-b-md shadow-lg border-x border-b border-surface-container-high active:bg-primary-container"></div>
-<div class="absolute left-[76%] top-2 w-[8%] h-20 bg-surface-container-lowest rounded-b-md shadow-lg border-x border-b border-surface-container-high active:bg-primary-container"></div>
-</div>
-</div>
-</section>
-</main>
-<!-- Bottom Navigation Bar -->
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#0e0e0e] dark:bg-[#0e0e0e] shadow-[0_-4px_24px_rgba(0,0,0,0.4)] border-t border-[#2a2a2a]">
-<a class="flex flex-col items-center justify-center text-[#e5e2e1]/60 px-3 py-1 hover:text-[#ffb77a]" href="#">
-<span class="material-symbols-outlined" data-icon="tune">tune</span>
-<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1">Mixer</span>
-</a>
-<a class="flex flex-col items-center justify-center text-[#e5e2e1]/60 px-3 py-1 hover:text-[#ffb77a]" href="#">
-<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
-<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1">Session</span>
-</a>
-<a class="flex flex-col items-center justify-center bg-[#c88242]/20 text-[#ffb77a] rounded-xl px-3 py-1 brightness-125 transition-all" href="#">
-<span class="material-symbols-outlined" data-icon="piano" style="font-variation-settings: 'FILL' 1;">piano</span>
-<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1">Synth</span>
-</a>
-<a class="flex flex-col items-center justify-center text-[#e5e2e1]/60 px-3 py-1 hover:text-[#ffb77a]" href="#">
-<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
-<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1">Library</span>
-</a>
-</nav>
-</body></html>
+  <body
+    class="bg-background text-on-surface font-body selection:bg-primary/30 min-h-screen pb-32"
+  >
+    <!-- Top Navigation -->
+    <header
+      class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#131313] dark:bg-[#131313] border-b border-[#2a2a2a] flat no-shadows"
+    >
+      <div class="flex items-center gap-4">
+        <span
+          class="material-symbols-outlined text-[#ffb77a] cursor-pointer"
+          data-icon="menu"
+          >menu</span
+        >
+        <h1
+          class="font-['Space_Grotesk'] font-bold tracking-tight uppercase text-lg font-black text-[#ffb77a] tracking-widest"
+        >
+          STUDIO HEIRLOOM
+        </h1>
+      </div>
+      <div
+        class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center overflow-hidden"
+      >
+        <img
+          class="w-full h-full object-cover"
+          data-alt="Close up of vintage computer hardware and circuit boards in warm lighting"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2Pu5W9vfvEZWXa5F1Ba04Q_hq7R8y3ZSmGQ_RQCbRaOsNgS-n3HO2WuTX4akVz6EUFSemB7S7PaxYetfGCSv1r8cShZSRRW03uhtEguvoNh8ywExJXkeCH-SYcXWIpq6Arz2Yt2PZpjLPhtMx-Pl8RPm05OrE9OKodSZeGzR70U2A9SQTRjUrNhrqKCHkvrtdn_S124j6roiVAsZclBF8fGJlKrG7J2d-oZA_TkSAQoEp5s2qZ4SonehEXBsgvr_AnY-WeeX-83g"
+        />
+      </div>
+    </header>
+    <main class="pt-20 px-4 max-w-lg mx-auto space-y-6">
+      <!-- Header Info -->
+      <section class="flex justify-between items-end mb-8">
+        <div>
+          <span
+            class="font-label text-on-surface-variant text-[10px] uppercase tracking-[0.2em]"
+            >Current Patch</span
+          >
+          <h2 class="font-headline text-3xl font-bold text-on-surface">
+            WARM_CELLULOID
+          </h2>
+        </div>
+        <div class="text-right">
+          <span
+            class="font-label text-on-surface-variant text-[10px] uppercase tracking-[0.2em]"
+            >BPM</span
+          >
+          <p class="font-headline text-2xl font-medium text-primary">112.0</p>
+        </div>
+      </section>
+      <!-- Oscillator Waveform Toggles (Small Toggle Switches) -->
+      <section
+        class="bg-surface-container-low p-5 rounded-xl flex items-center justify-between"
+      >
+        <div class="space-y-1">
+          <p
+            class="font-headline text-xs font-bold text-on-surface-variant uppercase tracking-widest"
+          >
+            Oscillator 1
+          </p>
+          <p class="font-label text-[10px] text-outline italic">
+            Analog Drift Enabled
+          </p>
+        </div>
+        <div class="flex gap-2">
+          <button
+            class="w-12 h-12 flex flex-col items-center justify-center bg-surface-container-highest rounded-lg border border-outline-variant hover:border-primary transition-colors"
+          >
+            <span
+              class="material-symbols-outlined text-sm text-on-surface-variant"
+              data-icon="water_drop"
+              >water_drop</span
+            >
+            <span class="font-label text-[8px] mt-1">SINE</span>
+          </button>
+          <button
+            class="w-12 h-12 flex flex-col items-center justify-center bg-surface-container-high rounded-lg border border-primary text-primary shadow-[0_0_10px_rgba(255,183,122,0.2)]"
+          >
+            <span
+              class="material-symbols-outlined text-sm"
+              data-icon="show_chart"
+              >show_chart</span
+            >
+            <span class="font-label text-[8px] mt-1">SAW</span>
+          </button>
+          <button
+            class="w-12 h-12 flex flex-col items-center justify-center bg-surface-container-highest rounded-lg border border-outline-variant hover:border-primary transition-colors"
+          >
+            <span
+              class="material-symbols-outlined text-sm text-on-surface-variant"
+              data-icon="stop"
+              >stop</span
+            >
+            <span class="font-label text-[8px] mt-1">SQR</span>
+          </button>
+        </div>
+      </section>
+      <!-- Main Filter Section (Big Knurled Knob) -->
+      <section class="grid grid-cols-1 gap-4">
+        <div
+          class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 flex flex-col items-center justify-center relative overflow-hidden"
+        >
+          <!-- Wood Accent Panel -->
+          <div class="absolute top-0 left-0 w-1 h-full wood-grain"></div>
+          <h3
+            class="font-headline text-sm font-bold text-on-surface mb-8 tracking-[0.3em] uppercase"
+          >
+            VCF Frequency
+          </h3>
+          <!-- The Big Knob -->
+          <div
+            class="relative w-48 h-48 rounded-full bg-surface-container-highest shadow-2xl flex items-center justify-center border-4 border-surface-container-high group"
+          >
+            <!-- Value Glow -->
+            <div
+              class="absolute inset-0 rounded-full border-[6px] border-primary/20 blur-sm"
+            ></div>
+            <div
+              class="absolute inset-0 rounded-full border-t-[6px] border-l-[6px] border-primary rotate-[135deg]"
+            ></div>
+            <!-- Knurled Surface -->
+            <div
+              class="w-40 h-40 rounded-full bg-[#2a2a2a] knurl-texture border border-black flex items-center justify-center relative shadow-inner"
+            >
+              <!-- Indicator -->
+              <div
+                class="absolute top-4 w-1.5 h-6 bg-primary rounded-full shadow-[0_0_8px_rgba(255,183,122,0.8)]"
+              ></div>
+              <!-- Center Cap -->
+              <div
+                class="w-16 h-16 rounded-full bg-gradient-to-br from-surface-container-high to-surface-container-lowest border border-outline-variant/20 flex items-center justify-center"
+              >
+                <span
+                  class="font-headline text-xs font-bold text-on-surface-variant"
+                  >2.4k</span
+                >
+              </div>
+            </div>
+          </div>
+          <div
+            class="mt-8 flex w-full justify-between items-center font-label text-[10px] text-outline uppercase tracking-widest px-4"
+          >
+            <span>20 Hz</span>
+            <span>Resonance: 42%</span>
+            <span>20 kHz</span>
+          </div>
+        </div>
+      </section>
+      <!-- ADSR Section (Wood Cap Faders) -->
+      <section class="bg-surface-container-low p-6 rounded-xl">
+        <div class="flex justify-between items-center mb-6">
+          <h3
+            class="font-headline text-xs font-bold text-on-surface tracking-widest uppercase"
+          >
+            Envelope Generator
+          </h3>
+          <span
+            class="material-symbols-outlined text-outline-variant"
+            data-icon="settings_input_component"
+            >settings_input_component</span
+          >
+        </div>
+        <div class="flex justify-around items-end h-48">
+          <!-- Attack -->
+          <div class="flex flex-col items-center h-full gap-3">
+            <div
+              class="w-2 h-full bg-surface-container-lowest rounded-full fader-track relative flex flex-col justify-end p-0.5"
+            >
+              <div
+                class="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-8 h-12 wood-grain rounded-sm border border-black/40 flex items-center justify-center shadow-lg cursor-pointer"
+              >
+                <div class="w-6 h-[1px] bg-white/10 mb-1"></div>
+                <div class="w-6 h-[1px] bg-white/10"></div>
+                <div class="w-6 h-[1px] bg-white/10 mt-1"></div>
+              </div>
+            </div>
+            <span
+              class="font-label text-[10px] text-on-surface-variant font-bold"
+              >A</span
+            >
+          </div>
+          <!-- Decay -->
+          <div class="flex flex-col items-center h-full gap-3">
+            <div
+              class="w-2 h-full bg-surface-container-lowest rounded-full fader-track relative flex flex-col justify-end p-0.5"
+            >
+              <div
+                class="absolute bottom-[45%] left-1/2 -translate-x-1/2 w-8 h-12 wood-grain rounded-sm border border-black/40 shadow-lg cursor-pointer"
+              ></div>
+            </div>
+            <span
+              class="font-label text-[10px] text-on-surface-variant font-bold"
+              >D</span
+            >
+          </div>
+          <!-- Sustain -->
+          <div class="flex flex-col items-center h-full gap-3">
+            <div
+              class="w-2 h-full bg-surface-container-lowest rounded-full fader-track relative flex flex-col justify-end p-0.5"
+            >
+              <div
+                class="absolute bottom-[60%] left-1/2 -translate-x-1/2 w-8 h-12 wood-grain rounded-sm border border-black/40 shadow-lg cursor-pointer"
+              ></div>
+            </div>
+            <span
+              class="font-label text-[10px] text-on-surface-variant font-bold"
+              >S</span
+            >
+          </div>
+          <!-- Release -->
+          <div class="flex flex-col items-center h-full gap-3">
+            <div
+              class="w-2 h-full bg-surface-container-lowest rounded-full fader-track relative flex flex-col justify-end p-0.5"
+            >
+              <div
+                class="absolute bottom-[30%] left-1/2 -translate-x-1/2 w-8 h-12 wood-grain rounded-sm border border-black/40 shadow-lg cursor-pointer"
+              ></div>
+            </div>
+            <span
+              class="font-label text-[10px] text-on-surface-variant font-bold"
+              >R</span
+            >
+          </div>
+        </div>
+      </section>
+      <!-- Mini Keyboard Section -->
+      <section class="pt-4">
+        <div
+          class="relative bg-surface-container-lowest p-2 rounded-t-xl overflow-hidden border-t border-x border-outline-variant/20"
+        >
+          <!-- Wood End Cheeks -->
+          <div class="absolute left-0 top-0 bottom-0 w-3 wood-grain z-10"></div>
+          <div
+            class="absolute right-0 top-0 bottom-0 w-3 wood-grain z-10"
+          ></div>
+          <div class="flex h-32 pl-3 pr-3">
+            <!-- White Keys -->
+            <div
+              class="flex-1 border-r border-surface-container-highest bg-on-surface rounded-b-sm shadow-inner active:bg-primary transition-colors flex items-end justify-center pb-2"
+            >
+              <span class="font-label text-[8px] text-background font-bold"
+                >C3</span
+              >
+            </div>
+            <div
+              class="flex-1 border-r border-surface-container-highest bg-on-surface rounded-b-sm active:bg-primary transition-colors"
+            ></div>
+            <div
+              class="flex-1 border-r border-surface-container-highest bg-on-surface rounded-b-sm active:bg-primary transition-colors"
+            ></div>
+            <div
+              class="flex-1 border-r border-surface-container-highest bg-on-surface rounded-b-sm active:bg-primary transition-colors"
+            ></div>
+            <div
+              class="flex-1 border-r border-surface-container-highest bg-on-surface rounded-b-sm active:bg-primary transition-colors"
+            ></div>
+            <div
+              class="flex-1 border-r border-surface-container-highest bg-on-surface rounded-b-sm active:bg-primary transition-colors"
+            ></div>
+            <div
+              class="flex-1 bg-on-surface rounded-b-sm active:bg-primary transition-colors"
+            ></div>
+            <!-- Black Keys (Floating via absolute or relative offsets) -->
+            <div
+              class="absolute left-[12%] top-2 w-[8%] h-20 bg-surface-container-lowest rounded-b-md shadow-lg border-x border-b border-surface-container-high active:bg-primary-container"
+            ></div>
+            <div
+              class="absolute left-[24%] top-2 w-[8%] h-20 bg-surface-container-lowest rounded-b-md shadow-lg border-x border-b border-surface-container-high active:bg-primary-container"
+            ></div>
+            <div
+              class="absolute left-[50%] top-2 w-[8%] h-20 bg-surface-container-lowest rounded-b-md shadow-lg border-x border-b border-surface-container-high active:bg-primary-container"
+            ></div>
+            <div
+              class="absolute left-[63%] top-2 w-[8%] h-20 bg-surface-container-lowest rounded-b-md shadow-lg border-x border-b border-surface-container-high active:bg-primary-container"
+            ></div>
+            <div
+              class="absolute left-[76%] top-2 w-[8%] h-20 bg-surface-container-lowest rounded-b-md shadow-lg border-x border-b border-surface-container-high active:bg-primary-container"
+            ></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Bottom Navigation Bar -->
+    <nav
+      class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#0e0e0e] dark:bg-[#0e0e0e] shadow-[0_-4px_24px_rgba(0,0,0,0.4)] border-t border-[#2a2a2a]"
+    >
+      <a
+        class="flex flex-col items-center justify-center text-[#e5e2e1]/60 px-3 py-1 hover:text-[#ffb77a]"
+        href="#"
+      >
+        <span class="material-symbols-outlined" data-icon="tune">tune</span>
+        <span
+          class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1"
+          >Mixer</span
+        >
+      </a>
+      <a
+        class="flex flex-col items-center justify-center text-[#e5e2e1]/60 px-3 py-1 hover:text-[#ffb77a]"
+        href="#"
+      >
+        <span class="material-symbols-outlined" data-icon="grid_view"
+          >grid_view</span
+        >
+        <span
+          class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1"
+          >Session</span
+        >
+      </a>
+      <a
+        class="flex flex-col items-center justify-center bg-[#c88242]/20 text-[#ffb77a] rounded-xl px-3 py-1 brightness-125 transition-all"
+        href="#"
+      >
+        <span
+          class="material-symbols-outlined"
+          data-icon="piano"
+          style="font-variation-settings: &quot;FILL&quot; 1"
+          >piano</span
+        >
+        <span
+          class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1"
+          >Synth</span
+        >
+      </a>
+      <a
+        class="flex flex-col items-center justify-center text-[#e5e2e1]/60 px-3 py-1 hover:text-[#ffb77a]"
+        href="#"
+      >
+        <span class="material-symbols-outlined" data-icon="folder_open"
+          >folder_open</span
+        >
+        <span
+          class="font-['Inter'] text-[10px] font-medium uppercase tracking-tighter mt-1"
+          >Library</span
+        >
+      </a>
+    </nav>
+  </body>
+</html>
