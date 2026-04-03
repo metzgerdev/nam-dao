@@ -14,7 +14,7 @@ const PROJECTS = [
     name: "Music Player",
     href: "#/music-player",
     description:
-      "A playback-focused route for demos, queues, and listening sessions",
+      "Listen to my house music project Zynar",
   },
   {
     name: "Cars",
