@@ -6,6 +6,7 @@ import {
   hasMeterSettled,
   IDLE_METER_LEVEL,
   normalizeMeterLevel,
+  readMeterLevels,
   shouldKeepMeterAnimationActive,
   smoothMeterLevel,
 } from "../MusicPlayer/vuMeterUtils";
@@ -70,6 +71,51 @@ describe("vuMeterUtils", () => {
         right: IDLE_METER_LEVEL,
       }),
     ).toBe(true);
+  });
+
+  test("reads weighted meter levels and mirrors mono input to the right channel", () => {
+    const leftSamples = new Float32Array([0.4, -0.4, 0.4, -0.4]);
+    const leftAnalyser = {
+      getFloatTimeDomainData(target: Float32Array) {
+        target.set(leftSamples);
+      },
+    } as unknown as AnalyserNode;
+    const leftBuffer = new Float32Array(leftSamples.length);
+    const rightBuffer = new Float32Array(leftSamples.length);
+
+    const monoLevels = readMeterLevels(
+      {
+        leftAnalyser,
+        rightAnalyser: null,
+      },
+      {
+        leftBuffer,
+        rightBuffer,
+      },
+    );
+
+    expect(monoLevels.left).toBeCloseTo(0.96, 5);
+    expect(monoLevels.right).toBeCloseTo(monoLevels.left, 5);
+
+    const rightAnalyser = {
+      getFloatTimeDomainData(target: Float32Array) {
+        target.set(new Float32Array([0.05, -0.05, 0.05, -0.05]));
+      },
+    } as unknown as AnalyserNode;
+
+    const stereoLevels = readMeterLevels(
+      {
+        leftAnalyser,
+        rightAnalyser,
+      },
+      {
+        leftBuffer: new Float32Array(leftSamples.length),
+        rightBuffer: new Float32Array(leftSamples.length),
+      },
+    );
+
+    expect(stereoLevels.left).toBeCloseTo(0.96, 5);
+    expect(stereoLevels.right).toBeCloseTo(0.175, 5);
   });
 
   test("creates the K-weighting shelving and high-pass filter stages", () => {

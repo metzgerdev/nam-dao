@@ -17,11 +17,10 @@ import {
 } from "./mockMusicPlayerApi";
 import {
   createKWeightingFilterChain,
-  computeRms,
   hasMeterSettled,
   IDLE_METER_LEVEL,
   METER_FFT_SIZE,
-  normalizeMeterLevel,
+  readMeterLevels,
   shouldKeepMeterAnimationActive,
   smoothMeterLevel,
 } from "./vuMeterUtils";
@@ -366,20 +365,18 @@ function MusicPlayer() {
       let nextRightLevel = IDLE_METER_LEVEL;
 
       if (isPlaying && leftAnalyser) {
-        leftAnalyser.getFloatTimeDomainData(leftBuffer);
-        if (rightAnalyser) {
-          rightAnalyser.getFloatTimeDomainData(rightBuffer);
-        } else {
-          rightBuffer.set(leftBuffer);
-        }
-
-        nextLeftLevel = normalizeMeterLevel(computeRms(leftBuffer));
-        const rawRightLevel = normalizeMeterLevel(computeRms(rightBuffer));
-        nextRightLevel =
-          rawRightLevel <= IDLE_METER_LEVEL + 0.01 &&
-          nextLeftLevel > IDLE_METER_LEVEL + 0.03
-            ? nextLeftLevel
-            : rawRightLevel;
+        const nextMeterLevels = readMeterLevels(
+          {
+            leftAnalyser,
+            rightAnalyser,
+          },
+          {
+            leftBuffer,
+            rightBuffer,
+          },
+        );
+        nextLeftLevel = nextMeterLevels.left;
+        nextRightLevel = nextMeterLevels.right;
       }
 
       let shouldContinue = isPlaying;
