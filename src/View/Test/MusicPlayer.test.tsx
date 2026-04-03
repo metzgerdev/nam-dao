@@ -73,6 +73,24 @@ describe("mockMusicPlayerApi", () => {
     ).rejects.toThrow(/Cannot query field "missingField" on type "Query"/i);
   });
 
+  test("throws when a request does not match the musicLibrary schema", async () => {
+    await expect(
+      executeMusicLibraryQuery(`
+        query InvalidMusicLibraryShape {
+          musicLibrary {
+            tracks {
+              id
+              bpm
+              unsupportedField
+            }
+          }
+        }
+      `),
+    ).rejects.toThrow(
+      /Cannot query field "unsupportedField" on type "MusicTrack"/i,
+    );
+  });
+
   test("returns graphql errors with a 400 response at the mock endpoint", async () => {
     await fetchMusicLibrary();
 
