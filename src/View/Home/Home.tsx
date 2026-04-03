@@ -11,6 +11,12 @@ const PROJECTS = [
       "Digital Audio Workstation inspired by Ableton and vintage hi fi speakers",
   },
   {
+    name: "Music Player",
+    href: "#/music-player",
+    description:
+      "A playback-focused route for demos, queues, and listening sessions",
+  },
+  {
     name: "Zynar",
     href: "https://open.spotify.com/artist/3lKDd5smaYVrRmawXlWn7O",
     description:
@@ -41,9 +47,10 @@ function Home() {
             <h1>Nam Dao</h1>
             <p className="home-summary">
               I’m a software engineer with a strong maker streak. I have 8+
-              years experience as a front end developer. I’m highly collaborative
-              with strong people skills. Obsessive over details that matter,
-              which I cultivate also as a music producer and car enthusiast.
+              years experience as a front end developer. I’m highly
+              collaborative with strong people skills. Obsessive over details
+              that matter, which I cultivate also as a music producer and car
+              enthusiast.
             </p>
 
             <p className="home-summary">
@@ -52,9 +59,9 @@ function Home() {
             </p>
             <p className="home-summary">
               I have an MS in Electrical Engineering from University of
-              Washington, and attended the Hack Reactor software accelerator.  I&apos;m currently attending the New
-              Line AI accelerator to control the AI or risk being controlled by
-              the AI. 🤖
+              Washington, and attended the Hack Reactor software accelerator.
+              I&apos;m currently attending the New Line AI accelerator to
+              control the AI or risk being controlled by the AI. 🤖
             </p>
           </div>
 

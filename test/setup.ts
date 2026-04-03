@@ -66,7 +66,10 @@ installGlobal("CustomEvent", windowInstance.CustomEvent);
 installGlobal("HashChangeEvent", windowInstance.HashChangeEvent);
 installGlobal("MouseEvent", windowInstance.MouseEvent);
 installGlobal("KeyboardEvent", windowInstance.KeyboardEvent);
-installGlobal("getComputedStyle", windowInstance.getComputedStyle.bind(windowInstance));
+installGlobal(
+  "getComputedStyle",
+  windowInstance.getComputedStyle.bind(windowInstance),
+);
 installGlobal(
   "requestAnimationFrame",
   windowInstance.requestAnimationFrame.bind(windowInstance),

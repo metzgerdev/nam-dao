@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import Daw from "./View/DAW/Daw";
 import Home from "./View/Home/Home";
+import MusicPlayer from "./View/MusicPlayer/MusicPlayer";
 import Sequencer from "./View/DrumMachine/Sequencer";
 import TooFastTooFurious from "./View/TooFastTooFurious/TooFastTooFurious";
 
-type RouteName = "daw" | "home" | "sequencer" | "too-fast-too-furious";
+type RouteName =
+  | "daw"
+  | "home"
+  | "music-player"
+  | "sequencer"
+  | "too-fast-too-furious";
 
 function readRoute(): RouteName {
   const hashRoute = window.location.hash.replace(/^#\/?/, "");
@@ -18,6 +24,10 @@ function readRoute(): RouteName {
 
   if (nextRoute === "daw") {
     return "daw";
+  }
+
+  if (nextRoute === "music-player") {
+    return "music-player";
   }
 
   if (nextRoute === "sequencer") {
@@ -60,29 +70,30 @@ function App() {
       return <Daw />;
     }
 
+    if (route === "music-player") {
+      return <MusicPlayer />;
+    }
+
     return <TooFastTooFurious />;
   }
 
   return (
     <div className="app-frame">
       <nav className="app-route-nav" aria-label="Application views">
-        <a
-          className={route === "home" ? "active" : ""}
-          href="#/home"
-        >
+        <a className={route === "home" ? "active" : ""} href="#/home">
           Home
         </a>
-        <a
-          className={route === "sequencer" ? "active" : ""}
-          href="#/sequencer"
-        >
+        <a className={route === "sequencer" ? "active" : ""} href="#/sequencer">
           Sequencer
         </a>
-        <a
-          className={route === "daw" ? "active" : ""}
-          href="#/daw"
-        >
+        <a className={route === "daw" ? "active" : ""} href="#/daw">
           DAW
+        </a>
+        <a
+          className={route === "music-player" ? "active" : ""}
+          href="#/music-player"
+        >
+          Music Player
         </a>
         <a
           className={route === "too-fast-too-furious" ? "active" : ""}
