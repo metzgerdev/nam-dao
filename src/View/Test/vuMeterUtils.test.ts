@@ -3,8 +3,10 @@ import {
   calculateVuBlend,
   createKWeightingFilterChain,
   computeRms,
+  hasMeterSettled,
   IDLE_METER_LEVEL,
   normalizeMeterLevel,
+  shouldKeepMeterAnimationActive,
   smoothMeterLevel,
 } from "../MusicPlayer/vuMeterUtils";
 
@@ -38,6 +40,36 @@ describe("vuMeterUtils", () => {
       0.0888,
       4,
     );
+  });
+
+  test("detects when the meter motion has settled", () => {
+    expect(
+      hasMeterSettled(
+        { left: 0.25, right: 0.5 },
+        { left: 0.2505, right: 0.5005 },
+      ),
+    ).toBe(true);
+    expect(
+      hasMeterSettled(
+        { left: 0.25, right: 0.5 },
+        { left: 0.252, right: 0.5005 },
+      ),
+    ).toBe(false);
+  });
+
+  test("keeps animation active until both channels return to idle", () => {
+    expect(
+      shouldKeepMeterAnimationActive({
+        left: IDLE_METER_LEVEL,
+        right: IDLE_METER_LEVEL,
+      }),
+    ).toBe(false);
+    expect(
+      shouldKeepMeterAnimationActive({
+        left: IDLE_METER_LEVEL + 0.002,
+        right: IDLE_METER_LEVEL,
+      }),
+    ).toBe(true);
   });
 
   test("creates the K-weighting shelving and high-pass filter stages", () => {
