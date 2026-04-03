@@ -1,6 +1,8 @@
 import { buildSchema, graphql } from "graphql";
 
 const MOCK_NETWORK_DELAY_MS = 500;
+const GRAPHQL_ENDPOINT_PATH = "/graphql";
+const MOCK_FETCH_INSTALLED = Symbol.for("music-player.mock-graphql-fetch");
 
 function wait(durationMs: number): Promise<void> {
   return new Promise((resolve) => {
@@ -187,20 +189,111 @@ const MUSIC_LIBRARY_QUERY = `
   }
 `;
 
-export async function executeMusicLibraryQuery<TData>(source: string) {
+function isGraphqlEndpoint(input: RequestInfo | URL): boolean {
+  const requestUrl =
+    typeof input === "string"
+      ? input
+      : input instanceof URL
+        ? input.href
+        : input.url;
+
+  try {
+    const url = new URL(requestUrl, window.location.origin);
+    return url.pathname === GRAPHQL_ENDPOINT_PATH;
+  } catch {
+    return requestUrl === GRAPHQL_ENDPOINT_PATH;
+  }
+}
+
+async function readGraphqlRequestBody(init?: RequestInit): Promise<{
+  query: string;
+  variables?: Record<string, unknown>;
+}> {
+  const bodyText =
+    typeof init?.body === "string"
+      ? init.body
+      : init?.body instanceof URLSearchParams
+        ? init.body.toString()
+        : "";
+
+  const parsedBody = JSON.parse(bodyText) as {
+    query?: string;
+    variables?: Record<string, unknown>;
+  };
+
+  return {
+    query: parsedBody.query ?? "",
+    variables: parsedBody.variables,
+  };
+}
+
+async function handleGraphqlRequest(init?: RequestInit): Promise<Response> {
   await wait(MOCK_NETWORK_DELAY_MS);
+  const { query, variables } = await readGraphqlRequestBody(init);
 
   const response = await graphql({
     rootValue,
     schema: musicLibrarySchema,
-    source,
+    source: query,
+    variableValues: variables,
   });
 
-  if (response.errors?.length) {
-    throw new Error(response.errors[0]?.message ?? "GraphQL request failed.");
+  return new Response(JSON.stringify(response), {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    status: response.errors?.length ? 400 : 200,
+  });
+}
+
+function installMockGraphqlFetch(): void {
+  if (typeof window === "undefined" || typeof window.fetch !== "function") {
+    return;
   }
 
-  return response.data as TData;
+  const fetchState = window as Window & {
+    [MOCK_FETCH_INSTALLED]?: boolean;
+  };
+
+  if (fetchState[MOCK_FETCH_INSTALLED]) {
+    return;
+  }
+
+  const originalFetch = window.fetch.bind(window);
+
+  window.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+    if (isGraphqlEndpoint(input)) {
+      return handleGraphqlRequest(init);
+    }
+
+    return originalFetch(input, init);
+  }) as typeof window.fetch;
+
+  fetchState[MOCK_FETCH_INSTALLED] = true;
+}
+
+export async function executeMusicLibraryQuery<TData>(source: string) {
+  installMockGraphqlFetch();
+
+  const response = await fetch(GRAPHQL_ENDPOINT_PATH, {
+    body: JSON.stringify({
+      query: source,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  });
+  const payload = (await response.json()) as {
+    data?: TData;
+    errors?: Array<{ message?: string }>;
+  };
+
+  if (!response.ok || payload.errors?.length) {
+    throw new Error(payload.errors?.[0]?.message ?? "GraphQL request failed.");
+  }
+
+  return payload.data as TData;
 }
 
 export async function fetchMusicLibrary(): Promise<MusicLibrary> {
