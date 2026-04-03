@@ -4,8 +4,6 @@ import {
   useRef,
   useState,
   type ChangeEvent,
-  type KeyboardEvent,
-  type PointerEvent,
 } from "react";
 import FeedbackCard from "./components/FeedbackCard";
 import LibrarySidebar from "./components/LibrarySidebar";
@@ -19,12 +17,14 @@ import {
   type MusicLibrary,
 } from "./mockMusicPlayerApi";
 import {
+  createKWeightingFilterChain,
   computeRms,
   IDLE_METER_LEVEL,
   METER_FFT_SIZE,
   normalizeMeterLevel,
   smoothMeterLevel,
 } from "./vuMeterUtils";
+import { useVolume } from "./useVolume";
 
 function formatPlaybackTime(value: number): string {
   if (!Number.isFinite(value) || value < 0) {
@@ -76,48 +76,15 @@ async function loadTrackDuration(track: MusicTrack): Promise<number> {
   });
 }
 
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
-}
-
-const DEFAULT_VOLUME = 0.72;
-
-function angleToVolume(angle: number): number {
-  const knobMinAngle = -135;
-  const knobMaxAngle = 135;
-
-  return clamp(
-    (clamp(angle, knobMinAngle, knobMaxAngle) - knobMinAngle) /
-      (knobMaxAngle - knobMinAngle),
-    0,
-    1,
-  );
-}
-
-function volumeFromPointerPosition(
-  clientX: number,
-  clientY: number,
-  element: HTMLElement,
-): number {
-  const rect = element.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-  const angle =
-    (Math.atan2(clientY - centerY, clientX - centerX) * 180) / Math.PI + 90;
-
-  return angleToVolume(angle);
-}
-
 function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const audioSourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
   const channelSplitterRef = useRef<ChannelSplitterNode | null>(null);
-  const channelMergerRef = useRef<ChannelMergerNode | null>(null);
   const gainNodeRef = useRef<GainNode | null>(null);
   const leftAnalyserRef = useRef<AnalyserNode | null>(null);
+  const meterFilterNodesRef = useRef<AudioNode[]>([]);
   const rightAnalyserRef = useRef<AnalyserNode | null>(null);
-  const activePointerIdRef = useRef<number | null>(null);
   const pendingAutoplayRef = useRef(false);
   const [activeTrackId, setActiveTrackId] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -127,11 +94,18 @@ function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [library, setLibrary] = useState<MusicLibrary | null>(null);
   const [trackDurations, setTrackDurations] = useState<Record<string, number>>({});
-  const [volume, setVolume] = useState(DEFAULT_VOLUME);
   const [meterLevels, setMeterLevels] = useState({
     left: IDLE_METER_LEVEL,
     right: IDLE_METER_LEVEL,
   });
+  const {
+    handleVolumeChange,
+    handleVolumeKeyDown,
+    handleVolumePointerDown,
+    handleVolumePointerMove,
+    handleVolumePointerRelease,
+    volume,
+  } = useVolume();
 
   useEffect(() => {
     let isMounted = true;
@@ -227,15 +201,15 @@ function MusicPlayer() {
       leftAnalyserRef.current?.disconnect();
       rightAnalyserRef.current?.disconnect();
       channelSplitterRef.current?.disconnect();
-      channelMergerRef.current?.disconnect();
       gainNodeRef.current?.disconnect();
       audioSourceNodeRef.current?.disconnect();
+      meterFilterNodesRef.current.forEach((node) => node.disconnect());
       leftAnalyserRef.current = null;
       rightAnalyserRef.current = null;
       channelSplitterRef.current = null;
-      channelMergerRef.current = null;
       gainNodeRef.current = null;
       audioSourceNodeRef.current = null;
+      meterFilterNodesRef.current = [];
 
       const audioContext = audioContextRef.current;
       audioContextRef.current = null;
@@ -348,10 +322,17 @@ function MusicPlayer() {
         const context = new AudioContextConstructor();
         const sourceNode = context.createMediaElementSource(audio);
         const splitter = context.createChannelSplitter(2);
-        const merger = context.createChannelMerger(2);
         const gainNode = context.createGain();
         const leftAnalyser = context.createAnalyser();
         const rightAnalyser = context.createAnalyser();
+        const leftKWeighting = createKWeightingFilterChain(context); //KWeightFilter mimics human hearing
+        const rightKWeighting = createKWeightingFilterChain(context);
+        const meterFilterNodes = [
+          leftKWeighting?.shelvingFilter,
+          leftKWeighting?.highPassFilter,
+          rightKWeighting?.shelvingFilter,
+          rightKWeighting?.highPassFilter,
+        ].filter((node): node is IIRFilterNode => Boolean(node));
 
         leftAnalyser.fftSize = METER_FFT_SIZE;
         rightAnalyser.fftSize = METER_FFT_SIZE;
@@ -359,11 +340,24 @@ function MusicPlayer() {
         rightAnalyser.smoothingTimeConstant = 0.78;
 
         sourceNode.connect(splitter);
-        splitter.connect(leftAnalyser, 0);
-        splitter.connect(rightAnalyser, 1);
-        leftAnalyser.connect(merger, 0, 0);
-        rightAnalyser.connect(merger, 0, 1);
-        merger.connect(gainNode);
+        sourceNode.connect(gainNode);
+
+        if (leftKWeighting) {
+          splitter.connect(leftKWeighting.shelvingFilter, 0);
+          leftKWeighting.shelvingFilter.connect(leftKWeighting.highPassFilter);
+          leftKWeighting.highPassFilter.connect(leftAnalyser);
+        } else {
+          splitter.connect(leftAnalyser, 0);
+        }
+
+        if (rightKWeighting) {
+          splitter.connect(rightKWeighting.shelvingFilter, 1);
+          rightKWeighting.shelvingFilter.connect(rightKWeighting.highPassFilter);
+          rightKWeighting.highPassFilter.connect(rightAnalyser);
+        } else {
+          splitter.connect(rightAnalyser, 1);
+        }
+
         gainNode.gain.value = volume;
         gainNode.connect(context.destination);
         audio.volume = 1;
@@ -371,9 +365,9 @@ function MusicPlayer() {
         audioContextRef.current = context;
         audioSourceNodeRef.current = sourceNode;
         channelSplitterRef.current = splitter;
-        channelMergerRef.current = merger;
         gainNodeRef.current = gainNode;
         leftAnalyserRef.current = leftAnalyser;
+        meterFilterNodesRef.current = meterFilterNodes;
         rightAnalyserRef.current = rightAnalyser;
 
         return context;
@@ -546,72 +540,6 @@ function MusicPlayer() {
 
     pendingAutoplayRef.current = true;
     setActiveTrackId(library.tracks[nextIndex]?.id ?? null);
-  }
-
-  function handleVolumeChange(event: ChangeEvent<HTMLInputElement>) {
-    setVolume(Number(event.currentTarget.value));
-  }
-
-  function handleVolumePointerDown(event: PointerEvent<HTMLDivElement>) {
-    activePointerIdRef.current = event.pointerId;
-    event.currentTarget.setPointerCapture(event.pointerId);
-    setVolume(
-      volumeFromPointerPosition(
-        event.clientX,
-        event.clientY,
-        event.currentTarget,
-      ),
-    );
-  }
-
-  function handleVolumePointerMove(event: PointerEvent<HTMLDivElement>) {
-    if (activePointerIdRef.current !== event.pointerId) {
-      return;
-    }
-
-    setVolume(
-      volumeFromPointerPosition(
-        event.clientX,
-        event.clientY,
-        event.currentTarget,
-      ),
-    );
-  }
-
-  function handleVolumePointerRelease(event: PointerEvent<HTMLDivElement>) {
-    if (activePointerIdRef.current !== event.pointerId) {
-      return;
-    }
-
-    activePointerIdRef.current = null;
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId);
-    }
-  }
-
-  function handleVolumeKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
-      event.preventDefault();
-      setVolume((previousVolume) => clamp(previousVolume - 0.02, 0, 1));
-      return;
-    }
-
-    if (event.key === "ArrowRight" || event.key === "ArrowUp") {
-      event.preventDefault();
-      setVolume((previousVolume) => clamp(previousVolume + 0.02, 0, 1));
-      return;
-    }
-
-    if (event.key === "Home") {
-      event.preventDefault();
-      setVolume(0);
-      return;
-    }
-
-    if (event.key === "End") {
-      event.preventDefault();
-      setVolume(1);
-    }
   }
 
   const [leftMeter, rightMeter] = meterReadouts;
