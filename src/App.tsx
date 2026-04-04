@@ -26,7 +26,7 @@ function readRoute(): RouteName {
 
   if (nextRoute === "daw") {
     return "daw";
-  }+
+  }
 
   if (nextRoute === "music-player") {
     return "music-player";
