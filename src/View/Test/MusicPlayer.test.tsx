@@ -1,3 +1,4 @@
+import { QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import {
   afterEach,
@@ -13,6 +14,17 @@ import {
   executeMusicLibraryQuery,
   fetchMusicLibrary,
 } from "../MusicPlayer/mockMusicPlayerApi";
+import { createAppQueryClient } from "../../queryClient";
+
+function renderMusicPlayer() {
+  const queryClient = createAppQueryClient();
+
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <MusicPlayer />
+    </QueryClientProvider>,
+  );
+}
 
 describe("mockMusicPlayerApi", () => {
   test("returns the music library with local asset urls", async () => {
@@ -133,7 +145,7 @@ describe("MusicPlayer", () => {
   });
 
   test("renders the featured track and switches tracks from the library", async () => {
-    render(<MusicPlayer />);
+    renderMusicPlayer();
 
     expect(screen.getByText(/Loading music library/i)).toBeTruthy();
     expect(
@@ -153,7 +165,7 @@ describe("MusicPlayer", () => {
   });
 
   test("starts and pauses playback from the transport controls", async () => {
-    render(<MusicPlayer />);
+    renderMusicPlayer();
 
     expect(
       await screen.findByRole("heading", { name: "Like an Animal" }),
