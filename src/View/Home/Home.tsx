@@ -1,3 +1,6 @@
+const profileImage = new URL("./assets/nam-dao-profile.avif", import.meta.url)
+  .href;
+
 const PROJECTS = [
   {
     name: "Sequencer",
@@ -32,7 +35,7 @@ function Home() {
             <img
               alt="Portrait of Nam Dao"
               className="home-portrait"
-              src="./nam-dao-profile.avif"
+              src={profileImage}
             />
           </div>
 

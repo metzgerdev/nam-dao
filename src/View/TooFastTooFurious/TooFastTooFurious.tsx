@@ -1,13 +1,16 @@
+const carOneImage = new URL("./assets/car-01.avif", import.meta.url).href;
+const carTwoImage = new URL("./assets/car-02.avif", import.meta.url).href;
+
 const CARS = [
   {
-    image: "./car-01.avif",
+    image: carOneImage,
     alt: "Silver BMW convertible",
     title: "2011 BMW M3",
     copy: "Currently at 127,000 miles and going strong with an epic v8 soundtrack from the legendary s65 motor. 8200 RPM redline",
     position: "center 76%",
   },
   {
-    image: "./car-02.avif",
+    image: carTwoImage,
     alt: "Matte black Porsche coupe",
     title: "2001 Porsche 911 Turbo",
     copy: 'Currently at 108,000 miles, and packs a wallop from the "Metzger" turbo flat 6 derived from the 1998 Le Man wining GT1 race car. 194 MPH top speed',

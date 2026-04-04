@@ -9,6 +9,18 @@ const ARP1 = "arp1";
 const VOCAL1 = "vocal1";
 const VOCAL2 = "vocal2";
 
+const kickSample = new URL("./samples/kick.wav", import.meta.url).href;
+const snareSample = new URL("./samples/snare.wav", import.meta.url).href;
+const bassSample = new URL("./samples/bass.wav", import.meta.url).href;
+const openHatSample = new URL("./samples/open.wav", import.meta.url).href;
+const closedHatSample = new URL("./samples/closed-hat.wav", import.meta.url)
+  .href;
+const rideSample = new URL("./samples/ride.wav", import.meta.url).href;
+const pianoSample = new URL("./samples/rev-piano.wav", import.meta.url).href;
+const arpSample = new URL("./samples/melody.wav", import.meta.url).href;
+const vocalOneSample = new URL("./samples/vocal-1.wav", import.meta.url).href;
+const vocalTwoSample = new URL("./samples/vocal-2.wav", import.meta.url).href;
+
 export const instrumentRows = [
   KICK,
   SNARE,
@@ -35,44 +47,44 @@ export type AudioBufferMap = Record<InstrumentName, AudioBuffer | null>;
 export const instruments: DrumState = {
   [KICK]: {
     activeSteps: new Set([0, 4, 8, 12]),
-    path: "./kick.wav",
+    path: kickSample,
   },
   [SNARE]: {
     activeSteps: new Set([4, 12]),
-    path: "./snare.wav",
+    path: snareSample,
   },
   [BASS]: {
     activeSteps: new Set([0, 3, 6, 9, 12, 15]),
-    path: "./bass.wav",
+    path: bassSample,
   },
   [OPENHAT]: {
     activeSteps: new Set([2, 6, 10, 14]),
-    path: "./open.wav",
+    path: openHatSample,
   },
   [CLOSEDHAT]: {
     activeSteps: new Set([
       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
     ]),
-    path: "./closed-hat.wav",
+    path: closedHatSample,
   },
   [RIDE]: {
     activeSteps: new Set(),
-    path: "./ride.wav",
+    path: rideSample,
   },
   [PIANO]: {
     activeSteps: new Set(),
-    path: "./rev-piano.wav",
+    path: pianoSample,
   },
   [ARP1]: {
     activeSteps: new Set([0]),
-    path: "./melody.wav",
+    path: arpSample,
   },
   [VOCAL1]: {
     activeSteps: new Set(),
-    path: "./vocal-1.wav",
+    path: vocalOneSample,
   },
   [VOCAL2]: {
     activeSteps: new Set(),
-    path: "./vocal-2.wav",
+    path: vocalTwoSample,
   },
 };
