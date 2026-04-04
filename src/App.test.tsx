@@ -73,12 +73,14 @@ describe("App routes", () => {
     jest.restoreAllMocks();
   });
 
-  test("renders the home page on the default route", () => {
+  test("renders the home page on the default route", async () => {
     setHashRoute("");
 
     render(<App />);
 
-    expect(screen.getByRole("heading", { name: /nam dao/i })).toBeTruthy();
+    expect(
+      await screen.findByRole("heading", { name: /nam dao/i }),
+    ).toBeTruthy();
     expect(
       screen.getByText(/i’m a software engineer with a strong maker streak/i),
     ).toBeTruthy();
@@ -119,24 +121,26 @@ describe("App routes", () => {
     );
   });
 
-  test("renders the music player on the music-player route", () => {
+  test("renders the music player on the music-player route", async () => {
     setHashRoute("#/music-player");
 
     render(<App />);
 
-    expect(screen.getByRole("heading", { name: /coming soon/i })).toBeTruthy();
+    expect(
+      await screen.findByRole("heading", { name: /like an animal/i }),
+    ).toBeTruthy();
     expect(
       screen.getByRole("link", { name: /music player/i }).className,
     ).toContain("active");
   });
 
-  test("renders the too fast too furious route", () => {
+  test("renders the too fast too furious route", async () => {
     setHashRoute("#/too-fast-too-furious");
 
     render(<App />);
 
     expect(
-      screen.getByText(/two machines that keep me inspired/i),
+      await screen.findByText(/two machines that keep me inspired/i),
     ).toBeTruthy();
     expect(screen.getByAltText(/silver bmw convertible/i)).toBeTruthy();
     expect(screen.getByAltText(/matte black porsche coupe/i)).toBeTruthy();
