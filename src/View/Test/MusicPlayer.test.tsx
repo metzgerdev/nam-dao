@@ -33,7 +33,7 @@ describe("mockMusicPlayerApi", () => {
     expect(library.featuredTrackId).toBe("like-an-animal");
     expect(library.tracks).toHaveLength(3);
     expect(library.tracks[0]?.audio.src).toContain("like-an-animal.m4a");
-    expect(library.tracks[1]?.artwork.src).toContain("sideways-cover.png");
+    expect(library.tracks[1]?.artwork.src).toContain("sideways-cover.avif");
     expect(library.tracks[2]?.audio.src).toContain("landslide.m4a");
   });
 

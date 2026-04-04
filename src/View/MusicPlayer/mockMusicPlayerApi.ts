@@ -89,10 +89,10 @@ const library: MusicLibrary = {
       artist: "Rufus Du Sol",
       artwork: {
         alt: "Like an Animal cover art with a dark studio palette.",
-        fileName: "like-an-animal-cover.png",
-        mimeType: "image/png",
+        fileName: "like-an-animal-cover.avif",
+        mimeType: "image/avif",
         src: new URL(
-          "./data/like-an-animal-cover.png",
+          "./data/like-an-animal-cover.avif",
           import.meta.url,
         ).href,
       },
@@ -115,9 +115,9 @@ const library: MusicLibrary = {
       artist: "Zynar",
       artwork: {
         alt: "Sideways cover art in a moody copper and charcoal palette.",
-        fileName: "sideways-cover.png",
-        mimeType: "image/png",
-        src: new URL("./data/sideways-cover.png", import.meta.url).href,
+        fileName: "sideways-cover.avif",
+        mimeType: "image/avif",
+        src: new URL("./data/sideways-cover.avif", import.meta.url).href,
       },
       audio: {
         fileName: "sideways.m4a",
@@ -138,9 +138,9 @@ const library: MusicLibrary = {
       artist: "Zynar",
       artwork: {
         alt: "Landslide cover art.",
-        fileName: "landslide-cover.png",
-        mimeType: "image/png",
-        src: new URL("./data/landslide-cover.png", import.meta.url).href,
+        fileName: "landslide-cover.avif",
+        mimeType: "image/avif",
+        src: new URL("./data/landslide-cover.avif", import.meta.url).href,
       },
       audio: {
         fileName: "landslide.m4a",

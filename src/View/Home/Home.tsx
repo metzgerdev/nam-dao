@@ -32,7 +32,7 @@ function Home() {
             <img
               alt="Portrait of Nam Dao"
               className="home-portrait"
-              src="./nam-dao-profile.jpg"
+              src="./nam-dao-profile.avif"
             />
           </div>
 
