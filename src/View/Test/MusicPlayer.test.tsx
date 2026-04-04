@@ -32,9 +32,9 @@ describe("mockMusicPlayerApi", () => {
 
     expect(library.featuredTrackId).toBe("like-an-animal");
     expect(library.tracks).toHaveLength(3);
-    expect(library.tracks[0]?.audio.src).toContain("like-an-animal.wav");
+    expect(library.tracks[0]?.audio.src).toContain("like-an-animal.m4a");
     expect(library.tracks[1]?.artwork.src).toContain("sideways-cover.png");
-    expect(library.tracks[2]?.audio.src).toContain("landslide.wav");
+    expect(library.tracks[2]?.audio.src).toContain("landslide.m4a");
   });
 
   test("serves track data through the mock /graphql endpoint", async () => {
