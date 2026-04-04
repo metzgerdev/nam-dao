@@ -423,7 +423,7 @@ function MusicPlayer() {
             <FeedbackCard
               kicker="Booting"
               live
-              summary="Pulling artwork and WAV sources from the local session assets."
+              summary="Pulling artwork and audio preview sources from the local session assets."
               title="Loading music library…"
             />
           ) : libraryErrorMessage && !library ? (

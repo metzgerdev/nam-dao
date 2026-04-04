@@ -1,11 +1,14 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import Daw from "./View/DAW/Daw";
-import Home from "./View/Home/Home";
-import MusicPlayer from "./View/MusicPlayer/MusicPlayer";
-import Sequencer from "./View/DrumMachine/Sequencer";
-import TooFastTooFurious from "./View/TooFastTooFurious/TooFastTooFurious";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { createAppQueryClient } from "./queryClient";
+
+const Daw = lazy(() => import("./View/DAW/Daw"));
+const Home = lazy(() => import("./View/Home/Home"));
+const MusicPlayer = lazy(() => import("./View/MusicPlayer/MusicPlayer"));
+const Sequencer = lazy(() => import("./View/DrumMachine/Sequencer"));
+const TooFastTooFurious = lazy(
+  () => import("./View/TooFastTooFurious/TooFastTooFurious"),
+);
 
 type RouteName =
   | "daw"
@@ -110,7 +113,9 @@ function App() {
           </a>
         </nav>
         <div className="app-route-stage" key={route}>
-          {renderRoute()}
+          <Suspense fallback={<p className="app-route-loading">Loading view…</p>}>
+            {renderRoute()}
+          </Suspense>
         </div>
       </div>
     </QueryClientProvider>
