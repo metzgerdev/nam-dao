@@ -2,8 +2,6 @@
 
 # Drum Machine
 
-<sub>STUDIO HEIRLOOM / ANALOG PRECISION FRAMEWORK</sub>
-
 React portfolio project exploring music-focused interfaces across a TR-909 inspired sequencer, a lightweight DAW, and a music player built around my own Zynar tracks.
 
 [Live Demo](https://metzgerdev.github.io/Drum-Machine/) · [Tech Stack](#tech-stack) · [Local Setup](#local-setup)
