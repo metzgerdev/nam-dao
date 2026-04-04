@@ -17,7 +17,7 @@ React portfolio project exploring music-focused interfaces across a TR-909 inspi
 | Module | Function |
 | --- | --- |
 | `SEQ-01` | TR-909 inspired step sequencer |
-| `ARR-02` | Lightweight DAW / arrangement interface |
+| `DAW-02` | Lightweight DAW / arrangement interface |
 | `PLY-03` | Music player powered by a mock GraphQL data layer |
 
 ## Signal Path
@@ -40,7 +40,7 @@ The goal was to blend product-style frontend architecture with a more expressive
       <p>Pattern-based drum programming with a hardware-inspired interface.</p>
     </td>
     <td width="50%">
-      <p><strong>MODULE 02 / ARR-02</strong></p>
+      <p><strong>MODULE 02 / DAW-02</strong></p>
       <img src="docs/screenshots/daw.png" alt="DAW screenshot" />
       <p>Arrangement-focused view built on top of the sequencer state and samples.</p>
     </td>
