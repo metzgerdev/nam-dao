@@ -28,7 +28,7 @@ This project started as a browser drum machine and evolved into a small collecti
 - A simplified DAW / arrangement surface
 - A music player for my own music and remix work
 
-The goal was to blend product-style frontend architecture with a more expressive visual identity than a typical demo app. The DAW work especially pushed the project toward tonal layering, clearer modular hierarchy, and a more “built” interface language.
+The project sits at the intersection of my interest in audio software and my background in electrical engineering. The goal was to blend product-style frontend architecture with a more expressive visual identity than a typical demo app. The DAW work especially pushed the project toward tonal layering, clearer modular hierarchy, and a more “built” interface language.
 
 ## Screenshots
 
@@ -73,6 +73,8 @@ It follows the same architecture as the sequencer: the audio engine continues to
 The Music Player is centered around my own music and remix work under the Zynar project. Instead of wiring the UI directly to static data, I used a mock GraphQL layer together with TanStack Query to simulate a more realistic frontend architecture.
 
 It also leans on a few performance-minded frontend patterns. The route is lazy-loaded so the player code does not inflate the initial app bundle, library and track-duration requests are cached through TanStack Query, and the audio element uses metadata preloading so the UI can become responsive before full media playback begins.
+
+The VU meter also reflects that audio and engineering background. It computes RMS energy and runs the signal through a K-weighting filter so the meter behavior tracks human loudness perception more closely than a simple peak meter. That part of the project draws directly on my electrical engineering background and interest in signal-aware audio interfaces.
 
 ### Music Player Signal Chain
 
