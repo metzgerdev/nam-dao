@@ -1,9 +1,11 @@
+import { QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Daw from "./View/DAW/Daw";
 import Home from "./View/Home/Home";
 import MusicPlayer from "./View/MusicPlayer/MusicPlayer";
 import Sequencer from "./View/DrumMachine/Sequencer";
 import TooFastTooFurious from "./View/TooFastTooFurious/TooFastTooFurious";
+import { createAppQueryClient } from "./queryClient";
 
 type RouteName =
   | "daw"
@@ -24,7 +26,7 @@ function readRoute(): RouteName {
 
   if (nextRoute === "daw") {
     return "daw";
-  }
+  }+
 
   if (nextRoute === "music-player") {
     return "music-player";
@@ -43,6 +45,7 @@ function readRoute(): RouteName {
 
 function App() {
   const [route, setRoute] = useState<RouteName>(readRoute);
+  const [queryClient] = useState(createAppQueryClient);
 
   useEffect(() => {
     function syncRoute() {
@@ -78,34 +81,39 @@ function App() {
   }
 
   return (
-    <div className="app-frame">
-      <nav className="app-route-nav" aria-label="Application views">
-        <a className={route === "home" ? "active" : ""} href="#/home">
-          Home
-        </a>
-        <a className={route === "sequencer" ? "active" : ""} href="#/sequencer">
-          Sequencer
-        </a>
-        <a className={route === "daw" ? "active" : ""} href="#/daw">
-          DAW
-        </a>
-        <a
-          className={route === "music-player" ? "active" : ""}
-          href="#/music-player"
-        >
-          Music Player
-        </a>
-        <a
-          className={route === "too-fast-too-furious" ? "active" : ""}
-          href="#/too-fast-too-furious"
-        >
-          Machines
-        </a>
-      </nav>
-      <div className="app-route-stage" key={route}>
-        {renderRoute()}
+    <QueryClientProvider client={queryClient}>
+      <div className="app-frame">
+        <nav className="app-route-nav" aria-label="Application views">
+          <a className={route === "home" ? "active" : ""} href="#/home">
+            Home
+          </a>
+          <a
+            className={route === "sequencer" ? "active" : ""}
+            href="#/sequencer"
+          >
+            Sequencer
+          </a>
+          <a className={route === "daw" ? "active" : ""} href="#/daw">
+            DAW
+          </a>
+          <a
+            className={route === "music-player" ? "active" : ""}
+            href="#/music-player"
+          >
+            Music Player
+          </a>
+          <a
+            className={route === "too-fast-too-furious" ? "active" : ""}
+            href="#/too-fast-too-furious"
+          >
+            Machines
+          </a>
+        </nav>
+        <div className="app-route-stage" key={route}>
+          {renderRoute()}
+        </div>
       </div>
-    </div>
+    </QueryClientProvider>
   );
 }
 

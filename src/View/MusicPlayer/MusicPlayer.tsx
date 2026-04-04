@@ -1,3 +1,4 @@
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 import FeedbackCard from "./components/FeedbackCard";
 import LibrarySidebar from "./components/LibrarySidebar";
@@ -85,11 +86,6 @@ function MusicPlayer() {
   const rightAnalyserRef = useRef<AnalyserNode | null>(null);
   const [activeTrackId, setActiveTrackId] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [library, setLibrary] = useState<MusicLibrary | null>(null);
-  const [trackDurations, setTrackDurations] = useState<Record<string, number>>(
-    {},
-  );
   const [meterLevels, setMeterLevels] = useState({
     left: IDLE_METER_LEVEL,
     right: IDLE_METER_LEVEL,
@@ -108,45 +104,18 @@ function MusicPlayer() {
       right: IDLE_METER_LEVEL,
     });
   }, []);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function loadLibrary() {
-      try {
-        const nextLibrary = await fetchMusicLibrary();
-
-        if (!isMounted) {
-          return;
-        }
-
-        setLibrary(nextLibrary);
-        setActiveTrackId(
-          nextLibrary.featuredTrackId ?? nextLibrary.tracks[0]?.id ?? null,
-        );
-      } catch (error) {
-        if (!isMounted) {
-          return;
-        }
-
-        setErrorMessage(
-          error instanceof Error
-            ? error.message
-            : "The mock GraphQL backend could not load the session.",
-        );
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    void loadLibrary();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const libraryQuery = useQuery({
+    queryKey: ["music-player", "library"],
+    queryFn: fetchMusicLibrary,
+  });
+  const library: MusicLibrary | null = libraryQuery.data ?? null;
+  const libraryErrorMessage =
+    libraryQuery.error instanceof Error
+      ? libraryQuery.error.message
+      : libraryQuery.error
+        ? "The mock GraphQL backend could not load the session."
+        : null;
+  const isLoading = libraryQuery.isPending;
 
   const activeTrack =
     library?.tracks.find((track) => track.id === activeTrackId) ?? null;
@@ -168,33 +137,32 @@ function MusicPlayer() {
 
   useEffect(() => {
     if (!library?.tracks.length) {
-      setTrackDurations({});
+      setActiveTrackId(null);
       return;
     }
 
-    let isMounted = true;
+    const activeTrackStillExists = library.tracks.some(
+      (track) => track.id === activeTrackId,
+    );
 
-    async function loadDurations() {
-      const nextEntries = await Promise.all(
-        library.tracks.map(async (track) => {
-          const nextDuration = await loadTrackDuration(track);
-          return [track.id, nextDuration] as const;
-        }),
-      );
-
-      if (!isMounted) {
-        return;
-      }
-
-      setTrackDurations(Object.fromEntries(nextEntries));
+    if (!activeTrackStillExists) {
+      setActiveTrackId(library.featuredTrackId ?? library.tracks[0]?.id ?? null);
     }
+  }, [activeTrackId, library]);
 
-    void loadDurations();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [library]);
+  const trackDurationQueries = useQueries({
+    queries: (library?.tracks ?? []).map((track) => ({
+      queryKey: ["music-player", "track-duration", track.audio.src],
+      queryFn: () => loadTrackDuration(track),
+      staleTime: Infinity,
+    })),
+  });
+  const trackDurations = Object.fromEntries(
+    (library?.tracks ?? []).map((track, index) => [
+      track.id,
+      trackDurationQueries[index]?.data ?? 0,
+    ]),
+  );
 
   useEffect(() => {
     return () => {
@@ -458,10 +426,10 @@ function MusicPlayer() {
               summary="Pulling artwork and WAV sources from the local session assets."
               title="Loading music library…"
             />
-          ) : errorMessage && !library ? (
+          ) : libraryErrorMessage && !library ? (
             <FeedbackCard
               kicker="Backend Error"
-              summary={errorMessage}
+              summary={libraryErrorMessage}
               title="Session unavailable."
             />
           ) : activeTrack ? (
