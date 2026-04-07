@@ -2,15 +2,13 @@
 
 # Drum Machine
 
-React portfolio project exploring music-focused interfaces across a TR-909 inspired sequencer, a lightweight DAW, and a music player built around my own Zynar tracks.
+React based audio products with a modern JS toolchain: a Roland TR-909 inspired sequencer, a lightweight DAW, and a music player built around my own Zynar tracks.  Aesthetics are balanced with performance.
 
 [Live Demo](https://metzgerdev.github.io/Drum-Machine/) · [Tech Stack](#tech-stack) · [Local Setup](#local-setup)
 
 </div>
 
 ---
-
-> A small collection of audio products designed with the structure of modern music software and the warmer, more tactile feel of vintage studio equipment.
 
 ## Control Surface
 
@@ -42,14 +40,14 @@ The project sits at the intersection of my interest in audio software and my bac
     <td width="50%">
       <p><strong>MODULE 02 / DAW-02</strong></p>
       <img src="docs/screenshots/daw.png" alt="DAW screenshot" />
-      <p>Arrangement-focused view built on top of the sequencer state and samples.</p>
+      <p>Evolution of the sequencer into a lightweight digital audio workstation. </p>
     </td>
   </tr>
   <tr>
     <td colspan="2">
       <p><strong>MODULE 03 / PLY-03</strong></p>
       <img src="docs/screenshots/music-player.png" alt="Music Player screenshot" />
-      <p>A polished playback experience for my own tracks with a production-style data flow.</p>
+      <p>A sleek music player for my own tracks with a production-style data flow.</p>
     </td>
   </tr>
 </table>
@@ -60,7 +58,7 @@ The project sits at the intersection of my interest in audio software and my bac
 
 The original experience is a browser drum machine inspired by the Roland TR-909. It focuses on quick pattern building, tempo control, transport actions, and sample-triggered playback in a tactile interface that feels closer to a piece of hardware than a plain grid.
 
-For performance, the audio engine and the UI are intentionally decoupled. Timing, scheduling, and sample triggering run through the Web Audio layer with refs and a lookahead scheduler, while React is responsible for editing pattern state and rendering the interface. That separation keeps playback timing tighter and avoids tying audio accuracy to React render cycles.
+For performance, the audio engine and the UI are intentionally decoupled. Timing, scheduling, and sample triggering run through the Web Audio layer with refs and a lookahead scheduler, while React is responsible for editing pattern state and rendering the interface. That separation keeps playback smooth by avoiding audio coupling to React render cycles.
 
 ### DAW
 
@@ -72,13 +70,11 @@ It follows the same architecture as the sequencer: the audio engine continues to
 
 The Music Player is centered around my own music and remix work under the Zynar project. Instead of wiring the UI directly to static data, I used a mock GraphQL layer together with TanStack Query to simulate a more realistic frontend architecture.
 
-It also leans on a few performance-minded frontend patterns. The route is lazy-loaded so the player code does not inflate the initial app bundle, library and track-duration requests are cached through TanStack Query, and the audio element uses metadata preloading so the UI can become responsive before full media playback begins.
+The route is lazy-loaded for a fast initial render, library and track-duration requests are cached through TanStack Query, and the audio element uses metadata preloading so the UI can become responsive before full media playback begins.
 
-The VU meter also reflects that audio and engineering background. It computes RMS energy and runs the signal through a K-weighting filter so the meter behavior tracks human loudness perception more closely than a simple peak meter. That part of the project draws directly on my electrical engineering background and interest in DSP.
+The VU meter demonstrates my audio and electrical engineering background. It computes RMS energy and runs the signal through a K-weighted filter which tracks human loudness perception more closely than a simple peak meter. 
 
-### Music Player Signal Chain
-
-That gives the player a workflow closer to a production app:
+### Music Player Data Flow
 
 - Track data is requested through `/graphql`
 - A local GraphQL schema resolves library and track queries
