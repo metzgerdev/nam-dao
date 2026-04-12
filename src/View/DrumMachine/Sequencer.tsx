@@ -1,4 +1,5 @@
 import ProgressBar from "./ProgressBar";
+import DropboxPanel from "./DropboxPanel";
 import { updateActiveStep } from "../../utils/playback";
 import { useStepSequencer } from "../../hooks/useStepSequencer";
 
@@ -9,6 +10,9 @@ function Sequencer() {
     handleTempoChange,
     instrumentRows,
     isPlaying,
+    loadSampleForInstrument,
+    restorePattern,
+    serializePattern,
     steps,
     tempo,
     togglePlayback,
@@ -16,7 +20,7 @@ function Sequencer() {
   } = useStepSequencer();
 
   return (
-    <main className="tr909">
+    <main className="tr909" aria-label="Sequencer">
       <section className="tr909-shell">
         <header className="tr909-header">
           <h1>
@@ -71,6 +75,13 @@ function Sequencer() {
             </div>
           ))}
         </section>
+
+        <DropboxPanel
+          instrumentRows={instrumentRows}
+          loadSampleForInstrument={loadSampleForInstrument}
+          serializePattern={serializePattern}
+          restorePattern={restorePattern}
+        />
       </section>
     </main>
   );

@@ -27,6 +27,12 @@ const SCHEDULE_AHEAD_SECONDS = 0.1;
 const STEP_COUNT = 16;
 const STEP_GRID = Array.from({ length: STEP_COUNT }, () => false);
 
+export interface SerializedPattern {
+  version: 1;
+  tempo: number;
+  instruments: Record<InstrumentName, number[]>;
+}
+
 function clonePatternState(previousState: DrumState): DrumState {
   return structuredClone(previousState);
 }
@@ -45,7 +51,13 @@ interface StepSequencerState {
   handleTempoChange: (event: ChangeEvent<HTMLInputElement>) => void;
   instrumentRows: readonly InstrumentName[];
   isPlaying: boolean;
+  loadSampleForInstrument: (
+    instrument: InstrumentName,
+    buffer: ArrayBuffer,
+  ) => Promise<void>;
+  restorePattern: (data: SerializedPattern) => void;
   samplesLoaded: boolean;
+  serializePattern: () => SerializedPattern;
   setDrumState: Dispatch<SetStateAction<DrumState>>;
   stepCount: number;
   steps: boolean[];
@@ -137,6 +149,38 @@ export function useStepSequencer(): StepSequencerState {
     });
   }
 
+  async function loadSampleForInstrument(
+    instrument: InstrumentName,
+    buffer: ArrayBuffer,
+  ): Promise<void> {
+    if (!audioContextRef.current) return;
+    const decoded =
+      await audioContextRef.current.decodeAudioData(buffer);
+    audioBufferRefs.current[instrument] = decoded;
+  }
+
+  function serializePattern(): SerializedPattern {
+    const serializedInstruments = {} as Record<InstrumentName, number[]>;
+    for (const key of instrumentRows) {
+      serializedInstruments[key] = [...drumStateRef.current[key].activeSteps];
+    }
+    return { version: 1, tempo, instruments: serializedInstruments };
+  }
+
+  function restorePattern(data: SerializedPattern): void {
+    setTempo(data.tempo);
+    setDrumState((previous) => {
+      const next = clonePatternState(previous);
+      for (const key of instrumentRows) {
+        const steps = data.instruments[key];
+        if (steps) {
+          next[key].activeSteps = new Set(steps);
+        }
+      }
+      return next;
+    });
+  }
+
   return {
     audioBuffers: audioBufferRefs.current,
     currentStepRef,
@@ -144,7 +188,10 @@ export function useStepSequencer(): StepSequencerState {
     handleTempoChange,
     instrumentRows,
     isPlaying,
+    loadSampleForInstrument,
+    restorePattern,
     samplesLoaded,
+    serializePattern,
     setDrumState,
     stepCount: STEP_COUNT,
     steps: STEP_GRID,
