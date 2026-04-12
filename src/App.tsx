@@ -18,6 +18,12 @@ type RouteName =
   | "too-fast-too-furious";
 
 function readRoute(): RouteName {
+  // OAuth redirect lands without a hash — send straight to the sequencer
+  // so the Dropbox hook can complete the code exchange.
+  if (new URLSearchParams(window.location.search).has("code")) {
+    return "sequencer";
+  }
+
   const hashRoute = window.location.hash.replace(/^#\/?/, "");
   const pathSegments = window.location.pathname.split("/").filter(Boolean);
   const pathRoute = pathSegments[pathSegments.length - 1];
