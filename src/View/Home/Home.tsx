@@ -28,7 +28,7 @@ const PROJECTS = [
 
 function Home() {
   return (
-    <main className="home">
+    <main className="home" aria-label="Home">
       <section className="home-shell">
         <div className="home-hero">
           <div className="home-portrait-panel">

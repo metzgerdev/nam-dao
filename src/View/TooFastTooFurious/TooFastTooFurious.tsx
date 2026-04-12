@@ -20,7 +20,7 @@ const CARS = [
 
 function TooFastTooFurious() {
   return (
-    <main className="garage">
+    <main className="garage" aria-label="Machines">
       <section className="garage-shell">
         <div className="garage-intro">
           <p className="home-kicker">Too Fast Too Furious</p>
