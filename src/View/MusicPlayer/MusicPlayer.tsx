@@ -405,7 +405,7 @@ function MusicPlayer() {
   const [leftMeter, rightMeter] = meterReadouts;
 
   return (
-    <main className="music-player">
+    <main className="music-player" aria-label="Music Player">
       <section className="music-player-shell">
         <div className="music-player-stage">
           <MeterStrip

@@ -140,7 +140,7 @@ function Daw() {
   }
 
   return (
-    <main className="daw">
+    <main className="daw" aria-label="DAW">
       <section className="daw-shell">
         <header className="daw-topbar">
           <div className="daw-transport">
