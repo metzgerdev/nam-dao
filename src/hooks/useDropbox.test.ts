@@ -35,7 +35,7 @@ const mockEnsureAppFolders = jest.fn<Promise<void>, [string]>(() => Promise.reso
 jest.mock("../utils/dropboxApi", () => ({
   downloadFile: (...args: unknown[]) => mockDownloadFile(...args),
   downloadJson: (...args: unknown[]) => mockDownloadJson(...args),
-  ensureAppFolders: (token: string) => mockEnsureAppFolders(token),
+  provisionDropboxFolders: (token: string) => mockEnsureAppFolders(token),
   listAudioFiles: (token: string) => mockListAudioFiles(token),
   listPatternFiles: (token: string) => mockListPatternFiles(token),
   patternPath: (name: string) => `/DrumMachine/Patterns/${name}.json`,
