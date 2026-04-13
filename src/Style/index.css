@@ -1847,10 +1847,24 @@ body {
 
 .dropbox-panel-body {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 1rem;
-  padding: 0.7rem 0.8rem;
+  grid-template-columns: 3fr 2fr;
+  gap: 0;
+  padding: 0;
   align-items: start;
+}
+
+.dropbox-disconnected {
+  padding: 0.6rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dropbox-panel-nokey {
+  padding: 0.6rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
 .dropbox-section-label {
@@ -1864,6 +1878,52 @@ body {
 
 .dropbox-library {
   min-width: 0;
+  padding: 0.7rem 0.8rem;
+  border-right: 1px solid #adb0ab;
+}
+
+.dropbox-patterns {
+  min-width: 0;
+  padding: 0.7rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropbox-pattern-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.7rem;
+}
+
+.dropbox-pattern-name-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed rgba(60, 69, 72, 0.6);
+  color: var(--ink-mid);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0 0 0.1rem;
+  min-width: 0;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.dropbox-pattern-name-input:focus {
+  border-bottom-color: var(--accent-orange);
+  color: var(--ink-dark);
+}
+
+.dropbox-pattern-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+  flex-wrap: wrap;
 }
 
 .dropbox-file-list {
@@ -1958,12 +2018,6 @@ body {
   border-color: #1a9e54;
 }
 
-.dropbox-pattern-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  min-width: 108px;
-}
 
 .dropbox-feedback {
   font-size: 0.65rem;

@@ -32,17 +32,6 @@ function Sequencer() {
           <h1>
             <span className="brand-accent">Foland</span> TR-909
           </h1>
-          <div className="pattern-name-group">
-            <input
-              className="pattern-name-input"
-              type="text"
-              value={patternName}
-              onChange={(e) => setPatternName(e.target.value)}
-              aria-label="Pattern name"
-              spellCheck={false}
-            />
-            {isDirty && <span className="pattern-dirty-dot" aria-label="Unsaved changes" />}
-          </div>
           <p>Rhythm Composer</p>
         </header>
 
@@ -98,10 +87,13 @@ function Sequencer() {
 
         <DropboxPanel
           instrumentRows={instrumentRows}
+          isDirty={isDirty}
           loadSampleForInstrument={loadSampleForInstrument}
           markSaved={markSaved}
-          serializePattern={serializePattern}
+          patternName={patternName}
           restorePattern={restorePattern}
+          serializePattern={serializePattern}
+          setPatternName={setPatternName}
           setSampleName={setSampleName}
         />
       </section>

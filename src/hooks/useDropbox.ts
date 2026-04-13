@@ -8,10 +8,11 @@ import {
   startDropboxAuth,
 } from "../utils/dropboxAuth";
 import {
-  PATTERN_PATH,
   downloadFile,
   downloadJson,
   listAudioFiles,
+  listPatternFiles,
+  patternPath,
   uploadJson,
   type DropboxFile,
 } from "../utils/dropboxApi";
@@ -26,11 +27,13 @@ export interface UseDropboxReturn {
   connectionState: DropboxConnectionState;
   files: DropboxFile[];
   filesLoading: boolean;
+  patternFiles: DropboxFile[];
+  patternFilesLoading: boolean;
   connect: () => void;
   disconnect: () => void;
   downloadAudio: (path: string) => Promise<ArrayBuffer>;
-  savePattern: (data: unknown) => Promise<void>;
-  loadPattern: <T>() => Promise<T>;
+  savePattern: (data: unknown, name: string) => Promise<void>;
+  loadPattern: <T>(path: string) => Promise<T>;
 }
 
 export function useDropbox(): UseDropboxReturn {
@@ -40,6 +43,8 @@ export function useDropbox(): UseDropboxReturn {
   );
   const [files, setFiles] = useState<DropboxFile[]>([]);
   const [filesLoading, setFilesLoading] = useState(false);
+  const [patternFiles, setPatternFiles] = useState<DropboxFile[]>([]);
+  const [patternFilesLoading, setPatternFilesLoading] = useState(false);
 
   // Handle OAuth redirect code exchange
   useEffect(() => {
@@ -59,15 +64,22 @@ export function useDropbox(): UseDropboxReturn {
       });
   }, []);
 
-  // Fetch audio file list when connected
+  // Fetch sample and pattern file lists when connected
   useEffect(() => {
     if (!token || connectionState !== "connected") return;
 
     setFilesLoading(true);
+    setPatternFilesLoading(true);
+
     listAudioFiles(token)
       .then(setFiles)
       .catch(() => setFiles([]))
       .finally(() => setFilesLoading(false));
+
+    listPatternFiles(token)
+      .then(setPatternFiles)
+      .catch(() => setPatternFiles([]))
+      .finally(() => setPatternFilesLoading(false));
   }, [token, connectionState]);
 
   const connect = useCallback(() => {
@@ -78,6 +90,7 @@ export function useDropbox(): UseDropboxReturn {
     clearStoredToken();
     setToken(null);
     setFiles([]);
+    setPatternFiles([]);
     setConnectionState("disconnected");
   }, []);
 
@@ -90,17 +103,24 @@ export function useDropbox(): UseDropboxReturn {
   );
 
   const savePattern = useCallback(
-    async (data: unknown): Promise<void> => {
+    async (data: unknown, name: string): Promise<void> => {
       if (!token) throw new Error("Not connected to Dropbox");
-      return uploadJson(token, PATTERN_PATH, data);
+      await uploadJson(token, patternPath(name), data);
+      // Refresh the pattern list after saving
+      listPatternFiles(token)
+        .then(setPatternFiles)
+        .catch(() => {});
     },
     [token],
   );
 
-  const loadPattern = useCallback(async <T>(): Promise<T> => {
-    if (!token) throw new Error("Not connected to Dropbox");
-    return downloadJson<T>(token, PATTERN_PATH);
-  }, [token]);
+  const loadPattern = useCallback(
+    async <T>(path: string): Promise<T> => {
+      if (!token) throw new Error("Not connected to Dropbox");
+      return downloadJson<T>(token, path);
+    },
+    [token],
+  );
 
   return {
     connectionState,
@@ -110,6 +130,8 @@ export function useDropbox(): UseDropboxReturn {
     files,
     filesLoading,
     loadPattern,
+    patternFiles,
+    patternFilesLoading,
     savePattern,
   };
 }
