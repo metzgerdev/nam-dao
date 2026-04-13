@@ -138,11 +138,6 @@ function DropboxPanel({
           <span className="dropbox-panel-title">Dropbox Studio</span>
         </header>
         <div className="dropbox-panel-nokey">
-          <PatternNameRow
-            patternName={patternName}
-            setPatternName={setPatternName}
-            isDirty={isDirty}
-          />
           <p className="dropbox-no-key">Dropbox integration is not enabled.</p>
         </div>
       </section>
@@ -184,11 +179,6 @@ function DropboxPanel({
 
       {!isConnected && !isConnecting && (
         <div className="dropbox-disconnected">
-          <PatternNameRow
-            patternName={patternName}
-            setPatternName={setPatternName}
-            isDirty={isDirty}
-          />
           <p className="dropbox-connect-copy">
             Connect to browse your Dropbox for samples and save patterns to the
             cloud.
