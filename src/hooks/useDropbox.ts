@@ -10,7 +10,7 @@ import {
 import {
   downloadFile,
   downloadJson,
-  ensureAppFolders,
+  provisionDropboxFolders,
   listAudioFiles,
   listPatternFiles,
   patternPath,
@@ -72,7 +72,7 @@ export function useDropbox(): UseDropboxReturn {
     setFilesLoading(true);
     setPatternFilesLoading(true);
 
-    ensureAppFolders(token)
+    provisionDropboxFolders(token)
       .catch(() => {})
       .then(() =>
         Promise.all([

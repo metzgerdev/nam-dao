@@ -64,7 +64,7 @@ async function ensureFolder(token: string, path: string): Promise<void> {
   // 409 means the folder already exists — both cases are success
 }
 
-export async function ensureAppFolders(token: string): Promise<void> {
+export async function provisionDropboxFolders(token: string): Promise<void> {
   await Promise.all([
     ensureFolder(token, SAMPLES_PATH),
     ensureFolder(token, PATTERNS_PATH),
