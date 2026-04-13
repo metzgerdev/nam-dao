@@ -1,6 +1,9 @@
 const API_BASE = "https://api.dropboxapi.com/2";
 const CONTENT_BASE = "https://content.dropboxapi.com/2";
 
+export const SAMPLES_PATH = "/DrumMachine/Samples";
+export const PATTERNS_PATH = "/DrumMachine/Patterns";
+
 const AUDIO_EXTENSIONS = new Set([
   ".wav",
   ".mp3",
@@ -25,12 +28,17 @@ function isAudioFile(entry: DropboxFile): boolean {
   return AUDIO_EXTENSIONS.has(entry.name.slice(dot).toLowerCase());
 }
 
-export async function listAudioFiles(
+function isJsonFile(entry: DropboxFile): boolean {
+  return entry[".tag"] === "file" && entry.name.endsWith(".json");
+}
+
+async function listFolder(
   token: string,
-  path = "",
+  path: string,
+  recursive = false,
 ): Promise<DropboxFile[]> {
   const response = await fetch(`${API_BASE}/files/list_folder`, {
-    body: JSON.stringify({ path, recursive: true }),
+    body: JSON.stringify({ path, recursive }),
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -38,10 +46,24 @@ export async function listAudioFiles(
     method: "POST",
   });
 
-  if (!response.ok) throw new Error("Failed to list Dropbox files");
+  if (!response.ok) throw new Error("Failed to list Dropbox folder");
 
   const data = (await response.json()) as { entries: DropboxFile[] };
-  return data.entries.filter(isAudioFile);
+  return data.entries;
+}
+
+export async function listAudioFiles(token: string): Promise<DropboxFile[]> {
+  const entries = await listFolder(token, SAMPLES_PATH, true);
+  return entries.filter(isAudioFile);
+}
+
+export async function listPatternFiles(token: string): Promise<DropboxFile[]> {
+  const entries = await listFolder(token, PATTERNS_PATH, false);
+  return entries.filter(isJsonFile);
+}
+
+export function patternPath(name: string): string {
+  return `${PATTERNS_PATH}/${name}.json`;
 }
 
 export async function downloadFile(
@@ -59,8 +81,6 @@ export async function downloadFile(
   if (!response.ok) throw new Error("Failed to download file");
   return response.arrayBuffer();
 }
-
-export const PATTERN_PATH = "/DrumMachine/current-pattern.json";
 
 export async function uploadJson(
   token: string,
