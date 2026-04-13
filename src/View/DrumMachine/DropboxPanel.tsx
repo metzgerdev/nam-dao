@@ -2,20 +2,19 @@ import { useState } from "react";
 import { hasDropboxAppKey } from "../../utils/dropboxAuth";
 import { useDropbox } from "../../hooks/useDropbox";
 import type { DropboxFile } from "../../utils/dropboxApi";
-import type { InstrumentName } from "../../data/instruments";
+import type { TrackLabel } from "../../data/instruments";
 import type { SerializedPattern } from "../../hooks/useStepSequencer";
 
 interface DropboxPanelProps {
-  instrumentRows: readonly InstrumentName[];
+  instrumentRows: readonly TrackLabel[];
   loadSampleForInstrument: (
-    instrument: InstrumentName,
+    track: TrackLabel,
     buffer: ArrayBuffer,
   ) => Promise<void>;
   markSaved: () => void;
   serializePattern: () => SerializedPattern;
   restorePattern: (data: SerializedPattern) => void;
-  setSampleName: (instrument: InstrumentName, name: string) => void;
-  trackLabels: Record<InstrumentName, string>;
+  setSampleName: (track: TrackLabel, name: string) => void;
 }
 
 type AssignStatus = "idle" | "loading" | "done" | "error";
@@ -33,7 +32,6 @@ function DropboxPanel({
   serializePattern,
   restorePattern,
   setSampleName,
-  trackLabels,
 }: DropboxPanelProps) {
   const {
     connectionState,
@@ -48,7 +46,7 @@ function DropboxPanel({
 
   const [selectedFile, setSelectedFile] = useState<DropboxFile | null>(null);
   const [assignStatus, setAssignStatus] = useState<
-    Partial<Record<InstrumentName, AssignStatus>>
+    Partial<Record<TrackLabel, AssignStatus>>
   >({});
   const [patternStatus, setPatternStatus] = useState<PatternStatus>("idle");
 
@@ -65,19 +63,19 @@ function DropboxPanel({
     );
   }
 
-  async function handleAssign(instrument: InstrumentName) {
+  async function handleAssign(track: TrackLabel) {
     if (!selectedFile) return;
-    setAssignStatus((prev) => ({ ...prev, [instrument]: "loading" }));
+    setAssignStatus((prev) => ({ ...prev, [track]: "loading" }));
     try {
       const buffer = await downloadAudio(selectedFile.path_lower);
-      await loadSampleForInstrument(instrument, buffer);
-      setSampleName(instrument, fileBaseName(selectedFile.name));
-      setAssignStatus((prev) => ({ ...prev, [instrument]: "done" }));
+      await loadSampleForInstrument(track, buffer);
+      setSampleName(track, fileBaseName(selectedFile.name));
+      setAssignStatus((prev) => ({ ...prev, [track]: "done" }));
       setTimeout(() => {
-        setAssignStatus((prev) => ({ ...prev, [instrument]: "idle" }));
+        setAssignStatus((prev) => ({ ...prev, [track]: "idle" }));
       }, 1500);
     } catch {
-      setAssignStatus((prev) => ({ ...prev, [instrument]: "error" }));
+      setAssignStatus((prev) => ({ ...prev, [track]: "error" }));
     }
   }
 
@@ -181,18 +179,18 @@ function DropboxPanel({
             {selectedFile && (
               <div className="dropbox-assign-row">
                 <span className="dropbox-assign-label">Assign to:</span>
-                {instrumentRows.map((instrument) => {
-                  const status = assignStatus[instrument] ?? "idle";
+                {instrumentRows.map((track) => {
+                  const status = assignStatus[track] ?? "idle";
                   return (
                     <button
-                      key={instrument}
+                      key={track}
                       type="button"
                       className={`dropbox-assign-btn${status === "loading" ? " loading" : ""}${status === "done" ? " done" : ""}`}
-                      onClick={() => void handleAssign(instrument)}
+                      onClick={() => void handleAssign(track)}
                       disabled={status === "loading"}
-                      title={`Load ${selectedFile.name} as ${trackLabels[instrument]}`}
+                      title={`Load ${selectedFile.name} as ${track}`}
                     >
-                      {status === "done" ? "✓" : status === "loading" ? "…" : trackLabels[instrument]}
+                      {status === "done" ? "✓" : status === "loading" ? "…" : track}
                     </button>
                   );
                 })}

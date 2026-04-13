@@ -23,7 +23,6 @@ function Sequencer() {
     tempo,
     togglePlayback,
     toggleStep,
-    trackLabels,
   } = useStepSequencer();
 
   return (
@@ -76,20 +75,20 @@ function Sequencer() {
             currentStepRef={currentStepRef}
             isPlaying={isPlaying}
           />
-          {instrumentRows.map((type) => (
-            <div className="row-block" key={type}>
+          {instrumentRows.map((track) => (
+            <div className="row-block" key={track}>
               <div className="row-label">
-                <span className="row-name">{trackLabels[type]}</span>
-                <span className="row-tooltip">{sampleNames[type]}</span>
+                <span className="row-name">{track}</span>
+                <span className="row-tooltip">{sampleNames[track]}</span>
               </div>
               <div className="sequencer-row">
                 {steps.map((_value, index) => (
                   <button
                     type="button"
-                    className={updateActiveStep(index, type, drumState)}
+                    className={updateActiveStep(index, track, drumState)}
                     value={index}
-                    key={`${type}-${index}`}
-                    onClick={() => toggleStep(type, index)}
+                    key={`${track}-${index}`}
+                    onClick={() => toggleStep(track, index)}
                   ></button>
                 ))}
               </div>
@@ -104,7 +103,6 @@ function Sequencer() {
           serializePattern={serializePattern}
           restorePattern={restorePattern}
           setSampleName={setSampleName}
-          trackLabels={trackLabels}
         />
       </section>
     </main>

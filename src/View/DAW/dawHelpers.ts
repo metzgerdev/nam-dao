@@ -1,24 +1,17 @@
-import type { InstrumentName } from "../../data/instruments";
+import type { TrackLabel } from "../../data/instruments";
 
-export const TRACK_TINTS: Partial<Record<InstrumentName, string>> = {
-  arp1: "daw-step-cell--secondary",
-  bass: "daw-step-cell--secondary",
-  closedHat: "daw-step-cell--cool",
-  kick: "daw-step-cell--primary",
-  openHat: "daw-step-cell--cool",
-  piano: "daw-step-cell--secondary",
-  ride: "daw-step-cell--cool",
-  snare: "daw-step-cell--primary",
-  vocal1: "daw-step-cell--secondary",
-  vocal2: "daw-step-cell--secondary",
+export const TRACK_TINTS: Partial<Record<TrackLabel, string>> = {
+  "Track 1": "daw-step-cell--primary",   // kick
+  "Track 2": "daw-step-cell--primary",   // snare
+  "Track 3": "daw-step-cell--cool",      // open hat
+  "Track 4": "daw-step-cell--cool",      // closed hat
+  "Track 5": "daw-step-cell--cool",      // ride
+  "Track 6": "daw-step-cell--secondary", // bass
+  "Track 7": "daw-step-cell--secondary", // piano
+  "Track 8": "daw-step-cell--secondary", // arp
+  "Track 9": "daw-step-cell--secondary", // vocal 1
+  "Track 10": "daw-step-cell--secondary", // vocal 2
 };
-
-export function formatTrackName(trackName: InstrumentName): string {
-  return trackName
-    .replace(/([A-Z])/g, " $1")
-    .trim()
-    .toUpperCase();
-}
 
 export function formatTrackIndex(index: number): string {
   return String(index + 1).padStart(2, "0");
