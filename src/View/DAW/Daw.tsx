@@ -1,21 +1,20 @@
 import { Fragment, useEffect, useState, type RefObject } from "react";
-import type { AudioBufferMap, InstrumentName } from "../../data/instruments";
+import type { AudioBufferMap, TrackLabel } from "../../data/instruments";
 import { useStepSequencer } from "../../hooks/useStepSequencer";
 import {
   buildWaveformPath,
   formatTrackIndex,
-  formatTrackName,
   TRACK_TINTS,
 } from "./dawHelpers";
 
 interface DawTrackProps {
   activeSteps: Set<number>;
-  audioBuffer: AudioBufferMap[InstrumentName];
+  audioBuffer: AudioBufferMap[TrackLabel];
   index: number;
   isCurrentStep: (stepIndex: number) => boolean;
-  onToggleStep: (trackName: InstrumentName, stepIndex: number) => void;
+  onToggleStep: (trackName: TrackLabel, stepIndex: number) => void;
   steps: boolean[];
-  trackName: InstrumentName;
+  trackName: TrackLabel;
 }
 
 function useUiStep(
@@ -66,7 +65,7 @@ function DawTrack({
       <header className="daw-track-header">
         <div className="daw-track-index">{formatTrackIndex(index)}</div>
         <div className="daw-track-copy">
-          <h2>{formatTrackName(trackName)}</h2>
+          <h2>{trackName}</h2>
         </div>
       </header>
       <div

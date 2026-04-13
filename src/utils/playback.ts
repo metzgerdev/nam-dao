@@ -1,9 +1,5 @@
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
-import type {
-  AudioBufferMap,
-  DrumState,
-  InstrumentName,
-} from "../data/instruments";
+import type { AudioBufferMap, DrumState, TrackLabel } from "../data/instruments";
 
 interface NumberRef {
   current: number;
@@ -63,7 +59,7 @@ function triggerSample(
 ): void {
   for (const sampleType of Object.keys(
     drumStateRef.current,
-  ) as InstrumentName[]) {
+  ) as TrackLabel[]) {
     const { activeSteps } = drumStateRef.current[sampleType];
     if (activeSteps.has(currentStepRef.current)) {
       const audioBuffer = audioBufferRefs.current[sampleType];
@@ -126,7 +122,7 @@ export function stopPlayback(audioContextRef: AudioContextRef): void {
 
 export function updateActiveStep(
   index: number,
-  type: InstrumentName,
+  type: TrackLabel,
   drumState: DrumState,
 ): string {
   let className = "step";

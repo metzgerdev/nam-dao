@@ -116,20 +116,20 @@ describe("Daw", () => {
     render(<Daw />);
 
     expect(screen.getByRole("button", { name: /start/i })).toBeTruthy();
-    expect(getTrackButtons("KICK")).toHaveLength(16);
-    expect(getTrackButtons("KICK")[0].className).toContain("active");
-    expect(getTrackButtons("KICK")[4].className).toContain("active");
-    expect(getTrackButtons("SNARE")[4].className).toContain("active");
-    expect(getTrackButtons("OPEN HAT")[2].className).toContain("active");
-    expect(getTrackButtons("CLOSED HAT")[15].className).toContain("active");
-    expect(getTrackButtons("ARP1")[0].className).toContain("active");
+    expect(getTrackButtons("Track 1")).toHaveLength(16);
+    expect(getTrackButtons("Track 1")[0].className).toContain("active");
+    expect(getTrackButtons("Track 1")[4].className).toContain("active");
+    expect(getTrackButtons("Track 2")[4].className).toContain("active");
+    expect(getTrackButtons("Track 3")[2].className).toContain("active");
+    expect(getTrackButtons("Track 4")[15].className).toContain("active");
+    expect(getTrackButtons("Track 8")[0].className).toContain("active");
 
     await waitForSampleBoot();
     await waitFor(() => {
-      const waveformFill = getTrackButtons("KICK")[0].querySelector(
+      const waveformFill = getTrackButtons("Track 1")[0].querySelector(
         ".daw-clip-waveform-fill",
       );
-      const waveformGuide = getTrackButtons("KICK")[0].querySelector(
+      const waveformGuide = getTrackButtons("Track 1")[0].querySelector(
         ".daw-clip-waveform-guide",
       );
       expect(waveformFill).toBeTruthy();
@@ -143,7 +143,7 @@ describe("Daw", () => {
   test("toggles an arrangement step on click", async () => {
     render(<Daw />);
     await waitForSampleBoot();
-    const kickStep = getTrackButtons("KICK")[1];
+    const kickStep = getTrackButtons("Track 1")[1];
     expect(kickStep.className).toBe("daw-step-cell");
 
     fireEvent.click(kickStep);
