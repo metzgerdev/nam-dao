@@ -263,7 +263,11 @@ function installMockGraphqlFetch(): void {
     [MOCK_FETCH_INSTALLED]?: boolean;
   };
 
-  if (fetchState[MOCK_FETCH_INSTALLED]) {
+  // Re-install if fetch has been replaced since we last patched it (e.g. by a
+  // test that swaps global.fetch and then restores it, leaving the closure
+  // holding a stale reference). We detect this by checking whether the current
+  // globalThis.fetch is still our own mockFetch.
+  if (fetchState[MOCK_FETCH_INSTALLED] && globalThis.fetch === window.fetch) {
     return;
   }
 

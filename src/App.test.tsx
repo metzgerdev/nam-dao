@@ -34,7 +34,10 @@ async function findView(name: string) {
 }
 
 describe("App routes", () => {
+  let originalFetch: typeof global.fetch;
+
   beforeEach(() => {
+    originalFetch = global.fetch;
     resetSampleCacheForTests();
     global.AudioContext = jest.fn(() => new MockAudioContext());
     global.fetch = jest.fn(() =>
@@ -61,6 +64,7 @@ describe("App routes", () => {
   });
 
   afterEach(() => {
+    global.fetch = originalFetch;
     resetSampleCacheForTests();
     window.location.hash = "";
     jest.restoreAllMocks();
