@@ -52,6 +52,25 @@ async function listFolder(
   return data.entries;
 }
 
+async function ensureFolder(token: string, path: string): Promise<void> {
+  await fetch(`${API_BASE}/files/create_folder_v2`, {
+    body: JSON.stringify({ path, autorename: false }),
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  });
+  // 409 means the folder already exists — both cases are success
+}
+
+export async function ensureAppFolders(token: string): Promise<void> {
+  await Promise.all([
+    ensureFolder(token, SAMPLES_PATH),
+    ensureFolder(token, PATTERNS_PATH),
+  ]);
+}
+
 export async function listAudioFiles(token: string): Promise<DropboxFile[]> {
   const entries = await listFolder(token, SAMPLES_PATH, true);
   return entries.filter(isAudioFile);

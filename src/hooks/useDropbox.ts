@@ -10,6 +10,7 @@ import {
 import {
   downloadFile,
   downloadJson,
+  ensureAppFolders,
   listAudioFiles,
   listPatternFiles,
   patternPath,
@@ -64,22 +65,27 @@ export function useDropbox(): UseDropboxReturn {
       });
   }, []);
 
-  // Fetch sample and pattern file lists when connected
+  // Ensure app folders exist then fetch file lists when connected
   useEffect(() => {
     if (!token || connectionState !== "connected") return;
 
     setFilesLoading(true);
     setPatternFilesLoading(true);
 
-    listAudioFiles(token)
-      .then(setFiles)
-      .catch(() => setFiles([]))
-      .finally(() => setFilesLoading(false));
-
-    listPatternFiles(token)
-      .then(setPatternFiles)
-      .catch(() => setPatternFiles([]))
-      .finally(() => setPatternFilesLoading(false));
+    ensureAppFolders(token)
+      .catch(() => {})
+      .then(() =>
+        Promise.all([
+          listAudioFiles(token)
+            .then(setFiles)
+            .catch(() => setFiles([]))
+            .finally(() => setFilesLoading(false)),
+          listPatternFiles(token)
+            .then(setPatternFiles)
+            .catch(() => setPatternFiles([]))
+            .finally(() => setPatternFilesLoading(false)),
+        ]),
+      );
   }, [token, connectionState]);
 
   const connect = useCallback(() => {

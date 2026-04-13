@@ -30,10 +30,12 @@ const mockListPatternFiles = jest.fn<Promise<[]>, [string]>(() => Promise.resolv
 const mockUploadJson = jest.fn<Promise<void>, [string, string, unknown]>(() => Promise.resolve());
 const mockDownloadJson = jest.fn();
 const mockDownloadFile = jest.fn();
+const mockEnsureAppFolders = jest.fn<Promise<void>, [string]>(() => Promise.resolve());
 
 jest.mock("../utils/dropboxApi", () => ({
   downloadFile: (...args: unknown[]) => mockDownloadFile(...args),
   downloadJson: (...args: unknown[]) => mockDownloadJson(...args),
+  ensureAppFolders: (token: string) => mockEnsureAppFolders(token),
   listAudioFiles: (token: string) => mockListAudioFiles(token),
   listPatternFiles: (token: string) => mockListPatternFiles(token),
   patternPath: (name: string) => `/DrumMachine/Patterns/${name}.json`,
@@ -57,6 +59,13 @@ beforeEach(() => {
   mockGetOAuthCode.mockReturnValue(null);
   mockListAudioFiles.mockResolvedValue([]);
   mockListPatternFiles.mockResolvedValue([]);
+  mockEnsureAppFolders.mockResolvedValue(undefined);
+});
+
+afterEach(() => {
+  // Reset all mock implementations so stale return values don't leak into
+  // other test files sharing the same Bun worker
+  jest.resetAllMocks();
 });
 
 // ── Initial state ─────────────────────────────────────────────────────────────
