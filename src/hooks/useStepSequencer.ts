@@ -29,9 +29,28 @@ const STEP_GRID = Array.from({ length: STEP_COUNT }, () => false);
 
 export interface SerializedPattern {
   version: 1;
+  name: string;
   tempo: number;
   instruments: Record<InstrumentName, number[]>;
 }
+
+const DEFAULT_TRACK_LABELS: Record<InstrumentName, string> = Object.fromEntries(
+  instrumentRows.map((instrument, index) => [instrument, `Track ${index + 1}`]),
+) as Record<InstrumentName, string>;
+
+function baseNameFromPath(path: string): string {
+  const segment = path.split("/").pop() ?? path;
+  const dot = segment.lastIndexOf(".");
+  return dot === -1 ? segment : segment.slice(0, dot);
+}
+
+const DEFAULT_SAMPLE_NAMES: Record<InstrumentName, string> =
+  Object.fromEntries(
+    instrumentRows.map((instrument) => [
+      instrument,
+      baseNameFromPath(instruments[instrument].path),
+    ]),
+  ) as Record<InstrumentName, string>;
 
 function clonePatternState(previousState: DrumState): DrumState {
   return structuredClone(previousState);
@@ -50,27 +69,38 @@ interface StepSequencerState {
   drumState: DrumState;
   handleTempoChange: (event: ChangeEvent<HTMLInputElement>) => void;
   instrumentRows: readonly InstrumentName[];
+  isDirty: boolean;
   isPlaying: boolean;
   loadSampleForInstrument: (
     instrument: InstrumentName,
     buffer: ArrayBuffer,
   ) => Promise<void>;
+  markSaved: () => void;
+  patternName: string;
   restorePattern: (data: SerializedPattern) => void;
   samplesLoaded: boolean;
+  sampleNames: Record<InstrumentName, string>;
   serializePattern: () => SerializedPattern;
   setDrumState: Dispatch<SetStateAction<DrumState>>;
+  setPatternName: (name: string) => void;
+  setSampleName: (instrument: InstrumentName, name: string) => void;
   stepCount: number;
   steps: boolean[];
   tempo: number;
   togglePlayback: () => void;
   toggleStep: (type: InstrumentName, stepNumber: number) => void;
+  trackLabels: Record<InstrumentName, string>;
 }
 
 export function useStepSequencer(): StepSequencerState {
   const [tempo, setTempo] = useState(123);
   const [drumState, setDrumState] = useState<DrumState>(instruments);
+  const [trackLabels] = useState(DEFAULT_TRACK_LABELS);
+  const [sampleNames, setSampleNames] = useState(DEFAULT_SAMPLE_NAMES);
   const [isPlaying, setIsPlaying] = useState(false);
   const [samplesLoaded, setSamplesLoaded] = useState(false);
+  const [patternName, setPatternName] = useState("Untitled Pattern");
+  const [isDirty, setIsDirty] = useState(false);
   const secondsPerStep = 60 / tempo / 4;
   const drumStateRef = useRef<DrumState>(instruments);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -124,6 +154,7 @@ export function useStepSequencer(): StepSequencerState {
 
   function handleTempoChange(event: ChangeEvent<HTMLInputElement>) {
     handleBPM(event, setTempo);
+    setIsDirty(true);
   }
 
   function togglePlayback() {
@@ -147,6 +178,11 @@ export function useStepSequencer(): StepSequencerState {
       }
       return nextState;
     });
+    setIsDirty(true);
+  }
+
+  function setSampleName(instrument: InstrumentName, name: string): void {
+    setSampleNames((previous) => ({ ...previous, [instrument]: name }));
   }
 
   async function loadSampleForInstrument(
@@ -154,8 +190,7 @@ export function useStepSequencer(): StepSequencerState {
     buffer: ArrayBuffer,
   ): Promise<void> {
     if (!audioContextRef.current) return;
-    const decoded =
-      await audioContextRef.current.decodeAudioData(buffer);
+    const decoded = await audioContextRef.current.decodeAudioData(buffer);
     audioBufferRefs.current[instrument] = decoded;
   }
 
@@ -164,11 +199,17 @@ export function useStepSequencer(): StepSequencerState {
     for (const key of instrumentRows) {
       serializedInstruments[key] = [...drumStateRef.current[key].activeSteps];
     }
-    return { version: 1, tempo, instruments: serializedInstruments };
+    return { version: 1, name: patternName, tempo, instruments: serializedInstruments };
+  }
+
+  function markSaved(): void {
+    setIsDirty(false);
   }
 
   function restorePattern(data: SerializedPattern): void {
     setTempo(data.tempo);
+    if (data.name) setPatternName(data.name);
+    setIsDirty(false);
     setDrumState((previous) => {
       const next = clonePatternState(previous);
       for (const key of instrumentRows) {
@@ -187,16 +228,23 @@ export function useStepSequencer(): StepSequencerState {
     drumState,
     handleTempoChange,
     instrumentRows,
+    isDirty,
     isPlaying,
     loadSampleForInstrument,
+    markSaved,
+    patternName,
     restorePattern,
     samplesLoaded,
+    sampleNames,
     serializePattern,
     setDrumState,
+    setPatternName,
+    setSampleName,
     stepCount: STEP_COUNT,
     steps: STEP_GRID,
     tempo,
     togglePlayback,
     toggleStep,
+    trackLabels,
   };
 }

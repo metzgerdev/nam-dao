@@ -9,14 +9,21 @@ function Sequencer() {
     drumState,
     handleTempoChange,
     instrumentRows,
+    isDirty,
     isPlaying,
     loadSampleForInstrument,
+    markSaved,
+    patternName,
     restorePattern,
+    sampleNames,
     serializePattern,
+    setPatternName,
+    setSampleName,
     steps,
     tempo,
     togglePlayback,
     toggleStep,
+    trackLabels,
   } = useStepSequencer();
 
   return (
@@ -26,6 +33,17 @@ function Sequencer() {
           <h1>
             <span className="brand-accent">Foland</span> TR-909
           </h1>
+          <div className="pattern-name-group">
+            <input
+              className="pattern-name-input"
+              type="text"
+              value={patternName}
+              onChange={(e) => setPatternName(e.target.value)}
+              aria-label="Pattern name"
+              spellCheck={false}
+            />
+            {isDirty && <span className="pattern-dirty-dot" aria-label="Unsaved changes" />}
+          </div>
           <p>Rhythm Composer</p>
         </header>
 
@@ -60,7 +78,10 @@ function Sequencer() {
           />
           {instrumentRows.map((type) => (
             <div className="row-block" key={type}>
-              <span className="row-name">{type}</span>
+              <div className="row-label">
+                <span className="row-name">{trackLabels[type]}</span>
+                <span className="row-tooltip">{sampleNames[type]}</span>
+              </div>
               <div className="sequencer-row">
                 {steps.map((_value, index) => (
                   <button
@@ -79,8 +100,11 @@ function Sequencer() {
         <DropboxPanel
           instrumentRows={instrumentRows}
           loadSampleForInstrument={loadSampleForInstrument}
+          markSaved={markSaved}
           serializePattern={serializePattern}
           restorePattern={restorePattern}
+          setSampleName={setSampleName}
+          trackLabels={trackLabels}
         />
       </section>
     </main>

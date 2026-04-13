@@ -109,15 +109,15 @@ describe("Sequencer", () => {
     await waitForSampleBoot();
     expect(screen.getByRole("button", { name: /start/i })).toBeTruthy();
     expect(screen.getByText(/tempo 123 bpm/i)).toBeTruthy();
-    expect(getRowButtons("kick")).toHaveLength(16);
-    expect(getRowButtons("snare")).toHaveLength(16);
-    expect(getRowButtons("vocal2")).toHaveLength(16);
+    expect(getRowButtons("Track 1")).toHaveLength(16);
+    expect(getRowButtons("Track 2")).toHaveLength(16);
+    expect(getRowButtons("Track 10")).toHaveLength(16);
   });
 
   test("toggles a step on click (inactive -> active)", async () => {
     render(<Sequencer />);
     await waitForSampleBoot();
-    const kickButtons = getRowButtons("kick");
+    const kickButtons = getRowButtons("Track 1");
     const step1 = kickButtons[1];
     expect(step1.className).toBe("step");
     fireEvent.click(step1);
@@ -127,7 +127,7 @@ describe("Sequencer", () => {
   test("toggles a step off when clicked again (active -> inactive)", async () => {
     render(<Sequencer />);
     await waitForSampleBoot();
-    const kickButtons = getRowButtons("kick");
+    const kickButtons = getRowButtons("Track 1");
     const step0 = kickButtons[0];
     expect(step0.className).toContain("active");
     fireEvent.click(step0);
