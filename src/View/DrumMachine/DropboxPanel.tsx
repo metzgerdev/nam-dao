@@ -11,18 +11,29 @@ interface DropboxPanelProps {
     instrument: InstrumentName,
     buffer: ArrayBuffer,
   ) => Promise<void>;
+  markSaved: () => void;
   serializePattern: () => SerializedPattern;
   restorePattern: (data: SerializedPattern) => void;
+  setSampleName: (instrument: InstrumentName, name: string) => void;
+  trackLabels: Record<InstrumentName, string>;
 }
 
 type AssignStatus = "idle" | "loading" | "done" | "error";
 type PatternStatus = "idle" | "saving" | "saved" | "loading" | "loaded" | "error";
 
+function fileBaseName(name: string): string {
+  const dot = name.lastIndexOf(".");
+  return dot === -1 ? name : name.slice(0, dot);
+}
+
 function DropboxPanel({
   instrumentRows,
   loadSampleForInstrument,
+  markSaved,
   serializePattern,
   restorePattern,
+  setSampleName,
+  trackLabels,
 }: DropboxPanelProps) {
   const {
     connectionState,
@@ -48,8 +59,7 @@ function DropboxPanel({
           <span className="dropbox-panel-title">Dropbox Studio</span>
         </header>
         <p className="dropbox-no-key">
-          Set <code>VITE_DROPBOX_APP_KEY</code> in <code>.env</code> to enable
-          Dropbox integration.
+          Dropbox integration is not enabled.
         </p>
       </section>
     );
@@ -61,6 +71,7 @@ function DropboxPanel({
     try {
       const buffer = await downloadAudio(selectedFile.path_lower);
       await loadSampleForInstrument(instrument, buffer);
+      setSampleName(instrument, fileBaseName(selectedFile.name));
       setAssignStatus((prev) => ({ ...prev, [instrument]: "done" }));
       setTimeout(() => {
         setAssignStatus((prev) => ({ ...prev, [instrument]: "idle" }));
@@ -74,6 +85,7 @@ function DropboxPanel({
     setPatternStatus("saving");
     try {
       await savePattern(serializePattern());
+      markSaved();
       setPatternStatus("saved");
       setTimeout(() => setPatternStatus("idle"), 2000);
     } catch {
@@ -178,9 +190,9 @@ function DropboxPanel({
                       className={`dropbox-assign-btn${status === "loading" ? " loading" : ""}${status === "done" ? " done" : ""}`}
                       onClick={() => void handleAssign(instrument)}
                       disabled={status === "loading"}
-                      title={`Load ${selectedFile.name} as ${instrument}`}
+                      title={`Load ${selectedFile.name} as ${trackLabels[instrument]}`}
                     >
-                      {status === "done" ? "✓" : status === "loading" ? "…" : instrument}
+                      {status === "done" ? "✓" : status === "loading" ? "…" : trackLabels[instrument]}
                     </button>
                   );
                 })}
