@@ -104,7 +104,6 @@ describe("OAuth redirect handling", () => {
     // After mount the effect fires
     await act(async () => {
       await Promise.resolve();
-      await Promise.resolve();
     });
 
     expect(mockClearOAuthParams).toHaveBeenCalled();
@@ -119,7 +118,6 @@ describe("OAuth redirect handling", () => {
     const { result } = renderDropbox();
 
     await act(async () => {
-      await Promise.resolve();
       await Promise.resolve();
     });
 
@@ -177,7 +175,6 @@ describe("file listing", () => {
 
     await act(async () => {
       await Promise.resolve();
-      await Promise.resolve();
     });
 
     expect(mockListAudioFiles).toHaveBeenCalledWith("tok");
@@ -194,7 +191,6 @@ describe("file listing", () => {
     const { result } = renderDropbox();
 
     await act(async () => {
-      await Promise.resolve();
       await Promise.resolve();
     });
 
