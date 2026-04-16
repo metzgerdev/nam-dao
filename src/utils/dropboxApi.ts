@@ -48,8 +48,15 @@ async function listFolder(
 
   if (!response.ok) throw new Error("Failed to list Dropbox folder");
 
-  const data = (await response.json()) as { entries: DropboxFile[] };
-  return data.entries;
+  const data = (await response.json()) as unknown;
+  if (
+    !data ||
+    typeof data !== "object" ||
+    !Array.isArray((data as { entries?: unknown }).entries)
+  ) {
+    throw new Error("Unexpected response shape from Dropbox");
+  }
+  return (data as { entries: DropboxFile[] }).entries;
 }
 
 async function ensureFolder(token: string, path: string): Promise<void> {
@@ -82,7 +89,8 @@ export async function listPatternFiles(token: string): Promise<DropboxFile[]> {
 }
 
 export function patternPath(name: string): string {
-  return `${PATTERNS_PATH}/${name}.json`;
+  const safe = name.replace(/[/\\]/g, "").replace(/\.\./g, "");
+  return `${PATTERNS_PATH}/${safe}.json`;
 }
 
 export async function downloadFile(

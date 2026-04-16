@@ -1,8 +1,11 @@
 const CLIENT_ID = import.meta.env.VITE_DROPBOX_APP_KEY as string | undefined;
 const AUTH_URL = "https://www.dropbox.com/oauth2/authorize";
 const TOKEN_URL = "https://api.dropbox.com/oauth2/token";
-const TOKEN_KEY = "dropbox_access_token";
 const VERIFIER_KEY = "dropbox_code_verifier";
+const STATE_KEY = "dropbox_oauth_state";
+
+// Token is kept in memory only — never persisted to storage to reduce XSS exposure
+let _token: string | null = null;
 
 export function hasDropboxAppKey(): boolean {
   return Boolean(CLIENT_ID);
@@ -39,8 +42,10 @@ export async function startDropboxAuth(): Promise<void> {
 
   const verifier = generateRandomString(64);
   const challenge = base64urlEncode(await sha256(verifier));
+  const state = generateRandomString(32);
 
   sessionStorage.setItem(VERIFIER_KEY, verifier);
+  sessionStorage.setItem(STATE_KEY, state);
 
   const params = new URLSearchParams({
     client_id: CLIENT_ID,
@@ -48,14 +53,24 @@ export async function startDropboxAuth(): Promise<void> {
     code_challenge_method: "S256",
     redirect_uri: getRedirectUri(),
     response_type: "code",
+    state,
     token_access_type: "offline",
   });
 
   window.location.href = `${AUTH_URL}?${params}`;
 }
 
-export async function exchangeCodeForToken(code: string): Promise<string> {
+export async function exchangeCodeForToken(
+  code: string,
+  receivedState: string | null,
+): Promise<string> {
   if (!CLIENT_ID) throw new Error("No app key configured");
+
+  const storedState = sessionStorage.getItem(STATE_KEY);
+  if (!storedState || receivedState !== storedState) {
+    throw new Error("OAuth state mismatch — possible CSRF attack");
+  }
+  sessionStorage.removeItem(STATE_KEY);
 
   const verifier = sessionStorage.getItem(VERIFIER_KEY);
   if (!verifier) throw new Error("No code verifier found");
@@ -76,23 +91,35 @@ export async function exchangeCodeForToken(code: string): Promise<string> {
 
   if (!response.ok) throw new Error("Token exchange failed");
 
-  const data = (await response.json()) as { access_token: string };
-  sessionStorage.setItem(TOKEN_KEY, data.access_token);
+  const data = (await response.json()) as unknown;
+  if (
+    !data ||
+    typeof data !== "object" ||
+    typeof (data as { access_token?: unknown }).access_token !== "string"
+  ) {
+    throw new Error("Invalid token response from Dropbox");
+  }
+
+  _token = (data as { access_token: string }).access_token;
   sessionStorage.removeItem(VERIFIER_KEY);
 
-  return data.access_token;
+  return _token;
 }
 
 export function getStoredToken(): string | null {
-  return sessionStorage.getItem(TOKEN_KEY);
+  return _token;
 }
 
 export function clearStoredToken(): void {
-  sessionStorage.removeItem(TOKEN_KEY);
+  _token = null;
 }
 
 export function getOAuthCode(): string | null {
   return new URLSearchParams(window.location.search).get("code");
+}
+
+export function getOAuthState(): string | null {
+  return new URLSearchParams(window.location.search).get("state");
 }
 
 export function clearOAuthParams(): void {

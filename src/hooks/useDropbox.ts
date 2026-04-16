@@ -4,6 +4,7 @@ import {
   clearStoredToken,
   exchangeCodeForToken,
   getOAuthCode,
+  getOAuthState,
   getStoredToken,
   startDropboxAuth,
 } from "../utils/dropboxAuth";
@@ -50,12 +51,13 @@ export function useDropbox(): UseDropboxReturn {
   // Handle OAuth redirect code exchange
   useEffect(() => {
     const code = getOAuthCode();
+    const state = getOAuthState();
     if (!code) return;
 
     clearOAuthParams();
     setConnectionState("connecting");
 
-    exchangeCodeForToken(code)
+    exchangeCodeForToken(code, state)
       .then((accessToken) => {
         setToken(accessToken);
         setConnectionState("connected");

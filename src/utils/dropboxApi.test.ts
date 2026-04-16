@@ -52,6 +52,20 @@ describe("patternPath", () => {
   test("does not double-add .json", () => {
     expect(patternPath("beat")).toBe(`${PATTERNS_PATH}/beat.json`);
   });
+
+  test("strips forward slashes from the name", () => {
+    expect(patternPath("../../etc/passwd")).toBe(
+      `${PATTERNS_PATH}/etcpasswd.json`,
+    );
+  });
+
+  test("strips backslashes from the name", () => {
+    expect(patternPath("foo\\bar")).toBe(`${PATTERNS_PATH}/foobar.json`);
+  });
+
+  test("strips .. sequences from the name", () => {
+    expect(patternPath("a..b..c")).toBe(`${PATTERNS_PATH}/abc.json`);
+  });
 });
 
 // ── listAudioFiles ────────────────────────────────────────────────────────────
@@ -121,6 +135,13 @@ describe("listAudioFiles", () => {
   test("throws when the API response is not ok", async () => {
     global.fetch = makeFetch({}, false);
     await expect(listAudioFiles(TOKEN)).rejects.toThrow();
+  });
+
+  test("throws when response is missing the entries array", async () => {
+    global.fetch = makeFetch({ unexpected: true });
+    await expect(listAudioFiles(TOKEN)).rejects.toThrow(
+      "Unexpected response shape from Dropbox",
+    );
   });
 });
 

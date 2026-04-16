@@ -1,7 +1,9 @@
 import {
   clearOAuthParams,
   clearStoredToken,
+  exchangeCodeForToken,
   getOAuthCode,
+  getOAuthState,
   getStoredToken,
   hasDropboxAppKey,
 } from "./dropboxAuth";
@@ -19,21 +21,12 @@ describe("hasDropboxAppKey", () => {
 
 describe("getStoredToken / clearStoredToken", () => {
   afterEach(() => {
+    // Reset in-memory token state between tests
+    clearStoredToken();
     sessionStorage.clear();
   });
 
   test("getStoredToken returns null when nothing is stored", () => {
-    expect(getStoredToken()).toBeNull();
-  });
-
-  test("getStoredToken returns the token after it has been stored", () => {
-    sessionStorage.setItem("dropbox_access_token", "tok_abc123");
-    expect(getStoredToken()).toBe("tok_abc123");
-  });
-
-  test("clearStoredToken removes the stored token", () => {
-    sessionStorage.setItem("dropbox_access_token", "tok_abc123");
-    clearStoredToken();
     expect(getStoredToken()).toBeNull();
   });
 
@@ -70,6 +63,32 @@ describe("getOAuthCode", () => {
   });
 });
 
+describe("getOAuthState", () => {
+  afterEach(() => {
+    window.history.replaceState({}, "", "/");
+  });
+
+  test("returns null when there is no state query param", () => {
+    window.history.replaceState({}, "", "/");
+    expect(getOAuthState()).toBeNull();
+  });
+
+  test("returns the state when present in the query string", () => {
+    window.history.replaceState({}, "", "/?state=csrf_token_xyz");
+    expect(getOAuthState()).toBe("csrf_token_xyz");
+  });
+
+  test("returns null when only code param is present", () => {
+    window.history.replaceState({}, "", "/?code=abc");
+    expect(getOAuthState()).toBeNull();
+  });
+
+  test("returns the state when it appears alongside other params", () => {
+    window.history.replaceState({}, "", "/?code=abc&state=mystate&foo=bar");
+    expect(getOAuthState()).toBe("mystate");
+  });
+});
+
 describe("clearOAuthParams", () => {
   afterEach(() => {
     window.history.replaceState({}, "", "/");
@@ -92,5 +111,42 @@ describe("clearOAuthParams", () => {
     window.history.replaceState({}, "", "/");
     clearOAuthParams();
     expect(window.location.search).toBe("");
+  });
+});
+
+describe("exchangeCodeForToken — state validation", () => {
+  let originalFetch: typeof global.fetch;
+  beforeAll(() => {
+    originalFetch = global.fetch;
+  });
+  afterEach(() => {
+    global.fetch = originalFetch;
+    clearStoredToken();
+    sessionStorage.clear();
+    window.history.replaceState({}, "", "/");
+  });
+
+  test("throws when no stored state exists", async () => {
+    sessionStorage.setItem("dropbox_code_verifier", "verifier");
+    // No STATE_KEY in sessionStorage
+    await expect(
+      exchangeCodeForToken("code", "some_state"),
+    ).rejects.toThrow("OAuth state mismatch");
+  });
+
+  test("throws when received state does not match stored state", async () => {
+    sessionStorage.setItem("dropbox_code_verifier", "verifier");
+    sessionStorage.setItem("dropbox_oauth_state", "expected_state");
+    await expect(
+      exchangeCodeForToken("code", "wrong_state"),
+    ).rejects.toThrow("OAuth state mismatch");
+  });
+
+  test("throws when received state is null", async () => {
+    sessionStorage.setItem("dropbox_code_verifier", "verifier");
+    sessionStorage.setItem("dropbox_oauth_state", "expected_state");
+    await expect(
+      exchangeCodeForToken("code", null),
+    ).rejects.toThrow("OAuth state mismatch");
   });
 });
