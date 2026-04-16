@@ -7,8 +7,9 @@ import { renderHook, act } from "@testing-library/react";
 // immediately. We replace the entire module with controlled stubs.
 
 const mockGetStoredToken = jest.fn<string | null, []>(() => null);
-const mockExchangeCodeForToken = jest.fn<Promise<string>, [string]>();
+const mockExchangeCodeForToken = jest.fn<Promise<string>, [string, string | null]>();
 const mockGetOAuthCode = jest.fn<string | null, []>(() => null);
+const mockGetOAuthState = jest.fn<string | null, []>(() => null);
 const mockClearOAuthParams = jest.fn();
 const mockClearStoredToken = jest.fn();
 const mockStartDropboxAuth = jest.fn();
@@ -16,8 +17,9 @@ const mockStartDropboxAuth = jest.fn();
 jest.mock("../utils/dropboxAuth", () => ({
   clearOAuthParams: () => mockClearOAuthParams(),
   clearStoredToken: () => mockClearStoredToken(),
-  exchangeCodeForToken: (code: string) => mockExchangeCodeForToken(code),
+  exchangeCodeForToken: (code: string, state: string | null) => mockExchangeCodeForToken(code, state),
   getOAuthCode: () => mockGetOAuthCode(),
+  getOAuthState: () => mockGetOAuthState(),
   getStoredToken: () => mockGetStoredToken(),
   hasDropboxAppKey: () => true,
   startDropboxAuth: () => mockStartDropboxAuth(),
@@ -54,9 +56,10 @@ function renderDropbox() {
 
 beforeEach(() => {
   jest.clearAllMocks();
-  // Defaults: not connected, no OAuth code in URL
+  // Defaults: not connected, no OAuth code/state in URL
   mockGetStoredToken.mockReturnValue(null);
   mockGetOAuthCode.mockReturnValue(null);
+  mockGetOAuthState.mockReturnValue(null);
   mockListAudioFiles.mockResolvedValue([]);
   mockListPatternFiles.mockResolvedValue([]);
   mockEnsureAppFolders.mockResolvedValue(undefined);
@@ -107,7 +110,7 @@ describe("OAuth redirect handling", () => {
     });
 
     expect(mockClearOAuthParams).toHaveBeenCalled();
-    expect(mockExchangeCodeForToken).toHaveBeenCalledWith("auth_code_123");
+    expect(mockExchangeCodeForToken).toHaveBeenCalledWith("auth_code_123", null);
     expect(result.current.connectionState).toBe("connected");
   });
 
