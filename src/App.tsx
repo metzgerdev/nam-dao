@@ -117,6 +117,13 @@ function App() {
           >
             Machines
           </a>
+          <a
+            href="https://github.com/metzgerdev/Drum-Machine"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
         </nav>
         <div className="app-route-stage" key={route}>
           <Suspense fallback={<p className="app-route-loading">Loading view…</p>}>
