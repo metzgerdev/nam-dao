@@ -1,0 +1,169 @@
+.blog {
+  display: grid;
+  place-items: start center;
+  padding: 2rem 1rem 4rem;
+}
+
+.blog-article {
+  width: min(760px, 100%);
+  color: rgba(229, 226, 225, 0.9);
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+/* ── headings ─────────────────────────────────────────────────────────── */
+.blog-article h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #f0ede8;
+  margin: 0 0 0.5rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.blog-article h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent-orange);
+  margin: 2.5rem 0 0.75rem;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+}
+
+.blog-article h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #d4cfca;
+  margin: 1.75rem 0 0.5rem;
+}
+
+/* ── body text ────────────────────────────────────────────────────────── */
+.blog-article p {
+  margin: 0 0 1.1rem;
+  color: rgba(229, 226, 225, 0.85);
+}
+
+.blog-article em {
+  color: rgba(229, 226, 225, 0.6);
+  font-style: italic;
+}
+
+.blog-article strong {
+  color: #f0ede8;
+  font-weight: 600;
+}
+
+.blog-article a {
+  color: var(--accent-orange);
+  text-decoration: none;
+}
+
+.blog-article a:hover {
+  text-decoration: underline;
+}
+
+/* ── subtitle / italics below h1 ─────────────────────────────────────── */
+.blog-article > p:first-of-type em {
+  display: block;
+  font-size: 0.95rem;
+  color: rgba(229, 226, 225, 0.55);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* ── hr ───────────────────────────────────────────────────────────────── */
+.blog-article hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 2rem 0;
+}
+
+/* ── code ─────────────────────────────────────────────────────────────── */
+.blog-article code {
+  font-family: "IBM Plex Mono", "Fira Code", monospace;
+  font-size: 0.82rem;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  color: #d4cfca;
+}
+
+.blog-article pre {
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 0 0 1.25rem;
+}
+
+.blog-article pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.78rem;
+  color: rgba(229, 226, 225, 0.8);
+}
+
+/* ── images ───────────────────────────────────────────────────────────── */
+.blog-article img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 1.25rem 0;
+  background: #fff;
+  display: block;
+}
+
+/* ── tables ───────────────────────────────────────────────────────────── */
+.blog-article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.9rem;
+}
+
+.blog-article th {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--accent-orange);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.blog-article td {
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  vertical-align: middle;
+  color: rgba(229, 226, 225, 0.8);
+}
+
+.blog-article tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── audio players ────────────────────────────────────────────────────── */
+.blog-article audio {
+  height: 28px;
+  width: 180px;
+  vertical-align: middle;
+  accent-color: var(--accent-orange);
+}
+
+/* ── footnotes ────────────────────────────────────────────────────────── */
+.blog-article .footnotes {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.82rem;
+  color: rgba(229, 226, 225, 0.5);
+}
+
+.blog-article sup a {
+  color: var(--accent-orange);
+  font-size: 0.75rem;
+}

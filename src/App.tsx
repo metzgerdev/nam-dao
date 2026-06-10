@@ -2,6 +2,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { createAppQueryClient } from "./queryClient";
 
+const Blog = lazy(() => import("./View/Blog/Blog"));
 const Daw = lazy(() => import("./View/DAW/Daw"));
 const Home = lazy(() => import("./View/Home/Home"));
 const MusicPlayer = lazy(() => import("./View/MusicPlayer/MusicPlayer"));
@@ -11,6 +12,7 @@ const TooFastTooFurious = lazy(
 );
 
 type RouteName =
+  | "blog"
   | "daw"
   | "home"
   | "music-player"
@@ -28,6 +30,10 @@ function readRoute(): RouteName {
   const pathSegments = window.location.pathname.split("/").filter(Boolean);
   const pathRoute = pathSegments[pathSegments.length - 1];
   const nextRoute = hashRoute || pathRoute;
+
+  if (nextRoute === "blog") {
+    return "blog";
+  }
 
   if (nextRoute === "home") {
     return "home";
@@ -70,6 +76,10 @@ function App() {
   }, []);
 
   function renderRoute() {
+    if (route === "blog") {
+      return <Blog />;
+    }
+
     if (route === "home") {
       return <Home />;
     }
@@ -95,6 +105,9 @@ function App() {
         <nav className="app-route-nav" aria-label="Application views">
           <a className={route === "home" ? "active" : ""} href="#/home">
             Home
+          </a>
+          <a className={route === "blog" ? "active" : ""} href="#/blog">
+            Blog
           </a>
           <a
             className={route === "sequencer" ? "active" : ""}
