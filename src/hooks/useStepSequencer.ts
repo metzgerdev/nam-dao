@@ -3,9 +3,7 @@ import {
   useRef,
   useState,
   type ChangeEvent,
-  type Dispatch,
   type RefObject,
-  type SetStateAction,
 } from "react";
 import {
   instrumentRows,
@@ -26,13 +24,6 @@ const LOOKAHEAD_MS = 25;
 const SCHEDULE_AHEAD_SECONDS = 0.1;
 const STEP_COUNT = 16;
 const STEP_GRID = Array.from({ length: STEP_COUNT }, () => false);
-
-export interface SerializedPattern {
-  version: 1;
-  name: string;
-  tempo: number;
-  instruments: Record<TrackLabel, number[]>;
-}
 
 function baseNameFromPath(path: string): string {
   const segment = path.split("/").pop() ?? path;
@@ -61,21 +52,9 @@ interface StepSequencerState {
   drumState: DrumState;
   handleTempoChange: (event: ChangeEvent<HTMLInputElement>) => void;
   instrumentRows: readonly TrackLabel[];
-  isDirty: boolean;
   isPlaying: boolean;
-  loadSampleForInstrument: (
-    track: TrackLabel,
-    buffer: ArrayBuffer,
-  ) => Promise<void>;
-  markSaved: () => void;
-  patternName: string;
-  restorePattern: (data: SerializedPattern) => void;
   samplesLoaded: boolean;
   sampleNames: Record<TrackLabel, string>;
-  serializePattern: () => SerializedPattern;
-  setDrumState: Dispatch<SetStateAction<DrumState>>;
-  setPatternName: (name: string) => void;
-  setSampleName: (track: TrackLabel, name: string) => void;
   stepCount: number;
   steps: boolean[];
   tempo: number;
@@ -86,11 +65,9 @@ interface StepSequencerState {
 export function useStepSequencer(): StepSequencerState {
   const [tempo, setTempo] = useState(123);
   const [drumState, setDrumState] = useState<DrumState>(instruments);
-  const [sampleNames, setSampleNames] = useState(DEFAULT_SAMPLE_NAMES);
+  const [sampleNames] = useState(DEFAULT_SAMPLE_NAMES);
   const [isPlaying, setIsPlaying] = useState(false);
   const [samplesLoaded, setSamplesLoaded] = useState(false);
-  const [patternName, setPatternName] = useState("Untitled Pattern");
-  const [isDirty, setIsDirty] = useState(false);
   const secondsPerStep = 60 / tempo / 4;
   const drumStateRef = useRef<DrumState>(instruments);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -144,7 +121,6 @@ export function useStepSequencer(): StepSequencerState {
 
   function handleTempoChange(event: ChangeEvent<HTMLInputElement>) {
     handleBPM(event, setTempo);
-    setIsDirty(true);
   }
 
   function togglePlayback() {
@@ -168,48 +144,6 @@ export function useStepSequencer(): StepSequencerState {
       }
       return nextState;
     });
-    setIsDirty(true);
-  }
-
-  function setSampleName(track: TrackLabel, name: string): void {
-    setSampleNames((previous) => ({ ...previous, [track]: name }));
-  }
-
-  async function loadSampleForInstrument(
-    track: TrackLabel,
-    buffer: ArrayBuffer,
-  ): Promise<void> {
-    if (!audioContextRef.current) return;
-    const decoded = await audioContextRef.current.decodeAudioData(buffer);
-    audioBufferRefs.current[track] = decoded;
-  }
-
-  function serializePattern(): SerializedPattern {
-    const serializedInstruments = {} as Record<TrackLabel, number[]>;
-    for (const track of instrumentRows) {
-      serializedInstruments[track] = [...drumStateRef.current[track].activeSteps];
-    }
-    return { version: 1, name: patternName, tempo, instruments: serializedInstruments };
-  }
-
-  function markSaved(): void {
-    setIsDirty(false);
-  }
-
-  function restorePattern(data: SerializedPattern): void {
-    setTempo(data.tempo);
-    if (data.name) setPatternName(data.name);
-    setIsDirty(false);
-    setDrumState((previous) => {
-      const next = clonePatternState(previous);
-      for (const track of instrumentRows) {
-        const steps = data.instruments[track];
-        if (steps) {
-          next[track].activeSteps = new Set(steps);
-        }
-      }
-      return next;
-    });
   }
 
   return {
@@ -218,18 +152,9 @@ export function useStepSequencer(): StepSequencerState {
     drumState,
     handleTempoChange,
     instrumentRows,
-    isDirty,
     isPlaying,
-    loadSampleForInstrument,
-    markSaved,
-    patternName,
-    restorePattern,
     samplesLoaded,
     sampleNames,
-    serializePattern,
-    setDrumState,
-    setPatternName,
-    setSampleName,
     stepCount: STEP_COUNT,
     steps: STEP_GRID,
     tempo,
