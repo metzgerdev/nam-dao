@@ -1,5 +1,4 @@
 import ProgressBar from "./ProgressBar";
-import DropboxPanel from "./DropboxPanel";
 import { updateActiveStep } from "../../utils/playback";
 import { useStepSequencer } from "../../hooks/useStepSequencer";
 
@@ -9,16 +8,8 @@ function Sequencer() {
     drumState,
     handleTempoChange,
     instrumentRows,
-    isDirty,
     isPlaying,
-    loadSampleForInstrument,
-    markSaved,
-    patternName,
-    restorePattern,
     sampleNames,
-    serializePattern,
-    setPatternName,
-    setSampleName,
     steps,
     tempo,
     togglePlayback,
@@ -84,18 +75,6 @@ function Sequencer() {
             </div>
           ))}
         </section>
-
-        <DropboxPanel
-          instrumentRows={instrumentRows}
-          isDirty={isDirty}
-          loadSampleForInstrument={loadSampleForInstrument}
-          markSaved={markSaved}
-          patternName={patternName}
-          restorePattern={restorePattern}
-          serializePattern={serializePattern}
-          setPatternName={setPatternName}
-          setSampleName={setSampleName}
-        />
       </section>
     </main>
   );

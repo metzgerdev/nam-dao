@@ -35,7 +35,7 @@ The project is a labor of passion, the result of crafting pleasing and functiona
     <td width="50%">
       <p><strong>MODULE 01 / SEQ-01</strong></p>
       <img src="docs/screenshots/sequencer.png" alt="Sequencer screenshot" />
-      <p>Pattern-based drum programming with a hardware-inspired interface and Dropbox integration.</p>
+      <p>Pattern-based drum programming with a hardware-inspired interface.</p>
     </td>
     <td width="50%">
       <p><strong>MODULE 02 / DAW-02</strong></p>
@@ -56,7 +56,7 @@ The project is a labor of passion, the result of crafting pleasing and functiona
 
 ### Sequencer
 
-Drum machine inspired by the Roland TR-909. It focuses on quick pattern building, and sample-triggered playback in a hardware inspspired interface.  Dropbox integration allows for colloborative sessions (samples and patterns can be shared).
+Drum machine inspired by the Roland TR-909. It focuses on quick pattern building, and sample-triggered playback in a hardware inspspired interface.
 
 For performance, the audio engine and the UI are intentionally decoupled. Timing, scheduling, and sample triggering run through the Web Audio layer with refs and a lookahead scheduler, while React is responsible for editing pattern state and rendering the interface. That separation keeps playback smooth by avoiding audio coupling to React render cycles.
 
