@@ -21,9 +21,10 @@ type RouteName =
 
 function readRoute(): RouteName {
   const hashRoute = window.location.hash.replace(/^#\/?/, "");
+  const hashSegment = hashRoute.split("/")[0];
   const pathSegments = window.location.pathname.split("/").filter(Boolean);
   const pathRoute = pathSegments[pathSegments.length - 1];
-  const nextRoute = hashRoute || pathRoute;
+  const nextRoute = hashSegment || pathRoute;
 
   if (nextRoute === "blog") {
     return "blog";
