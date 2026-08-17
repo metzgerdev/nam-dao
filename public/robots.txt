@@ -1,0 +1,7 @@
+# Note: crawlers only honour robots.txt at a domain root. This file sits at
+# /nam-dao/robots.txt and is therefore advisory only until the site moves to a
+# custom domain (or a metzgerdev.github.io root repo).
+User-agent: *
+Allow: /
+
+Sitemap: https://metzgerdev.github.io/nam-dao/sitemap.xml
