@@ -104,13 +104,6 @@ describe("App routes", () => {
     expect(await findView("Project not found")).toBeTruthy();
   });
 
-  test("renders the about page on the about route", async () => {
-    setHashRoute("#/about");
-    render(<App />);
-
-    expect(await findView("About")).toBeTruthy();
-  });
-
   test("renders the sequencer on the sequencer route", async () => {
     setHashRoute("#/sequencer");
     render(<App />);

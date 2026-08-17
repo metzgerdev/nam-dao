@@ -157,16 +157,6 @@ body {
   margin: 0;
 }
 
-.prose p {
-  margin: 0 0 var(--space-4);
-  color: var(--text-secondary);
-  max-width: var(--measure-prose);
-}
-
-.prose p:last-child {
-  margin-bottom: 0;
-}
-
 /* ── hero ──────────────────────────────────────────────────────────────── */
 
 .hero {
@@ -462,75 +452,6 @@ body {
   font-family: var(--font-mono);
   font-size: 0.76rem;
   color: var(--accent);
-}
-
-/* ── fact list ─────────────────────────────────────────────────────────── */
-
-.fact-list {
-  margin: 0;
-  display: grid;
-  gap: var(--space-4);
-}
-
-.fact-list div {
-  display: grid;
-  gap: var(--space-1);
-  padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--rule);
-}
-
-.fact-list div:last-child {
-  border-bottom: 0;
-  padding-bottom: 0;
-}
-
-.fact-list dt {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-}
-
-.fact-list dd {
-  margin: 0;
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-}
-
-/* ── about ─────────────────────────────────────────────────────────────── */
-
-.about-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
-  gap: var(--space-7);
-  align-items: start;
-}
-
-.about-portrait-frame {
-  border: 1px solid var(--rule);
-  border-radius: 3px;
-  overflow: hidden;
-  background: var(--bg-sunken);
-}
-
-.about-portrait {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  filter: grayscale(0.25) contrast(1.02);
-}
-
-@media (max-width: 860px) {
-  .about-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .about-portrait-frame {
-    max-width: 320px;
-  }
 }
 
 /* ── case study ────────────────────────────────────────────────────────── */

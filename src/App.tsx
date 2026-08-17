@@ -3,7 +3,6 @@ import { Suspense, lazy, useEffect, useState, type MouseEvent } from "react";
 import { createAppQueryClient } from "./queryClient";
 import DemoFrame from "./View/Work/DemoFrame";
 
-const About = lazy(() => import("./View/About/About"));
 const Blog = lazy(() => import("./View/Blog/Blog"));
 const Home = lazy(() => import("./View/Home/Home"));
 const MusicPlayer = lazy(() => import("./View/MusicPlayer/MusicPlayer"));
@@ -15,7 +14,6 @@ const GITHUB_URL = "https://github.com/metzgerdev";
 const LINKEDIN_URL = "https://www.linkedin.com/in/nam-dao";
 
 type RouteName =
-  | "about"
   | "blog"
   | "home"
   | "music-player"
@@ -39,10 +37,6 @@ function readRoute(): Route {
     return hashParam
       ? { name: "work-detail", param: hashParam }
       : { name: "work" };
-  }
-
-  if (nextRoute === "about") {
-    return { name: "about" };
   }
 
   // "writing" is the label in the nav; "blog" is kept so older links resolve.
@@ -90,10 +84,6 @@ function App() {
 
     if (route.name === "work-detail") {
       return <WorkDetail slug={route.param ?? ""} />;
-    }
-
-    if (route.name === "about") {
-      return <About />;
     }
 
     if (route.name === "blog") {
@@ -166,12 +156,6 @@ function App() {
                 Writing
               </a>
               <a
-                className={route.name === "about" ? "active" : ""}
-                href="#/about"
-              >
-                About
-              </a>
-              <a
                 className="external"
                 href={GITHUB_URL}
                 rel="noopener noreferrer"
@@ -198,7 +182,6 @@ function App() {
             <div className="site-footer-links">
               <a href="#/work">Work</a>
               <a href="#/blog">Writing</a>
-              <a href="#/about">About</a>
               <a href={GITHUB_URL} rel="noopener noreferrer" target="_blank">
                 GitHub
               </a>
