@@ -86,59 +86,6 @@ function Home() {
           ))}
         </div>
       </section>
-
-      <section className="section shell" aria-labelledby="background">
-        <div className="section-head">
-          <h2 className="section-title" id="background">
-            Background
-          </h2>
-        </div>
-
-        <div className="background-grid">
-          <div className="prose">
-            <p>
-              I moved into AI engineering from a front-end career, which turns
-              out to be a useful combination. Most of the work in an LLM system
-              is not the model call — it is the data pipeline feeding it, the
-              evaluation harness telling you whether a change helped, and the
-              interface a human uses to stay in the loop. I have built all
-              three.
-            </p>
-            <p>
-              The audio specialisation is not decorative. An MS in electrical
-              engineering means I can read the DSP underneath a neural audio
-              codec, and producing electronic music means I know what the output
-              is supposed to sound like. That combination is rare enough to be
-              worth pointing at.
-            </p>
-          </div>
-
-          <dl className="fact-list">
-            <div>
-              <dt>Focus</dt>
-              <dd>LLM systems, generative audio, retrieval and evaluation</dd>
-            </div>
-            <div>
-              <dt>Tools</dt>
-              <dd>
-                Python · PyTorch · Hugging Face · FAISS · LangGraph · Pydantic ·
-                TypeScript
-              </dd>
-            </div>
-            <div>
-              <dt>Education</dt>
-              <dd>
-                MS Electrical Engineering, University of Washington · Hack
-                Reactor · New Line AI accelerator
-              </dd>
-            </div>
-            <div>
-              <dt>Also</dt>
-              <dd>Produces house music as Zynar</dd>
-            </div>
-          </dl>
-        </div>
-      </section>
     </main>
   );
 }

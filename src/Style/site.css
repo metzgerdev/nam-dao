@@ -464,13 +464,7 @@ body {
   color: var(--accent);
 }
 
-/* ── background / experience ───────────────────────────────────────────── */
-
-.background-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  gap: var(--space-7);
-}
+/* ── fact list ─────────────────────────────────────────────────────────── */
 
 .fact-list {
   margin: 0;
@@ -771,11 +765,6 @@ body {
     align-items: flex-start;
     gap: 0;
     min-width: 0;
-  }
-
-  .background-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
   }
 }
 
