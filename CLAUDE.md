@@ -35,11 +35,25 @@ Deploy to GitHub Pages via `bun run deploy` (runs `predeploy` build first).
 
 This is Nam Dao's professional portfolio, targeting hiring managers for **AI engineer** roles. The AI/ML case studies are the primary content; the two audio demos are secondary craft evidence and should stay ranked below the ML work.
 
-The app is a single-page app with a custom hash/path router in `src/App.tsx`. All views are lazy-loaded via `React.lazy`. Navigation is driven by `window.location.hash` (e.g. `#/sequencer`). Routes: `home`, `work`, `work/<slug>`, `blog` (alias `writing`), `about`, `sequencer`, `music-player`. Unknown routes fall back to Home.
+The app is a single-page app with a custom **path-based** router in `src/App.tsx`. All views are lazy-loaded via `React.lazy`. Routes: `/`, `/work/`, `/work/<slug>/`, `/blog/`, `/blog/<slug>/`, `/sequencer/`, `/music-player/`. Unknown routes fall back to Home.
+
+`src/routing.ts` owns all URL handling: `hrefFor()` builds hrefs (always with a trailing slash, because prerendered routes are directory indexes and a static host would otherwise 301), `currentPath()` parses, and `migrateLegacyHash()` rewrites old `#/…` URLs in place so previously shared links still resolve. A single delegated click listener in `App.tsx` turns in-app anchors into `pushState` navigations, which keeps every link a plain `href` that still works with JavaScript disabled.
+
+### Prerendering
+
+`bun run build:static` runs `vite build` then `scripts/prerender.ts`, which drives a headless browser over every route and writes `dist/<route>/index.html`. That makes each URL a real static 200 with full markup and its own `<title>`/description/canonical/og tags — crawlers that do not run JavaScript see the content. It also regenerates `sitemap.xml` and `404.html`.
+
+`predeploy` uses `build:static`, so `bun run deploy` always ships prerendered output. Plain `bun run build` skips prerendering and stays fast for local work.
+
+Two constraints are baked into that script and worth knowing before editing it:
+- It does **not** use `vite preview`. Vite answers 404 to any request carrying `Sec-Fetch-Dest: script`, which is exactly what a browser sends for `<script type="module">`, so the app never boots and every route captures an empty shell.
+- It serves via `Bun.serve` with an SPA fallback, because a plain static server 404s `/work` — that file is what the script is about to create.
+
+Add a blog post and you must add its route to `ROUTES` in `scripts/prerender.ts`; `articles.ts` imports `?raw` markdown, which only resolves inside Vite.
 
 ### Content
 
-**All project content lives in `src/data/projects.ts`** — a single `Project[]` that drives the home page, the work index, and every case study. Add or edit a project there rather than in a view. `featured: true` surfaces it on the home page; `kind: "ai" | "craft"` sorts it into the right section of `#/work`.
+**All project content lives in `src/data/projects.ts`** — a single `Project[]` that drives the home page, the work index, and every case study. Add or edit a project there rather than in a view. `featured: true` surfaces it on the home page; `kind: "ai" | "craft"` sorts it into the right section of `/work/`.
 
 Case-study copy is factual and sourced from the actual repo READMEs, including limitations sections. Do not add metrics or claims that are not backed by the source repo.
 
@@ -48,10 +62,16 @@ Case-study copy is factual and sourced from the actual repo READMEs, including l
 Split by intent, imported in order from `src/Style/index.css`:
 
 - `tokens.css` — colour, type and spacing custom properties
-- `site.css` — site chrome: nav, hero, work list, case studies, about, footer
+- `site.css` — site chrome: nav, hero, work list, case studies, footer
 - `instruments.css` — the sequencer and music player only
 
-The site chrome is "editorial dark": near-black surfaces, hairline rules instead of shadows, a system serif (`--font-display`) for headings and a monospace (`--font-mono`) for labels and metrics. The instrument views deliberately keep their hardware/skeuomorphic look — **do not** restyle them to match the site chrome.
+The site chrome uses the "Velvet Sandstone" palette: a warm off-white canvas, hairline rules instead of shadows, a system serif (`--font-display`) for headings and a monospace (`--font-mono`) for labels and metrics.
+
+None of the five palette swatches is dark enough for body text — the darkest measures 4.47:1 on the canvas — so the ink tokens are derived and every one is annotated with its contrast ratio in `tokens.css`. Keep that invariant: any new text colour must clear 4.5:1 against the surface it sits on. Sand and blush are mixed back toward the canvas before use as surfaces for the same reason.
+
+Type scales from one lever: `html { font-size: 107% }`. Everything is in `rem`, and the `vw` term of each `font-size: clamp()` is scaled to match, so the ratio holds at every viewport width.
+
+The instrument views deliberately keep their hardware/skeuomorphic look — **do not** restyle them to match the site chrome.
 
 No web fonts: `index.html` ships a strict CSP with `default-src 'self'`, so all typefaces must be system stacks and all assets must be local.
 

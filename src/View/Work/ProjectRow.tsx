@@ -1,4 +1,5 @@
 import type { Project } from "../../data/projects";
+import { hrefFor } from "../../routing";
 
 interface ProjectRowProps {
   index: number;
@@ -9,7 +10,7 @@ function ProjectRow({ index, project }: ProjectRowProps) {
   const position = String(index + 1).padStart(2, "0");
 
   return (
-    <a className="project-row" href={`#/work/${project.slug}`}>
+    <a className="project-row" href={hrefFor(`work/${project.slug}`)}>
       <span className="project-index" aria-hidden="true">
         {position}
       </span>

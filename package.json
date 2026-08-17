@@ -6,9 +6,11 @@
   "packageManager": "bun@1.3.10",
   "scripts": {
     "build": "vite build",
+    "prerender": "bun run scripts/prerender.ts",
+    "build:static": "vite build && bun run scripts/prerender.ts",
     "build:dev": "vite build --mode development",
     "dev": "vite",
-    "predeploy": "bun run build",
+    "predeploy": "bun run build:static",
     "deploy": "gh-pages -d dist",
     "preview": "vite preview",
     "serve": "vite",

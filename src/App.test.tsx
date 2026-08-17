@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen, within } from "@testing-library/react";
 import App from "./App";
 import { resetSampleCacheForTests } from "./utils/sampleLoader";
+import { migrateLegacyHash } from "./routing";
 
 class MockAudioContext {
   constructor() {
@@ -25,8 +26,9 @@ class MockAudioContext {
   }
 }
 
-function setHashRoute(route) {
-  window.location.hash = route;
+// Routing is path-based; drive it the way the browser would.
+function setRoute(path) {
+  window.history.pushState({}, "", path === "" ? "/" : `/${path}`);
 }
 
 async function findView(name: string) {
@@ -66,19 +68,19 @@ describe("App routes", () => {
   afterEach(() => {
     global.fetch = originalFetch;
     resetSampleCacheForTests();
-    window.location.hash = "";
+    window.history.pushState({}, "", "/");
     jest.restoreAllMocks();
   });
 
   test("renders the home page on the default route", async () => {
-    setHashRoute("");
+    setRoute("");
     render(<App />);
 
     expect(await findView("Home")).toBeTruthy();
   });
 
   test("renders the work index on the work route", async () => {
-    setHashRoute("#/work");
+    setRoute("work");
     render(<App />);
 
     expect(await findView("Work")).toBeTruthy();
@@ -91,35 +93,46 @@ describe("App routes", () => {
   });
 
   test("renders a case study on a work detail route", async () => {
-    setHashRoute("#/work/midi-gpt");
+    setRoute("work/midi-gpt");
     render(<App />);
 
     expect(await findView("Midi GPT")).toBeTruthy();
   });
 
   test("renders a not-found case study for an unknown slug", async () => {
-    setHashRoute("#/work/does-not-exist");
+    setRoute("work/does-not-exist");
     render(<App />);
 
     expect(await findView("Project not found")).toBeTruthy();
   });
 
   test("renders the sequencer on the sequencer route", async () => {
-    setHashRoute("#/sequencer");
+    setRoute("sequencer");
     render(<App />);
 
     expect(await findView("Sequencer")).toBeTruthy();
   });
 
   test("renders the music player on the music-player route", async () => {
-    setHashRoute("#/music-player");
+    setRoute("music-player");
     render(<App />);
 
     expect(await findView("Music Player")).toBeTruthy();
   });
 
+  test("rewrites a legacy hash URL to the equivalent path", async () => {
+    window.history.pushState({}, "", "/");
+    window.location.hash = "#/work/midi-gpt";
+    migrateLegacyHash();
+
+    // Trailing slash: prerendered routes are directory indexes, so this is the
+    // URL that serves without a redirect.
+    expect(window.location.pathname).toBe("/work/midi-gpt/");
+    expect(window.location.hash).toBe("");
+  });
+
   test("falls back to home for an unknown route", async () => {
-    setHashRoute("#/not-a-real-route");
+    setRoute("not-a-real-route");
     render(<App />);
 
     expect(await findView("Home")).toBeTruthy();
