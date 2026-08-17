@@ -30,14 +30,14 @@
   font-family: var(--font-display);
   font-size: 2.1rem;
   font-weight: 400;
-  color: #f0ede8;
+  color: var(--text);
   letter-spacing: -0.01em;
 }
 
 .blog-list-intro {
   margin: 0;
   max-width: 46ch;
-  color: rgba(229, 226, 225, 0.6);
+  color: var(--text-muted);
   font-size: 0.98rem;
   line-height: 1.6;
 }
@@ -56,7 +56,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background: rgba(12, 13, 16, 0.55);
+  background: var(--bg-raised);
   border: 1px solid var(--rule);
   border-radius: 3px;
   overflow: hidden;
@@ -68,7 +68,7 @@
 .blog-card:hover,
 .blog-card:focus-within {
   border-color: var(--rule-strong);
-  background: rgba(12, 13, 16, 0.75);
+  background: var(--bg-sunken);
 }
 
 .blog-card-media {
@@ -104,8 +104,8 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--accent);
-  background: rgba(255, 183, 122, 0.12);
-  border: 1px solid rgba(255, 183, 122, 0.25);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-edge);
   border-radius: 2px;
   padding: 0.15rem 0.45rem;
 }
@@ -117,7 +117,7 @@
   font-weight: 400;
   line-height: 1.3;
   letter-spacing: -0.01em;
-  color: #f0ede8;
+  color: var(--text);
   text-transform: none;
 }
 
@@ -146,7 +146,7 @@
 
 .blog-card-subtitle {
   margin: 0;
-  color: rgba(229, 226, 225, 0.62);
+  color: var(--text-muted);
   font-size: 0.9rem;
   line-height: 1.55;
 }
@@ -158,7 +158,7 @@
   margin-top: 0.15rem;
   font-family: var(--font-mono);
   font-size: 0.74rem;
-  color: rgba(229, 226, 225, 0.45);
+  color: var(--text-faint);
 }
 
 /* ── back button (article view) ───────────────────────────────────────── */
@@ -183,7 +183,7 @@
 
 .blog-article {
   width: min(760px, 100%);
-  color: rgba(229, 226, 225, 0.9);
+  color: var(--text-secondary);
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
   font-size: 1rem;
   line-height: 1.75;
@@ -194,7 +194,7 @@
   font-family: var(--font-display);
   font-size: 2.05rem;
   font-weight: 400;
-  color: #f0ede8;
+  color: var(--text);
   margin: 0 0 0.5rem;
   line-height: 1.18;
   letter-spacing: -0.02em;
@@ -204,7 +204,7 @@
   font-family: var(--font-display);
   font-size: 1.4rem;
   font-weight: 400;
-  color: #f0ede8;
+  color: var(--text);
   margin: 2.5rem 0 0.75rem;
   letter-spacing: -0.01em;
 }
@@ -213,23 +213,23 @@
   font-family: var(--font-display);
   font-size: 1.1rem;
   font-weight: 700;
-  color: #d4cfca;
+  color: var(--text-secondary);
   margin: 1.75rem 0 0.5rem;
 }
 
 /* ── body text ────────────────────────────────────────────────────────── */
 .blog-article p {
   margin: 0 0 1.1rem;
-  color: rgba(229, 226, 225, 0.85);
+  color: var(--text-secondary);
 }
 
 .blog-article em {
-  color: rgba(229, 226, 225, 0.6);
+  color: var(--text-muted);
   font-style: italic;
 }
 
 .blog-article strong {
-  color: #f0ede8;
+  color: var(--text);
   font-weight: 600;
 }
 
@@ -246,7 +246,7 @@
 .blog-article > p:first-of-type em {
   display: block;
   font-size: 0.95rem;
-  color: rgba(229, 226, 225, 0.55);
+  color: var(--text-muted);
   margin-bottom: 1.5rem;
   line-height: 1.5;
 }
@@ -254,7 +254,7 @@
 /* ── hr ───────────────────────────────────────────────────────────────── */
 .blog-article hr {
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--rule);
   margin: 2rem 0;
 }
 
@@ -262,14 +262,14 @@
 .blog-article code {
   font-family: "IBM Plex Mono", "Fira Code", monospace;
   font-size: 0.82rem;
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--bg-sunken);
   padding: 0.15em 0.4em;
   border-radius: 4px;
-  color: #d4cfca;
+  color: var(--text-secondary);
 }
 
 .blog-article pre {
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--bg-sunken);
   border: 1px solid var(--rule);
   border-radius: 8px;
   padding: 1rem 1.25rem;
@@ -281,7 +281,7 @@
   background: none;
   padding: 0;
   font-size: 0.78rem;
-  color: rgba(229, 226, 225, 0.8);
+  color: var(--text-secondary);
 }
 
 /* ── images ───────────────────────────────────────────────────────────── */
@@ -302,12 +302,12 @@
 }
 
 .blog-article th {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--bg-sunken);
   color: var(--accent);
   font-weight: 600;
   text-align: left;
   padding: 0.6rem 0.85rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid var(--rule-strong);
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -315,9 +315,9 @@
 
 .blog-article td {
   padding: 0.6rem 0.85rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--rule);
   vertical-align: middle;
-  color: rgba(229, 226, 225, 0.8);
+  color: var(--text-secondary);
 }
 
 .blog-article tr:last-child td {
@@ -336,9 +336,9 @@
 .blog-article .footnotes {
   margin-top: 2.5rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--rule);
   font-size: 0.82rem;
-  color: rgba(229, 226, 225, 0.5);
+  color: var(--text-faint);
 }
 
 .blog-article sup a {

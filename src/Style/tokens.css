@@ -1,29 +1,51 @@
 /* ==========================================================================
-   Design tokens — editorial dark
+   Design tokens — "Velvet Sandstone"
+
+   Five-swatch palette: cream, sand, blush, olive, mocha, on an off-white
+   canvas. None of the five is dark enough for body text (the darkest, mocha,
+   measures 4.47:1 on the canvas — just under the 4.5:1 floor), so the ink
+   below is a warm espresso derived from the same family. Every text token is
+   contrast-checked against its intended background; ratios are noted inline.
+
    All fonts are system stacks: the page CSP forbids external font hosts.
    ========================================================================== */
 
 :root {
-  /* Surfaces — near-black, very slightly warm so it reads as ink not screen */
-  --bg: #0b0b0c;
-  --bg-raised: #121213;
-  --bg-sunken: #080809;
+  /* ── palette, as authored ─────────────────────────────────────────────── */
+  --swatch-cream: #f4e8c6;
+  --swatch-sand: #ead7bc;
+  --swatch-blush: #e9cfca;
+  --swatch-olive: #948b76;
+  --swatch-mocha: #846f60;
+
+  /* ── surfaces ─────────────────────────────────────────────────────────── */
+  --bg: #faf8f2;
+  --bg-raised: #f4efe4;
+  --bg-sunken: #f0ead9;
+
+  /* Sand and blush at partial strength. At full strength neither leaves
+     enough headroom for the accent or the small mono labels that sit on
+     them, so both are mixed back toward the canvas. */
+  --surface-sand: #f4ecdf; /* sand @35% */
+  --surface-blush: #edd9d5; /* blush @60% */
 
   /* Hairlines. The design uses rules, not shadows. */
-  --rule: rgba(255, 255, 255, 0.09);
-  --rule-strong: rgba(255, 255, 255, 0.16);
+  --rule: rgba(46, 38, 32, 0.14);
+  --rule-strong: rgba(46, 38, 32, 0.28);
 
-  /* Ink */
-  --text: #ededec;
-  --text-secondary: rgba(237, 237, 236, 0.66);
-  --text-muted: rgba(237, 237, 236, 0.44);
-  --text-faint: rgba(237, 237, 236, 0.28);
+  /* ── ink (all ≥4.5:1 on --bg) ─────────────────────────────────────────── */
+  --text: #2e2620; /* 13.98:1 */
+  --text-secondary: #5c4b3d; /*  7.82:1 */
+  --text-muted: #6b6454; /*  5.53:1 */
+  --text-faint: #756d5d; /*  4.82:1 */
 
-  /* A single accent, used sparingly */
-  --accent: #ffb77a;
-  --accent-dim: rgba(255, 183, 122, 0.16);
+  /* ── accent ───────────────────────────────────────────────────────────── */
+  --accent: #7a6252; /*  5.35:1 — links, small text */
+  --accent-display: #846f60; /*  4.47:1 — large display text only */
+  --accent-dim: rgba(244, 232, 198, 0.75); /* cream wash for chips/buttons */
+  --accent-edge: rgba(122, 98, 82, 0.32);
 
-  /* Type */
+  /* ── type ─────────────────────────────────────────────────────────────── */
   --font-display: ui-serif, "New York", Georgia, "Times New Roman", serif;
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, Roboto,
@@ -32,11 +54,11 @@
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
     monospace;
 
-  /* Measure */
+  /* ── measure ──────────────────────────────────────────────────────────── */
   --measure-wide: 1080px;
   --measure-prose: 68ch;
 
-  /* Rhythm */
+  /* ── rhythm ───────────────────────────────────────────────────────────── */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;

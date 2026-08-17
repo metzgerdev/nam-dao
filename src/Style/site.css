@@ -29,8 +29,8 @@ body {
 }
 
 ::selection {
-  background: var(--accent);
-  color: #111;
+  background: var(--swatch-sand);
+  color: var(--text);
 }
 
 :focus-visible {
@@ -74,7 +74,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(11, 11, 12, 0.86);
+  background: rgba(250, 248, 242, 0.88);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--rule);
 }
@@ -197,7 +197,7 @@ body {
 
 .hero-statement em {
   font-style: italic;
-  color: var(--accent);
+  color: var(--accent-display);
 }
 
 .hero-summary {
@@ -255,7 +255,7 @@ body {
 }
 
 .link-button--primary {
-  border-color: var(--accent);
+  border-color: var(--accent-edge);
   color: var(--accent);
   background: var(--accent-dim);
 }
@@ -362,9 +362,9 @@ body {
   font-family: var(--font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.06em;
-  color: var(--accent);
-  border: 1px solid var(--accent-dim);
-  background: var(--accent-dim);
+  color: var(--text);
+  border: 1px solid rgba(122, 98, 82, 0.24);
+  background: var(--surface-blush);
   border-radius: 2px;
   padding: 0.1rem 0.45rem;
 }
@@ -433,7 +433,7 @@ body {
 
 .demo-card:hover {
   border-color: var(--rule-strong);
-  background: var(--bg-raised);
+  background: var(--surface-sand);
 }
 
 .demo-card-label {
@@ -581,6 +581,7 @@ body {
   border: 1px solid var(--rule);
   border-radius: 3px;
   overflow: hidden;
+  background: var(--surface-sand);
 }
 
 .case-metric {
@@ -606,7 +607,7 @@ body {
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: var(--text-secondary);
 }
 
 .case-section {
