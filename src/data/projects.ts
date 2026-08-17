@@ -11,6 +11,7 @@ export interface Project {
   featured: boolean;
   status?: string;
   repo?: string;
+  /** Bare route path for the live demo, e.g. "sequencer". */
   demo?: string;
   stack: string[];
   metrics: Metric[];
@@ -138,7 +139,7 @@ export const projects: Project[] = [
     tagline: "A TR-909 step sequencer with the audio engine kept out of React",
     kind: "craft",
     featured: false,
-    demo: "#/sequencer",
+    demo: "sequencer",
     repo: `${GITHUB}/nam-dao`,
     stack: ["Web Audio API", "React 19", "TypeScript"],
     metrics: [
@@ -157,7 +158,7 @@ export const projects: Project[] = [
     tagline: "A player with a K-weighted VU meter and a mock GraphQL layer",
     kind: "craft",
     featured: false,
-    demo: "#/music-player",
+    demo: "music-player",
     repo: `${GITHUB}/nam-dao`,
     stack: ["GraphQL", "TanStack Query", "Web Audio API", "React 19"],
     metrics: [

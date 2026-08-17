@@ -1,44 +1,26 @@
-import { useEffect, useState } from "react";
 import { articles } from "./articles";
 import BlogArticle from "./BlogArticle";
+import { hrefFor } from "../../routing";
 import "./Blog.css";
 
-function readSelectedSlug(): string | null {
-  const hash = window.location.hash.replace(/^#\/?/, "");
-  const segments = hash.split("/").filter(Boolean);
-  if (segments[0] !== "blog") {
-    return null;
-  }
-  return segments[1] ?? null;
+interface BlogProps {
+  /** Article slug from the route, when one is open. */
+  slug?: string;
 }
 
-function Blog() {
-  const [selectedSlug, setSelectedSlug] = useState<string | null>(readSelectedSlug);
-
-  useEffect(() => {
-    function syncSlug() {
-      setSelectedSlug(readSelectedSlug());
-    }
-
-    window.addEventListener("hashchange", syncSlug);
-    window.addEventListener("popstate", syncSlug);
-    return () => {
-      window.removeEventListener("hashchange", syncSlug);
-      window.removeEventListener("popstate", syncSlug);
-    };
-  }, []);
-
-  const selected =
-    selectedSlug === null
-      ? null
-      : (articles.find((article) => article.slug === selectedSlug) ?? null);
+function Blog({ slug }: BlogProps) {
+  // The router owns the slug now, so this view has no URL parsing of its own.
+  const selected = slug
+    ? (articles.find((article) => article.slug === slug) ?? null)
+    : null;
 
   if (selected) {
     return (
       <BlogArticle
         article={selected}
         onBack={() => {
-          window.location.hash = "#/blog";
+          window.history.pushState(null, "", hrefFor("blog"));
+          window.dispatchEvent(new PopStateEvent("popstate"));
         }}
       />
     );
@@ -69,7 +51,10 @@ function Blog() {
                 ))}
               </div>
               <h2 className="blog-card-title">
-                <a className="blog-card-link" href={`#/blog/${article.slug}`}>
+                <a
+                  className="blog-card-link"
+                  href={hrefFor(`blog/${article.slug}`)}
+                >
                   {article.title}
                 </a>
               </h2>

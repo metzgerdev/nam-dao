@@ -1,6 +1,7 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Suspense, lazy, useEffect, useState, type MouseEvent } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { createAppQueryClient } from "./queryClient";
+import { currentPath, hrefFor, isInternalNavigation } from "./routing";
 import DemoFrame from "./View/Work/DemoFrame";
 
 const Blog = lazy(() => import("./View/Blog/Blog"));
@@ -17,6 +18,7 @@ const EMAIL = "m5q2f1sf@anonaddy.me";
 
 type RouteName =
   | "blog"
+  | "blog-article"
   | "home"
   | "music-player"
   | "sequencer"
@@ -29,28 +31,22 @@ interface Route {
 }
 
 function readRoute(): Route {
-  const hashRoute = window.location.hash.replace(/^#\/?/, "");
-  const [hashSegment, hashParam] = hashRoute.split("/");
-  const pathSegments = window.location.pathname.split("/").filter(Boolean);
-  const pathRoute = pathSegments[pathSegments.length - 1];
-  const nextRoute = hashSegment || pathRoute;
+  const [segment, param] = currentPath().split("/");
 
-  if (nextRoute === "work") {
-    return hashParam
-      ? { name: "work-detail", param: hashParam }
-      : { name: "work" };
+  if (segment === "work") {
+    return param ? { name: "work-detail", param } : { name: "work" };
   }
 
-  // "writing" is the label in the nav; "blog" is kept so older links resolve.
-  if (nextRoute === "blog" || nextRoute === "writing") {
-    return { name: "blog" };
+  // "writing" is the nav label; "blog" is the canonical path.
+  if (segment === "blog" || segment === "writing") {
+    return param ? { name: "blog-article", param } : { name: "blog" };
   }
 
-  if (nextRoute === "music-player") {
+  if (segment === "music-player") {
     return { name: "music-player" };
   }
 
-  if (nextRoute === "sequencer") {
+  if (segment === "sequencer") {
     return { name: "sequencer" };
   }
 
@@ -66,12 +62,31 @@ function App() {
       setRoute(readRoute());
     }
 
-    window.addEventListener("hashchange", syncRoute);
     window.addEventListener("popstate", syncRoute);
-    return () => {
-      window.removeEventListener("hashchange", syncRoute);
-      window.removeEventListener("popstate", syncRoute);
-    };
+    return () => window.removeEventListener("popstate", syncRoute);
+  }, []);
+
+  // One delegated listener turns every in-app anchor into a pushState
+  // navigation, so individual links stay plain hrefs that still work if
+  // JavaScript never runs — which is what the prerendered pages rely on.
+  useEffect(() => {
+    function onClick(event: MouseEvent) {
+      const anchor = (event.target as HTMLElement | null)?.closest("a");
+      if (!anchor || !isInternalNavigation(anchor, event)) {
+        return;
+      }
+
+      const url = new URL(anchor.href, window.location.href);
+      event.preventDefault();
+
+      if (url.pathname !== window.location.pathname) {
+        window.history.pushState(null, "", url.pathname);
+        setRoute(readRoute());
+      }
+    }
+
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
   }, []);
 
   // Land at the top of a newly opened view rather than mid-scroll.
@@ -88,8 +103,8 @@ function App() {
       return <WorkDetail slug={route.param ?? ""} />;
     }
 
-    if (route.name === "blog") {
-      return <Blog />;
+    if (route.name === "blog" || route.name === "blog-article") {
+      return <Blog slug={route.param} />;
     }
 
     // The instrument views are wrapped so a direct link still explains itself.
@@ -112,49 +127,22 @@ function App() {
     return <Home />;
   }
 
-  /**
-   * Home is the empty-hash fallback, so the brand navigates to the bare base
-   * URL rather than "#/home" — that keeps the landing address clean. Modified
-   * clicks fall through to the href so new-tab still works.
-   */
-  function goHome(event: MouseEvent<HTMLAnchorElement>) {
-    if (
-      event.button !== 0 ||
-      event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey
-    ) {
-      return;
-    }
-
-    event.preventDefault();
-    window.history.pushState(null, "", import.meta.env.BASE_URL);
-    setRoute(readRoute());
-  }
-
   const isWork = route.name === "work" || route.name === "work-detail";
+  const isBlog = route.name === "blog" || route.name === "blog-article";
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="app-frame">
         <nav className="site-nav" aria-label="Primary">
           <div className="site-nav-inner">
-            <a
-              className="site-nav-brand"
-              href={import.meta.env.BASE_URL}
-              onClick={goHome}
-            >
+            <a className="site-nav-brand" href={hrefFor("")}>
               Nam&nbsp;Dao
             </a>
             <div className="site-nav-links">
-              <a className={isWork ? "active" : ""} href="#/work">
+              <a className={isWork ? "active" : ""} href={hrefFor("work")}>
                 Work
               </a>
-              <a
-                className={route.name === "blog" ? "active" : ""}
-                href="#/blog"
-              >
+              <a className={isBlog ? "active" : ""} href={hrefFor("blog")}>
                 Writing
               </a>
               <a
@@ -182,8 +170,8 @@ function App() {
           <div className="site-footer-inner">
             <span>Nam Dao — AI Engineer, Los Angeles</span>
             <div className="site-footer-links">
-              <a href="#/work">Work</a>
-              <a href="#/blog">Writing</a>
+              <a href={hrefFor("work")}>Work</a>
+              <a href={hrefFor("blog")}>Writing</a>
               <a href={`mailto:${EMAIL}`}>Email</a>
               <a href={GITHUB_URL} rel="noopener noreferrer" target="_blank">
                 GitHub

@@ -1,4 +1,5 @@
 import { craftProjects, featuredProjects } from "../../data/projects";
+import { hrefFor } from "../../routing";
 import ProjectRow from "../Work/ProjectRow";
 
 const GITHUB_URL = "https://github.com/metzgerdev";
@@ -28,7 +29,10 @@ function Home() {
         </div>
 
         <div className="hero-links">
-          <a className="link-button link-button--primary" href="#/work">
+          <a
+            className="link-button link-button--primary"
+            href={hrefFor("work")}
+          >
             Selected work
           </a>
           <a className="link-button" href={`mailto:${EMAIL}`}>
@@ -58,7 +62,7 @@ function Home() {
           <h2 className="section-title" id="selected-work">
             Selected work
           </h2>
-          <a className="section-link" href="#/work">
+          <a className="section-link" href={hrefFor("work")}>
             All projects →
           </a>
         </div>
@@ -80,7 +84,11 @@ function Home() {
 
         <div className="demo-grid">
           {craftProjects.map((project) => (
-            <a className="demo-card" href={project.demo} key={project.slug}>
+            <a
+              className="demo-card"
+              href={hrefFor(project.demo ?? "")}
+              key={project.slug}
+            >
               <p className="demo-card-label">Live</p>
               <h3 className="demo-card-name">{project.name}</h3>
               <p className="demo-card-copy">{project.tagline}</p>

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { projectBySlug } from "../../data/projects";
+import { hrefFor } from "../../routing";
 
 interface DemoFrameProps {
   children: ReactNode;
@@ -17,13 +18,13 @@ function DemoFrame({ children, slug }: DemoFrameProps) {
     <div className="demo-shell demo-stage">
       {project ? (
         <header className="demo-stage-head">
-          <a className="case-back" href="#/work">
+          <a className="case-back" href={hrefFor("work")}>
             ← Work
           </a>
           <h1>{project.name}</h1>
           <p>{project.tagline}</p>
           <p className="demo-stage-cue">
-            <a className="section-link" href={`#/work/${project.slug}`}>
+            <a className="section-link" href={hrefFor(`work/${project.slug}`)}>
               Read how it was built →
             </a>
           </p>

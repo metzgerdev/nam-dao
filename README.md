@@ -14,13 +14,15 @@ AI engineer portfolio and blog. Case studies on LLM and generative-audio work, p
 
 | Route | Contents |
 | --- | --- |
-| `#/home` | Positioning, selected work, demos, background |
-| `#/work` | Full project index — AI/ML and interface engineering |
-| `#/work/<slug>` | Case study per project |
-| `#/blog` | Long-form writing (also reachable as `#/writing`) |
-| `#/about` | Background, experience, contact |
-| `#/sequencer` | Live demo — TR-909 step sequencer |
-| `#/music-player` | Live demo — player with a K-weighted VU meter |
+| `/` | Positioning, selected work, demos |
+| `/work/` | Full project index — AI/ML and interface engineering |
+| `/work/<slug>/` | Case study per project |
+| `/blog/` | Long-form writing |
+| `/blog/<slug>/` | Article |
+| `/sequencer/` | Live demo — TR-909 step sequencer |
+| `/music-player/` | Live demo — player with a K-weighted VU meter |
+
+Every route is prerendered to a static HTML file at build time, so each one is a real 200 with its own title and description rather than a client-rendered shell. Legacy `#/…` links from before the routing change are rewritten in place and still resolve.
 
 Project content lives in [`src/data/projects.ts`](src/data/projects.ts) and drives the home page, the work index, and every case study from one source.
 
@@ -93,6 +95,7 @@ bun run dev
 | --- | --- |
 | `bun run dev` | Start the local development server |
 | `bun run build` | Create a production build |
+| `bun run build:static` | Production build plus prerendering (used by deploy) |
 | `bun test` | Run the test suite |
 | `bun run lint` | Lint |
 | `bun run typecheck` | Type-check without emitting |
