@@ -10,15 +10,12 @@ function Home() {
       <section className="hero shell">
         <p className="hero-name">Nam Dao — AI Engineer</p>
 
-        <h1 className="hero-statement">
-          I build LLM systems with a niche in <em>audio</em> applications.
-        </h1>
+        <h1 className="hero-statement">Rigor meets craftsmanship.</h1>
 
         <p className="hero-summary">
-          Small models that generate music, retrieval systems measured against
-          real benchmarks, and evaluation pipelines that keep an LLM judge
-          honest. An electrical engineering background in signal processing, and
-          eight years of shipping front-end software before that.
+          I build LLM systems with a niche in <em>audio</em> applications. Experience in RAG, evals, agents, custom models and post
+          training. I have an electrical engineering background in signal
+          processing, and eight years of shipping front-end software.
         </p>
 
         <div className="hero-meta">

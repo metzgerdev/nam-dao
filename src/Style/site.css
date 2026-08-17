@@ -637,32 +637,6 @@ body {
   margin-bottom: 0;
 }
 
-.case-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  max-width: var(--measure-prose);
-}
-
-.case-list li {
-  position: relative;
-  padding-left: var(--space-5);
-  padding-block: var(--space-2);
-  color: var(--text-secondary);
-  border-bottom: 1px solid var(--rule);
-}
-
-.case-list li:last-child {
-  border-bottom: 0;
-}
-
-.case-list li::before {
-  content: "—";
-  position: absolute;
-  left: 0;
-  color: var(--text-faint);
-}
-
 .case-footer {
   margin-top: var(--space-7);
   padding-top: var(--space-6);

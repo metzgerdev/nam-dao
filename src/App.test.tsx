@@ -94,7 +94,7 @@ describe("App routes", () => {
     setHashRoute("#/work/midi-gpt");
     render(<App />);
 
-    expect(await findView("midi_gpt")).toBeTruthy();
+    expect(await findView("Midi GPT")).toBeTruthy();
   });
 
   test("renders a not-found case study for an unknown slug", async () => {
