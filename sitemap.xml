@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  One entry by necessity: the site uses hash routing, and crawlers discard
-  everything after "#". Sub-routes such as #/work/midi-gpt are not distinct
-  URLs and cannot be listed here. Moving to path-based routing would make
-  each project and article separately indexable.
--->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://metzgerdev.github.io/nam-dao/</loc>
-    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://metzgerdev.github.io/nam-dao/work/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metzgerdev.github.io/nam-dao/blog/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metzgerdev.github.io/nam-dao/work/midi-gpt/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metzgerdev.github.io/nam-dao/work/rag-pipeline/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metzgerdev.github.io/nam-dao/work/rag-pipeline-research/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metzgerdev.github.io/nam-dao/work/llm-resume-coach/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metzgerdev.github.io/nam-dao/work/synthetic-data-pipeline/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metzgerdev.github.io/nam-dao/work/sequencer/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metzgerdev.github.io/nam-dao/work/music-player/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metzgerdev.github.io/nam-dao/blog/musicgen-delay-pattern/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metzgerdev.github.io/nam-dao/sequencer/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://metzgerdev.github.io/nam-dao/music-player/</loc>
+    <priority>0.8</priority>
   </url>
 </urlset>

@@ -1,0 +1,70 @@
+<!doctype html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:;">
+    <title>Midi GPT — Nam Dao</title>
+    <meta name="description" content="I built a small language model using a GPT-2 transformer architecture that generates MIDI from a drum loop and key as the prompt. The model is trained on a corpus of MIDI patterns from house and UK garage. The corpus was expanded deterministically to generate additional synthetic data for training. ">
+    <meta name="author" content="Nam Dao">
+    <meta name="theme-color" content="#faf8f2">
+    <link rel="canonical" href="https://metzgerdev.github.io/nam-dao/work/midi-gpt/">
+
+    <meta property="og:type" content="profile">
+    <meta property="og:site_name" content="Nam Dao">
+    <meta property="og:title" content="Midi GPT — Nam Dao">
+    <meta property="og:description" content="I built a small language model using a GPT-2 transformer architecture that generates MIDI from a drum loop and key as the prompt. The model is trained on a corpus of MIDI patterns from house and UK garage. The corpus was expanded deterministically to generate additional synthetic data for training. ">
+    <meta property="og:url" content="https://metzgerdev.github.io/nam-dao/work/midi-gpt/">
+    <meta property="og:image" content="https://metzgerdev.github.io/nam-dao/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Nam Dao, AI Engineer — I build LLM systems with a niche in audio applications.">
+    <meta property="og:locale" content="en_US">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Midi GPT — Nam Dao">
+    <meta name="twitter:description" content="I built a small language model using a GPT-2 transformer architecture that generates MIDI from a drum loop and key as the prompt. The model is trained on a corpus of MIDI patterns from house and UK garage. The corpus was expanded deterministically to generate additional synthetic data for training. ">
+    <meta name="twitter:image" content="https://metzgerdev.github.io/nam-dao/og.png">
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Nam Dao",
+        "jobTitle": "AI Engineer",
+        "description": "AI engineer building LLM systems with a niche in audio applications.",
+        "url": "https://metzgerdev.github.io/nam-dao/",
+        "image": "https://metzgerdev.github.io/nam-dao/og.png",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Los Angeles",
+          "addressRegion": "CA",
+          "addressCountry": "US"
+        },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "University of Washington"
+        },
+        "knowsAbout": [
+          "Large language models",
+          "Retrieval-augmented generation",
+          "LLM evaluation",
+          "Multi-agent systems",
+          "Generative audio",
+          "Machine learning",
+          "Digital signal processing"
+        ],
+        "sameAs": [
+          "https://github.com/metzgerdev",
+          "https://www.linkedin.com/in/nam-dao"
+        ]
+      }
+    </script>
+    <script type="module" crossorigin="" src="/nam-dao/assets/index-n5UtxYkO.js"></script>
+    <link rel="modulepreload" crossorigin="" href="/nam-dao/assets/jsx-runtime-D-oznMWL.js">
+    <link rel="modulepreload" crossorigin="" href="/nam-dao/assets/react-DcCgrBX5.js">
+    <link rel="stylesheet" crossorigin="" href="/nam-dao/assets/index-sXovKDtt.css">
+  <link rel="modulepreload" as="script" crossorigin="" href="/nam-dao/assets/WorkDetail-ChrSW35H.js"></head>
+  <body>
+    <div id="root"><div class="app-frame"><nav class="site-nav" aria-label="Primary"><div class="site-nav-inner"><a class="site-nav-brand" href="/nam-dao/">Nam&nbsp;Dao</a><div class="site-nav-links"><a class="active" href="/nam-dao/work/">Work</a><a class="" href="/nam-dao/blog/">Writing</a><a class="external" href="https://github.com/metzgerdev" rel="noopener noreferrer" target="_blank">GitHub</a></div></div></nav><div class="app-route-stage"><main aria-label="Midi GPT"><article class="case shell"><a class="case-back" href="/nam-dao/work/">← Work</a><header class="case-header"><h1 class="case-title">Midi GPT</h1><p class="case-tagline">A small language model that generates MIDI for electronic music</p><div class="tag-row"><span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">mido</span><span class="tag">librosa</span><span class="tag">NumPy</span><span class="tag">SciPy</span><span class="tag">uv</span></div></header><dl class="case-metrics"><div class="case-metric"><dd class="case-metric-value">0.687M</dd><dt class="case-metric-label">Parameters</dt></div><div class="case-metric"><dd class="case-metric-value">8 bars</dd><dt class="case-metric-label">Output</dt></div><div class="case-metric"><dd class="case-metric-value">CPU, seconds</dd><dt class="case-metric-label">Inference</dt></div><div class="case-metric"><dd class="case-metric-value">1/16 note</dd><dt class="case-metric-label">Grid</dt></div></dl><div class="case-section"><p>I built a small language model using a GPT-2 transformer architecture that generates MIDI from a drum loop and key as the prompt. The model is trained on a corpus of MIDI patterns from house and UK garage. The corpus was expanded deterministically to generate additional synthetic data for training. I then performed SFT and DPO to fine-tune the model to my personal taste. A DPO script is provided so the end user can perform additional fine-tuning.</p><p>Because MIDI is a compact symbolic representation of music, the model is small enough to run inference on CPU in a couple of seconds. It has 0.687M parameters and writes eight bars in a few seconds. A 1/16 note grid and drum conditioning results in a tight rhythmic lock.</p></div><footer class="case-footer"><div class="hero-links"><a class="link-button" href="https://github.com/metzgerdev/midi_gpt" rel="noopener noreferrer" target="_blank">View repository</a></div><a class="section-link" href="/nam-dao/work/">All projects →</a></footer></article></main></div><footer class="site-footer"><div class="site-footer-inner"><span>Nam Dao — AI Engineer, Los Angeles</span><div class="site-footer-links"><a href="/nam-dao/work/">Work</a><a href="/nam-dao/blog/">Writing</a><a href="mailto:m5q2f1sf@anonaddy.me">Email</a><a href="https://github.com/metzgerdev" rel="noopener noreferrer" target="_blank">GitHub</a><a href="https://www.linkedin.com/in/nam-dao" rel="noopener noreferrer" target="_blank">LinkedIn</a></div></div></footer></div></div>
+  
+
+</body></html>
