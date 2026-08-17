@@ -3,6 +3,8 @@ import ProjectRow from "../Work/ProjectRow";
 
 const GITHUB_URL = "https://github.com/metzgerdev";
 const LINKEDIN_URL = "https://www.linkedin.com/in/nam-dao";
+// Forwarding alias, so it can be rotated without touching the real mailbox.
+const EMAIL = "m5q2f1sf@anonaddy.me";
 
 function Home() {
   return (
@@ -13,9 +15,10 @@ function Home() {
         <h1 className="hero-statement">Rigor meets craftsmanship.</h1>
 
         <p className="hero-summary">
-          I build LLM systems with a niche in <em>audio</em> applications. Experience in RAG, evals, agents, custom models and post
-          training. I have an electrical engineering background in signal
-          processing, and eight years of shipping front-end software.
+          I build LLM systems with a niche in <em>audio</em> applications.
+          Experience in RAG, evals, agents, custom models and post training. I
+          have an electrical engineering background in signal processing, and
+          eight years of shipping front-end software.
         </p>
 
         <div className="hero-meta">
@@ -27,6 +30,9 @@ function Home() {
         <div className="hero-links">
           <a className="link-button link-button--primary" href="#/work">
             Selected work
+          </a>
+          <a className="link-button" href={`mailto:${EMAIL}`}>
+            Email
           </a>
           <a
             className="link-button"

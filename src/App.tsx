@@ -12,6 +12,8 @@ const WorkDetail = lazy(() => import("./View/Work/WorkDetail"));
 
 const GITHUB_URL = "https://github.com/metzgerdev";
 const LINKEDIN_URL = "https://www.linkedin.com/in/nam-dao";
+// Forwarding alias, so it can be rotated without touching the real mailbox.
+const EMAIL = "m5q2f1sf@anonaddy.me";
 
 type RouteName =
   | "blog"
@@ -182,6 +184,7 @@ function App() {
             <div className="site-footer-links">
               <a href="#/work">Work</a>
               <a href="#/blog">Writing</a>
+              <a href={`mailto:${EMAIL}`}>Email</a>
               <a href={GITHUB_URL} rel="noopener noreferrer" target="_blank">
                 GitHub
               </a>
