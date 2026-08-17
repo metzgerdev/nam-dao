@@ -1,60 +1,68 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { createAppQueryClient } from "./queryClient";
+import DemoFrame from "./View/Work/DemoFrame";
 
+const About = lazy(() => import("./View/About/About"));
 const Blog = lazy(() => import("./View/Blog/Blog"));
-const Daw = lazy(() => import("./View/DAW/Daw"));
 const Home = lazy(() => import("./View/Home/Home"));
 const MusicPlayer = lazy(() => import("./View/MusicPlayer/MusicPlayer"));
 const Sequencer = lazy(() => import("./View/DrumMachine/Sequencer"));
-const TooFastTooFurious = lazy(
-  () => import("./View/TooFastTooFurious/TooFastTooFurious"),
-);
+const Work = lazy(() => import("./View/Work/Work"));
+const WorkDetail = lazy(() => import("./View/Work/WorkDetail"));
+
+const GITHUB_URL = "https://github.com/metzgerdev";
+const LINKEDIN_URL = "https://www.linkedin.com/in/nam-dao";
 
 type RouteName =
+  | "about"
   | "blog"
-  | "daw"
   | "home"
   | "music-player"
   | "sequencer"
-  | "too-fast-too-furious";
+  | "work"
+  | "work-detail";
 
-function readRoute(): RouteName {
+interface Route {
+  name: RouteName;
+  param?: string;
+}
+
+function readRoute(): Route {
   const hashRoute = window.location.hash.replace(/^#\/?/, "");
-  const hashSegment = hashRoute.split("/")[0];
+  const [hashSegment, hashParam] = hashRoute.split("/");
   const pathSegments = window.location.pathname.split("/").filter(Boolean);
   const pathRoute = pathSegments[pathSegments.length - 1];
   const nextRoute = hashSegment || pathRoute;
 
-  if (nextRoute === "blog") {
-    return "blog";
+  if (nextRoute === "work") {
+    return hashParam
+      ? { name: "work-detail", param: hashParam }
+      : { name: "work" };
   }
 
-  if (nextRoute === "home") {
-    return "home";
+  if (nextRoute === "about") {
+    return { name: "about" };
   }
 
-  if (nextRoute === "daw") {
-    return "daw";
+  // "writing" is the label in the nav; "blog" is kept so older links resolve.
+  if (nextRoute === "blog" || nextRoute === "writing") {
+    return { name: "blog" };
   }
 
   if (nextRoute === "music-player") {
-    return "music-player";
+    return { name: "music-player" };
   }
 
   if (nextRoute === "sequencer") {
-    return "sequencer";
+    return { name: "sequencer" };
   }
 
-  if (nextRoute === "too-fast-too-furious") {
-    return "too-fast-too-furious";
-  }
-
-  return "home";
+  return { name: "home" };
 }
 
 function App() {
-  const [route, setRoute] = useState<RouteName>(readRoute);
+  const [route, setRoute] = useState<Route>(readRoute);
   const [queryClient] = useState(createAppQueryClient);
 
   useEffect(() => {
@@ -70,74 +78,111 @@ function App() {
     };
   }, []);
 
+  // Land at the top of a newly opened view rather than mid-scroll.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [route.name, route.param]);
+
   function renderRoute() {
-    if (route === "blog") {
+    if (route.name === "work") {
+      return <Work />;
+    }
+
+    if (route.name === "work-detail") {
+      return <WorkDetail slug={route.param ?? ""} />;
+    }
+
+    if (route.name === "about") {
+      return <About />;
+    }
+
+    if (route.name === "blog") {
       return <Blog />;
     }
 
-    if (route === "home") {
-      return <Home />;
+    // The instrument views are wrapped so a direct link still explains itself.
+    if (route.name === "sequencer") {
+      return (
+        <DemoFrame slug="sequencer">
+          <Sequencer />
+        </DemoFrame>
+      );
     }
 
-    if (route === "sequencer") {
-      return <Sequencer />;
+    if (route.name === "music-player") {
+      return (
+        <DemoFrame slug="music-player">
+          <MusicPlayer />
+        </DemoFrame>
+      );
     }
 
-    if (route === "daw") {
-      return <Daw />;
-    }
-
-    if (route === "music-player") {
-      return <MusicPlayer />;
-    }
-
-    return <TooFastTooFurious />;
+    return <Home />;
   }
+
+  const isWork = route.name === "work" || route.name === "work-detail";
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="app-frame">
-        <nav className="app-route-nav" aria-label="Application views">
-          <a className={route === "home" ? "active" : ""} href="#/home">
-            Home
-          </a>
-          <a className={route === "blog" ? "active" : ""} href="#/blog">
-            Blog
-          </a>
-          <a
-            className={route === "sequencer" ? "active" : ""}
-            href="#/sequencer"
-          >
-            Sequencer
-          </a>
-          <a className={route === "daw" ? "active" : ""} href="#/daw">
-            DAW
-          </a>
-          <a
-            className={route === "music-player" ? "active" : ""}
-            href="#/music-player"
-          >
-            Music Player
-          </a>
-          <a
-            className={route === "too-fast-too-furious" ? "active" : ""}
-            href="#/too-fast-too-furious"
-          >
-            Machines
-          </a>
-          <a
-            href="https://github.com/metzgerdev/Drum-Machine"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub
-          </a>
+        <nav className="site-nav" aria-label="Primary">
+          <div className="site-nav-inner">
+            <a className="site-nav-brand" href="#/home">
+              Nam&nbsp;Dao
+            </a>
+            <div className="site-nav-links">
+              <a className={isWork ? "active" : ""} href="#/work">
+                Work
+              </a>
+              <a
+                className={route.name === "blog" ? "active" : ""}
+                href="#/blog"
+              >
+                Writing
+              </a>
+              <a
+                className={route.name === "about" ? "active" : ""}
+                href="#/about"
+              >
+                About
+              </a>
+              <a
+                className="external"
+                href={GITHUB_URL}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                GitHub
+              </a>
+            </div>
+          </div>
         </nav>
-        <div className="app-route-stage" key={route}>
-          <Suspense fallback={<p className="app-route-loading">Loading view…</p>}>
+
+        <div
+          className="app-route-stage"
+          key={`${route.name}/${route.param ?? ""}`}
+        >
+          <Suspense fallback={<p className="app-route-loading">Loading…</p>}>
             {renderRoute()}
           </Suspense>
         </div>
+
+        <footer className="site-footer">
+          <div className="site-footer-inner">
+            <span>Nam Dao — AI Engineer, Los Angeles</span>
+            <div className="site-footer-links">
+              <a href="#/work">Work</a>
+              <a href="#/blog">Writing</a>
+              <a href="#/about">About</a>
+              <a href={GITHUB_URL} rel="noopener noreferrer" target="_blank">
+                GitHub
+              </a>
+              <a href={LINKEDIN_URL} rel="noopener noreferrer" target="_blank">
+                LinkedIn
+              </a>
+            </div>
+          </div>
+        </footer>
       </div>
     </QueryClientProvider>
   );

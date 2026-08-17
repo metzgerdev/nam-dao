@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "description": "80s inspired drum machine",
-  "homepage": "https://metzgerdev.github.io/Drum-Machine/",
-  "name": "Drum Machine",
+  "description": "AI engineer portfolio and blog",
+  "homepage": "https://metzgerdev.github.io/nam-dao/",
+  "name": "nam-dao",
   "packageManager": "bun@1.3.10",
   "scripts": {
     "build": "vite build",
