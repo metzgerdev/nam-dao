@@ -13,10 +13,5 @@
     "allowJs": false
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": [
-    "src/**/*.test.ts",
-    "src/**/*.test.tsx",
-    "src/utils/Shared/**/*",
-    "src/View/DAW/waveform.test.ts"
-  ]
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/utils/Shared/**/*"]
 }

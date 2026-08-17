@@ -1,84 +1,50 @@
 <div align="center">
 
-# Drum Machine
+# Nam Dao — Portfolio
 
-React based audio widgets with a modern JS toolchain: a Roland TR-909 inspired sequencer, a lightweight DAW, and a music player built around my electronic music project, Zynar.  Aesthetics are balanced with performance.
+AI engineer portfolio and blog. Case studies on LLM and generative-audio work, plus two live audio demos built on the Web Audio API.
 
-[Live Demo](https://metzgerdev.github.io/Drum-Machine/) · [Tech Stack](#tech-stack) · [Local Setup](#local-setup)
+[Live Site](https://metzgerdev.github.io/nam-dao/) · [Tech Stack](#tech-stack) · [Local Setup](#local-setup)
 
 </div>
 
 ---
 
-## Apps
+## What's here
 
-| Module | Function |
+| Route | Contents |
 | --- | --- |
-| `SEQ-01` | TR-909 inspired step sequencer |
-| `DAW-02` | Lightweight DAW / arrangement interface |
-| `PLY-03` | Music player powered by a mock GraphQL data layer |
+| `#/home` | Positioning, selected work, demos, background |
+| `#/work` | Full project index — AI/ML and interface engineering |
+| `#/work/<slug>` | Case study per project |
+| `#/blog` | Long-form writing (also reachable as `#/writing`) |
+| `#/about` | Background, experience, contact |
+| `#/sequencer` | Live demo — TR-909 step sequencer |
+| `#/music-player` | Live demo — player with a K-weighted VU meter |
 
-## Inspiration
+Project content lives in [`src/data/projects.ts`](src/data/projects.ts) and drives the home page, the work index, and every case study from one source.
 
-This project started as a browser drum machine and evolved into:
+## Design
 
-- A TR-909 inspired step sequencer
-- A simplified DAW / arrangement surface
-- A music player for my own music and remix work
+The site chrome is deliberately restrained: near-black surfaces, hairline rules instead of shadows, a system serif for display type and a monospace for labels and metrics. No web fonts — the page ships a strict CSP that forbids external hosts, so everything is a system stack.
 
-The project is a labor of passion, the result of crafting pleasing and functional UI and my background in electrical engineering and audio processing. 
+Styles are split by intent:
 
-## Screenshots
+- [`src/Style/tokens.css`](src/Style/tokens.css) — colour, type and spacing tokens
+- [`src/Style/site.css`](src/Style/site.css) — nav, hero, work list, case studies, about, footer
+- [`src/Style/instruments.css`](src/Style/instruments.css) — the sequencer and music player, which keep their hardware/skeuomorphic aesthetic on purpose
 
-<table>
-  <tr>
-    <td width="50%">
-      <p><strong>MODULE 01 / SEQ-01</strong></p>
-      <img src="docs/screenshots/sequencer.png" alt="Sequencer screenshot" />
-      <p>Pattern-based drum programming with a hardware-inspired interface.</p>
-    </td>
-    <td width="50%">
-      <p><strong>MODULE 02 / DAW-02</strong></p>
-      <img src="docs/screenshots/daw.png" alt="DAW screenshot" />
-      <p>Evolution of the sequencer into a lightweight digital audio workstation. </p>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2">
-      <p><strong>MODULE 03 / PLY-03</strong></p>
-      <img src="docs/screenshots/music-player.png" alt="Music Player screenshot" />
-      <p>A sleek music player for my own tracks with a production-style data flow.</p>
-    </td>
-  </tr>
-</table>
-
-## Modules
+## Demos
 
 ### Sequencer
 
-Drum machine inspired by the Roland TR-909. It focuses on quick pattern building, and sample-triggered playback in a hardware inspspired interface.
-
-For performance, the audio engine and the UI are intentionally decoupled. Timing, scheduling, and sample triggering run through the Web Audio layer with refs and a lookahead scheduler, while React is responsible for editing pattern state and rendering the interface. That separation keeps playback smooth by avoiding audio coupling to React render cycles.
-
-### DAW
-
-The sequencer is the basis for a lightweight DAW. 
-
+A drum machine inspired by the Roland TR-909. The audio engine and the UI are intentionally decoupled: timing, scheduling and sample triggering run through the Web Audio layer with refs and a lookahead scheduler, while React only edits pattern state and renders the interface. That separation keeps playback smooth by never coupling audio to React render cycles.
 
 ### Music Player
 
-The Music Player is centered around my own music and remix work under the Zynar project. Instead of wiring the UI directly to static data, I used a mock GraphQL layer together with TanStack Query to simulate a more realistic frontend architecture.
+Built around my own music and remix work under the Zynar project. Instead of wiring the UI to static data, it uses a mock GraphQL layer with TanStack Query to simulate a more realistic frontend architecture. The route is lazy-loaded, library and track-duration requests are cached, and the audio element preloads metadata so the UI becomes responsive before playback is ready.
 
-The route is lazy-loaded for a fast initial render, library and track-duration requests are cached through TanStack Query, and the audio element uses metadata preloading so the UI can become responsive before full media playback begins.
-
-The VU meter demonstrates my audio and electrical engineering background. It computes RMS energy and runs the signal through a K-weighted filter which tracks human loudness perception more closely than a simple peak meter. 
-
-### Music Player Data Flow
-
-- Track data is requested through `/graphql`
-- A local GraphQL schema resolves library and track queries
-- TanStack Query manages loading, caching, and async UI state
-- Artwork and audio previews are served as versioned app assets
+The VU meter computes RMS energy and runs the signal through a K-weighted filter chain, which tracks human loudness perception more closely than a simple peak meter.
 
 ## Tech Stack
 
@@ -128,5 +94,7 @@ bun run dev
 | `bun run dev` | Start the local development server |
 | `bun run build` | Create a production build |
 | `bun test` | Run the test suite |
+| `bun run lint` | Lint |
+| `bun run typecheck` | Type-check without emitting |
 | `bun run format` | Format the project |
 | `bun run format:check` | Check formatting without writing files |

@@ -33,19 +33,34 @@ Deploy to GitHub Pages via `bun run deploy` (runs `predeploy` build first).
 
 ## Architecture
 
-The app is a single-page app with a custom hash/path router in `src/App.tsx`. All views are lazy-loaded via `React.lazy`. Navigation is driven by `window.location.hash` (e.g. `#/sequencer`).
+This is Nam Dao's professional portfolio, targeting hiring managers for **AI engineer** roles. The AI/ML case studies are the primary content; the two audio demos are secondary craft evidence and should stay ranked below the ML work.
 
-### Modules
+The app is a single-page app with a custom hash/path router in `src/App.tsx`. All views are lazy-loaded via `React.lazy`. Navigation is driven by `window.location.hash` (e.g. `#/sequencer`). Routes: `home`, `work`, `work/<slug>`, `blog` (alias `writing`), `about`, `sequencer`, `music-player`. Unknown routes fall back to Home.
 
-This app is a front end portfolio intended as a showcase of technical skills and product taste. 
+### Content
+
+**All project content lives in `src/data/projects.ts`** — a single `Project[]` that drives the home page, the work index, and every case study. Add or edit a project there rather than in a view. `featured: true` surfaces it on the home page; `kind: "ai" | "craft"` sorts it into the right section of `#/work`.
+
+Case-study copy is factual and sourced from the actual repo READMEs, including limitations sections. Do not add metrics or claims that are not backed by the source repo.
+
+### Styling
+
+Split by intent, imported in order from `src/Style/index.css`:
+
+- `tokens.css` — colour, type and spacing custom properties
+- `site.css` — site chrome: nav, hero, work list, case studies, about, footer
+- `instruments.css` — the sequencer and music player only
+
+The site chrome is "editorial dark": near-black surfaces, hairline rules instead of shadows, a system serif (`--font-display`) for headings and a monospace (`--font-mono`) for labels and metrics. The instrument views deliberately keep their hardware/skeuomorphic look — **do not** restyle them to match the site chrome.
+
+No web fonts: `index.html` ships a strict CSP with `default-src 'self'`, so all typefaces must be system stacks and all assets must be local.
+
+### Views
 
 **SEQ-01 — Sequencer** (`src/View/DrumMachine/Sequencer.tsx`)
 The audio engine is intentionally decoupled from React. Timing, scheduling, and sample triggering run entirely through the Web Audio API using refs and a lookahead scheduler (`src/utils/playback.ts`). React only manages pattern state and renders the UI. `useStepSequencer` (`src/hooks/useStepSequencer.ts`) is the central hook that owns all sequencer state and wires the audio engine to the UI.
 
 Key constants: `LOOKAHEAD_MS = 25`, `SCHEDULE_AHEAD_SECONDS = 0.1`, `STEP_COUNT = 16`.
-
-**DAW-02 — DAW** (`src/View/DAW/Daw.tsx`)
-A visual arrangement surface built over the same shared audio/pattern state as the sequencer. Audio continues to run through the same engine; the DAW layer is purely a visual overlay. Helpers in `src/View/DAW/dawHelpers.ts`.
 
 **PLY-03 — Music Player** (`src/View/MusicPlayer/MusicPlayer.tsx`)
 Uses a mock GraphQL layer (`src/View/MusicPlayer/mockMusicPlayerApi.ts`) that intercepts `fetch` calls to `/graphql` and resolves them client-side using the `graphql` package. TanStack Query (`@tanstack/react-query`) manages caching and async state. The `QueryClient` is created in `src/queryClient.ts` and provided at the app root.

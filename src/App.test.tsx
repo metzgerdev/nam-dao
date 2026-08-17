@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import App from "./App";
 import { resetSampleCacheForTests } from "./utils/sampleLoader";
 
@@ -75,7 +75,40 @@ describe("App routes", () => {
     render(<App />);
 
     expect(await findView("Home")).toBeTruthy();
-    expect(screen.getByRole("link", { name: /home/i }).className).toContain("active");
+  });
+
+  test("renders the work index on the work route", async () => {
+    setHashRoute("#/work");
+    render(<App />);
+
+    expect(await findView("Work")).toBeTruthy();
+
+    // "Work" also appears in the footer, so scope to the primary nav.
+    const nav = screen.getByRole("navigation", { name: /primary/i });
+    expect(
+      within(nav).getByRole("link", { name: /^work$/i }).className,
+    ).toContain("active");
+  });
+
+  test("renders a case study on a work detail route", async () => {
+    setHashRoute("#/work/midi-gpt");
+    render(<App />);
+
+    expect(await findView("midi_gpt")).toBeTruthy();
+  });
+
+  test("renders a not-found case study for an unknown slug", async () => {
+    setHashRoute("#/work/does-not-exist");
+    render(<App />);
+
+    expect(await findView("Project not found")).toBeTruthy();
+  });
+
+  test("renders the about page on the about route", async () => {
+    setHashRoute("#/about");
+    render(<App />);
+
+    expect(await findView("About")).toBeTruthy();
   });
 
   test("renders the sequencer on the sequencer route", async () => {
@@ -83,15 +116,6 @@ describe("App routes", () => {
     render(<App />);
 
     expect(await findView("Sequencer")).toBeTruthy();
-    expect(screen.getByRole("link", { name: /sequencer/i }).className).toContain("active");
-  });
-
-  test("renders the daw on the daw route", async () => {
-    setHashRoute("#/daw");
-    render(<App />);
-
-    expect(await findView("DAW")).toBeTruthy();
-    expect(screen.getByRole("link", { name: /daw/i }).className).toContain("active");
   });
 
   test("renders the music player on the music-player route", async () => {
@@ -99,14 +123,12 @@ describe("App routes", () => {
     render(<App />);
 
     expect(await findView("Music Player")).toBeTruthy();
-    expect(screen.getByRole("link", { name: /music player/i }).className).toContain("active");
   });
 
-  test("renders the too fast too furious route", async () => {
-    setHashRoute("#/too-fast-too-furious");
+  test("falls back to home for an unknown route", async () => {
+    setHashRoute("#/not-a-real-route");
     render(<App />);
 
-    expect(await findView("Machines")).toBeTruthy();
-    expect(screen.getByRole("link", { name: /machines/i }).className).toContain("active");
+    expect(await findView("Home")).toBeTruthy();
   });
 });
