@@ -167,8 +167,14 @@ body {
 /* ── hero ──────────────────────────────────────────────────────────────── */
 
 .hero {
-  padding-block: var(--space-9) var(--space-8);
+  padding-block: var(--space-7) var(--space-8);
   border-bottom: 1px solid var(--rule);
+}
+
+/* A page that opens straight into a section (Work) rather than a hero should
+   not inherit the between-sections rhythm as its top gap. */
+main > .section:first-child {
+  padding-top: var(--space-7);
 }
 
 .hero-name {
