@@ -59,23 +59,11 @@ function WorkDetail({ slug }: WorkDetailProps) {
           </dl>
         ) : null}
 
-        <p className="hero-summary">{project.summary}</p>
-
-        {project.sections.map((section) => (
-          <section className="case-section" key={section.heading}>
-            <h2>{section.heading}</h2>
-            {section.body?.map((paragraph) => (
-              <p key={paragraph.slice(0, 40)}>{paragraph}</p>
-            ))}
-            {section.list ? (
-              <ul className="case-list">
-                {section.list.map((item) => (
-                  <li key={item.slice(0, 40)}>{item}</li>
-                ))}
-              </ul>
-            ) : null}
-          </section>
-        ))}
+        <div className="case-section">
+          {project.description.map((paragraph) => (
+            <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+          ))}
+        </div>
 
         <footer className="case-footer">
           <div className="hero-links">
