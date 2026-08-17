@@ -86,7 +86,7 @@
 }
 
 .music-player-copy h1 {
-  font-size: clamp(2rem, 4.8vw, 4rem);
+  font-size: clamp(2rem, 5.14vw, 4rem);
   color: #8edcf3;
   line-height: 1.05;
 }
@@ -524,7 +524,7 @@
 }
 
 .music-player-feedback-card h2 {
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: clamp(1.8rem, 4.28vw, 3rem);
   color: #e5e2e1;
 }
 
@@ -574,7 +574,7 @@
 }
 
 .music-player-overview-copy h2 {
-  font-size: clamp(2rem, 4vw, 3.6rem);
+  font-size: clamp(2rem, 4.28vw, 3.6rem);
   color: #e5e2e1;
   line-height: 1;
 }
@@ -1112,7 +1112,7 @@
 
 .tr909-header h1 {
   margin: 0;
-  font-size: clamp(1.2rem, 2.8vw, 2.3rem);
+  font-size: clamp(1.2rem, 3vw, 2.3rem);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
@@ -1126,7 +1126,7 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--ink-mid);
-  font-size: clamp(0.78rem, 1.4vw, 1.4rem);
+  font-size: clamp(0.78rem, 1.5vw, 1.4rem);
   font-weight: 700;
 }
 
@@ -1142,7 +1142,7 @@
   border-bottom: 1px dashed rgba(60, 69, 72, 0.6);
   color: var(--ink-mid);
   font-family: inherit;
-  font-size: clamp(0.78rem, 1.4vw, 1.4rem);
+  font-size: clamp(0.78rem, 1.5vw, 1.4rem);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -1448,7 +1448,7 @@
   }
 
   .music-player-overview-copy h2 {
-    font-size: clamp(1.85rem, 9vw, 3rem);
+    font-size: clamp(1.85rem, 9.63vw, 3rem);
   }
 
   .music-player-vu-window {

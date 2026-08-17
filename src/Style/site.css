@@ -8,7 +8,12 @@
   box-sizing: border-box;
 }
 
+/* Type across the site is declared in rem, so the root size is the single
+   lever that scales all of it. 107% = a 7% bump on every rem value. Kept as a
+   percentage rather than px so it still respects a reader's own browser
+   font-size setting. */
 html {
+  font-size: 107%;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -18,7 +23,9 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 16px;
+  /* rem, not px — otherwise inherited text would stay pinned at 16px while
+     everything with an explicit rem size scaled past it. */
+  font-size: 1rem;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -177,7 +184,7 @@ body {
 .hero-statement {
   margin: 0 0 var(--space-6);
   font-family: var(--font-display);
-  font-size: clamp(2.1rem, 5.4vw, 3.5rem);
+  font-size: clamp(2.1rem, 5.78vw, 3.5rem);
   line-height: 1.12;
   letter-spacing: -0.02em;
   font-weight: 400;
@@ -481,7 +488,7 @@ body {
 .case-title {
   margin: 0 0 var(--space-3);
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4.6vw, 2.9rem);
+  font-size: clamp(2rem, 4.92vw, 2.9rem);
   font-weight: 400;
   line-height: 1.14;
   letter-spacing: -0.02em;
