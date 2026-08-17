@@ -1,5 +1,5 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState, type MouseEvent } from "react";
 import { createAppQueryClient } from "./queryClient";
 import DemoFrame from "./View/Work/DemoFrame";
 
@@ -120,6 +120,27 @@ function App() {
     return <Home />;
   }
 
+  /**
+   * Home is the empty-hash fallback, so the brand navigates to the bare base
+   * URL rather than "#/home" — that keeps the landing address clean. Modified
+   * clicks fall through to the href so new-tab still works.
+   */
+  function goHome(event: MouseEvent<HTMLAnchorElement>) {
+    if (
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    window.history.pushState(null, "", import.meta.env.BASE_URL);
+    setRoute(readRoute());
+  }
+
   const isWork = route.name === "work" || route.name === "work-detail";
 
   return (
@@ -127,7 +148,11 @@ function App() {
       <div className="app-frame">
         <nav className="site-nav" aria-label="Primary">
           <div className="site-nav-inner">
-            <a className="site-nav-brand" href="#/home">
+            <a
+              className="site-nav-brand"
+              href={import.meta.env.BASE_URL}
+              onClick={goHome}
+            >
               Nam&nbsp;Dao
             </a>
             <div className="site-nav-links">
