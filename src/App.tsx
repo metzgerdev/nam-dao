@@ -136,7 +136,7 @@ function App() {
         <nav className="site-nav" aria-label="Primary">
           <div className="site-nav-inner">
             <a className="site-nav-brand" href={hrefFor("")}>
-              Nam&nbsp;Dao
+              Home
             </a>
             <div className="site-nav-links">
               <a className={isWork ? "active" : ""} href={hrefFor("work")}>
