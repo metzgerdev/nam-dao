@@ -52,8 +52,15 @@ const ROUTES: RouteSpec[] = [
     path: `work/${p.slug}`,
     description: p.description[0]?.slice(0, 300),
   })),
-  // The article's own <h1> runs to ~90 characters, well past what a title tag
-  // shows; use the short form from articles.ts instead.
+  // Articles set their own <h1> for the page, which is not always what a title
+  // tag wants — MusicGen's runs to ~90 characters, Midi GPT's is two words.
+  // Use the short form from articles.ts for both.
+  {
+    path: "blog/midi-gpt",
+    title: "Midi GPT: A Model Tuned to My Taste",
+    description:
+      "A 621k-parameter transformer that writes house and UK garage MIDI, fine-tuned on my own DAW edits with SFT and DPO.",
+  },
   {
     path: "blog/musicgen-delay-pattern",
     title: "MusicGen: One Stream Instead of Many",

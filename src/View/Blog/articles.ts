@@ -1,4 +1,5 @@
 import musicGenContent from "./blog_post.md?raw";
+import midiGptContent from "./midi_gpt_post.md?raw";
 
 const BLOG_BASE = `${import.meta.env.BASE_URL}blog/`;
 
@@ -14,6 +15,17 @@ export interface Article {
 }
 
 export const articles: Article[] = [
+  {
+    slug: "midi-gpt",
+    title: "Midi GPT: A Model Tuned to My Taste",
+    subtitle:
+      "A 621k-parameter transformer that writes house and UK garage MIDI, fine-tuned on my own DAW edits with SFT and DPO.",
+    date: "August 2026",
+    readingTime: "5 min read",
+    tags: ["Machine Learning", "Audio", "Fine-tuning"],
+    cover: `${BLOG_BASE}midi-gpt/sft-preference-shift.png`,
+    content: midiGptContent,
+  },
   {
     slug: "musicgen-delay-pattern",
     title: "MusicGen: One Stream Instead of Many",
