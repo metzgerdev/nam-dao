@@ -1,0 +1,205 @@
+<!doctype html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:;">
+    <title>Midi GPT: A Model Tuned to My Taste — Nam Dao</title>
+    <meta name="description" content="A 621k-parameter transformer that writes house and UK garage MIDI, fine-tuned on my own DAW edits with SFT and DPO.">
+    <meta name="author" content="Nam Dao">
+    <meta name="theme-color" content="#faf8f2">
+    <link rel="canonical" href="https://metzgerdev.github.io/nam-dao/blog/midi-gpt/">
+
+    <meta property="og:type" content="profile">
+    <meta property="og:site_name" content="Nam Dao">
+    <meta property="og:title" content="Midi GPT: A Model Tuned to My Taste — Nam Dao">
+    <meta property="og:description" content="A 621k-parameter transformer that writes house and UK garage MIDI, fine-tuned on my own DAW edits with SFT and DPO.">
+    <meta property="og:url" content="https://metzgerdev.github.io/nam-dao/blog/midi-gpt/">
+    <meta property="og:image" content="https://metzgerdev.github.io/nam-dao/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Nam Dao, AI Engineer — I build LLM systems with a niche in audio applications.">
+    <meta property="og:locale" content="en_US">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Midi GPT: A Model Tuned to My Taste — Nam Dao">
+    <meta name="twitter:description" content="A 621k-parameter transformer that writes house and UK garage MIDI, fine-tuned on my own DAW edits with SFT and DPO.">
+    <meta name="twitter:image" content="https://metzgerdev.github.io/nam-dao/og.png">
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Nam Dao",
+        "jobTitle": "AI Engineer",
+        "description": "AI engineer building LLM systems with a niche in audio applications.",
+        "url": "https://metzgerdev.github.io/nam-dao/",
+        "image": "https://metzgerdev.github.io/nam-dao/og.png",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Los Angeles",
+          "addressRegion": "CA",
+          "addressCountry": "US"
+        },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "University of Washington"
+        },
+        "knowsAbout": [
+          "Large language models",
+          "Retrieval-augmented generation",
+          "LLM evaluation",
+          "Multi-agent systems",
+          "Generative audio",
+          "Machine learning",
+          "Digital signal processing"
+        ],
+        "sameAs": [
+          "https://github.com/metzgerdev",
+          "https://www.linkedin.com/in/nam-dao"
+        ]
+      }
+    </script>
+    <script type="module" crossorigin="" src="/nam-dao/assets/index-De5uiVdL.js"></script>
+    <link rel="modulepreload" crossorigin="" href="/nam-dao/assets/jsx-runtime-D-oznMWL.js">
+    <link rel="modulepreload" crossorigin="" href="/nam-dao/assets/react-DcCgrBX5.js">
+    <link rel="stylesheet" crossorigin="" href="/nam-dao/assets/index-sXovKDtt.css">
+  <link rel="modulepreload" as="script" crossorigin="" href="/nam-dao/assets/Blog-B318gGuB.js"><link rel="stylesheet" crossorigin="" href="/nam-dao/assets/Blog-a0M8ssAZ.css"></head>
+  <body>
+    <div id="root"><div class="app-frame"><nav class="site-nav" aria-label="Primary"><div class="site-nav-inner"><a class="site-nav-brand" href="/nam-dao/">Home</a><div class="site-nav-links"><a class="" href="/nam-dao/work/">Work</a><a class="active" href="/nam-dao/blog/">Writing</a><a class="external" href="https://github.com/metzgerdev" rel="noopener noreferrer" target="_blank">GitHub</a></div></div></nav><div class="app-route-stage"><main class="blog" aria-label="Midi GPT: A Model Tuned to My Taste"><button type="button" class="blog-back">← All posts</button><article class="blog-article"><h1>Midi GPT</h1>
+<p><em>A small language model that generates MIDI, trained on a curated data set, and fine tuned further with Direct Preference Optimization.</em></p>
+<hr>
+<h2>Motivation</h2>
+<p>I produce electronic music, and need a tool to help me get past creative blocks. A short musical pattern is often enough to build into something bigger. Existing MIDI generators produce outputs that are not in my style or voice. Midi GPT is aimed at a narrow slice of EDM and can be further fine tuned to a user's preference.</p>
+<h2>Data Preparation</h2>
+<p>I trained two models, one for bass and one for melody. I curated a collection of MIDI patterns from House and UK Garage.</p>
+<p>Each training example is one 4-bar phrase, reduced to a single voice and written as one token per sixteenth note indicating a pitch, a rest, or a sustain. A distilled representation of music pinned to rhythm and pitch.</p>
+<p>Each chunk carries two additional signals derived from itself: <strong>grid</strong> (its own note-ons) and <strong>chord</strong> (inferred per bar by matching a pitch-class histogram against chord templates). The corpus is thus self-supervised.</p>
+<p>Every chunk is transposed through all twelve keys - 354 unique bass phrases become 4,248 training examples, and 288 melody phrases become 3,456.  This data augmentation also removes the correlation between rhythm being tied to a certain pitch, so that the model doesn't overfit rhythm with pitch.</p>
+<h2>Token Vocabulary</h2>
+<p>The vocabulary is 65 symbols: REST = 0, SUSTAIN = 1, 61 pitches (MIDI 24–84, C1 through C6), then BOS - (Beginning of Sequence) = 63 and EOS (End of Sequence) = 64.  The tokenization is a direct mapping of the symbol to token id.
+<img alt="The 65-token vocabulary laid over a keyboard: REST and SUSTAIN, 61 pitch ids from C1 to C6, then BOS and EOS" src="/nam-dao/blog/midi-gpt/vocab-token-ids.png"></p>
+<p>The model has a simple job at each step — output a pitch, a rest, or a sustain.  The sequence [2, 1, 1, 1] is note C1 sustained for a quarter note (each step is a 1/16th note). The resulting midi is edited in a digital audio workstation.</p>
+<h2>Embedding</h2>
+<p>Every token id becomes a 128-d vector by indexing a row of <code>nn.Embedding(65, 128)</code> — row 14 is C2. The lookup is exactly <code>one_hot(14) @ W</code>.</p>
+<p><img alt="The nn.Embedding(65, 128) table, one row per token, with row 14 (C2) highlighted" src="/nam-dao/blog/midi-gpt/embedding-table.png">
+<img alt="One-hot(14) times W equals row 14 of the table" src="/nam-dao/blog/midi-gpt/embedding-lookup.png"></p>
+<p>Position indexes its own table, similar to the token id look up. Grid and chord are projected rather than looked up, since their inputs are values, not ids. A chord is a 12-slot chroma, one slot per pitch class:</p>
+<p><img alt="A 12-slot chroma vector for A minor, with C, E and A set to 1 and the rest 0" src="/nam-dao/blog/midi-gpt/chord-chroma.png"></p>
+<p><code>nn.Linear(12, 128)</code> maps it up, which for A minor is just three columns and a bias:</p>
+<p><code>chord_proj(A minor) = W[:,C] + W[:,E] + W[:,A] + b</code></p>
+<p><img alt="The three active pitch-class rows of the linear layer summing into one 128-d vector" src="/nam-dao/blog/midi-gpt/chord-projection.png"></p>
+<p>All four land in the same 128-d space and are summed:</p>
+<p><code>x = tok_emb + pos_emb + grid_proj + chord_proj</code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>signal</th><th>shape in</th><th>how it becomes 128-d</th></tr></thead><tbody><tr><td>token</td><td>1 id (0–64)</td><td><code>nn.Embedding(65, 128)</code> — the id indexes a row</td></tr><tr><td>position</td><td>1 index (0–67)</td><td><code>nn.Embedding(68, 128)</code> — the step indexes a row</td></tr><tr><td>grid</td><td>1 scalar (0 or 1)</td><td><code>nn.Linear(1, 128)</code> — one weight vector scaled by the onset</td></tr><tr><td>chord</td><td>12-d chroma</td><td><code>nn.Linear(12, 128)</code> — a learned map from pitch classes</td></tr></tbody></table>
+<p>Grid and chord are user-provided signals to condition the output. In training both come from the phrase itself — the stem's own note-ons, and the chroma inferred per bar. At inference the grid comes from the kick of a chosen drum groove, four-on-the-floor house or two-step UK Garage, and the chord from your key and progression.</p>
+<h2>Transformer</h2>
+<p>The backbone is a small GPT-2. At roughly 620k parameters, the model can easily run on a laptop.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>key</th><th>value</th><th>what it is</th></tr></thead><tbody><tr><td><code>n_layers</code></td><td>3</td><td>transformer blocks</td></tr><tr><td><code>n_heads</code></td><td>4</td><td>attention heads per block, 32 dimensions each</td></tr><tr><td><code>emb_dim</code></td><td>128</td><td>model width — every signal is projected to this</td></tr><tr><td>feed-forward</td><td>512</td><td>hidden width inside each block, 4 × <code>emb_dim</code></td></tr><tr><td><code>context_length</code></td><td>68</td><td>BOS + 64 steps + EOS, with room to spare</td></tr><tr><td><code>vocab_size</code></td><td>65</td><td>REST, SUSTAIN, 61 pitches, BOS, EOS</td></tr><tr><td><code>drop_rate</code></td><td>0.1</td><td></td></tr><tr><td><code>qkv_bias</code></td><td>False</td><td></td></tr></tbody></table>
+<h2>Training</h2>
+<p>Training is teacher-forced.  A causal mask prevents look ahead attention. AdamW, learning rate 5e-4, weight decay 0.05, batch size 16, 150 epochs, 15% held out for validation, best validation loss kept.</p>
+<p>Training took about seven and a half minutes on
+an M-series GPU.</p>
+<p>Most of the drop happens in the first fifteen epochs — cross-entropy falls from 2.0 to about
+0.18 — and from roughly epoch 40 the run is grinding out small improvements. Validation
+bottoms at 0.1243 on epoch 131 and drifts up slightly afterwards.</p>
+<p><img alt="Training and validation cross-entropy over 150 epochs of the bass model, shown whole and zoomed from epoch 20, with a generalisation gap of +0.022 and best validation 0.1243 at epoch 131" src="/nam-dao/blog/midi-gpt/loss-curves-bass.png"></p>
+<p>The +0.022 gap is flattering. The split is random over the augmented corpus, so 300 of the 354 phrases appear on both sides of it in some other key — and since the augmentation exists to make the model key-invariant, those are very nearly the same example. The true gap on phrases it has never heard is wider.</p>
+<h2>SFT</h2>
+<p>From the base checkpoint, I generated 10 outputs, and edited them to my preference.  These edits were transposed through a range of 12 semitones and concatented with the existing corpus into a shuffled loader for SFT.  This mixture, along with a low learning rate (1e-4), and only 8 epochs, limits drift from the base model.  As seen below, the goal is to shift the distribution towards the preference, but not destroy the base model.</p>
+<p><img alt="Mean log P(clip) across base, ft1, ft2 and ft3: the chosen line rises from -133 to -7, the rejected line lags" src="/nam-dao/blog/midi-gpt/sft-preference-shift.png"></p>
+<h2>DPO Fine Tune</h2>
+<p>DPO fine-tunes further toward the user's preference. It optimises an implicit reward — how much more likely the policy generates a clip than the frozen anchor does — and widens the gap between that reward for the clip you kept and the clip you replaced, while a KL term holds the policy near the anchor.</p>
+<p>sequence_logprob sums the per-step log probabilities of one exact clip — how likely the model was to produce that precise sequence, under the grid and chord it was conditioned on (g and c below). The policy is the model being trained; it starts as the checkpoint that generated the clip. The anchor is frozen, and by default it is the untuned base model.  Drift is measured from the base checkpoint instead of compounding across rounds.</p>
+<pre><code class="language-python">policy_chosen   = sequence_logprob(policy, xc, yc, g, c)
+policy_rejected = sequence_logprob(policy, xr, yr, g, c)
+anchor_chosen   = sequence_logprob(anchor, xc, yc, g, c)   # frozen
+anchor_rejected = sequence_logprob(anchor, xr, yr, g, c)   # frozen
+
+
+margin = beta * ((policy_chosen - anchor_chosen)
+                - (policy_rejected - anchor_rejected))
+loss   = -F.logsigmoid(margin).mean() + lam * kl_to_anchor(policy, contexts)
+</code></pre>
+<p><img alt="Implicit reward over 30 DPO rounds on 24 held-out pairs: r(chosen) climbs to +5.17 while r(rejected) falls to -2.36, a margin of +7.53" src="/nam-dao/blog/midi-gpt/dpo-reward-margin.png"></p></article></main></div><footer class="site-footer"><div class="site-footer-inner"><span>Nam Dao — AI Engineer, Los Angeles</span><div class="site-footer-links"><a href="/nam-dao/work/">Work</a><a href="/nam-dao/blog/">Writing</a><a href="mailto:m5q2f1sf@anonaddy.me">Email</a><a href="https://github.com/metzgerdev" rel="noopener noreferrer" target="_blank">GitHub</a><a href="https://www.linkedin.com/in/nam-dao" rel="noopener noreferrer" target="_blank">LinkedIn</a></div></div></footer></div></div>
+  
+
+</body></html>

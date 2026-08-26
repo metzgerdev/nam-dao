@@ -41,6 +41,10 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://metzgerdev.github.io/nam-dao/blog/midi-gpt/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://metzgerdev.github.io/nam-dao/blog/musicgen-delay-pattern/</loc>
     <priority>0.8</priority>
   </url>
