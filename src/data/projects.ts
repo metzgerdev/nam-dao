@@ -101,12 +101,19 @@ export const projects: Project[] = [
   {
     slug: "llm-resume-coach",
     name: "LLM Resume Coach",
-    tagline: "Two scorers on the same rubric",
+    tagline:
+      "A resume coach that scores resume / job alignment through rule based and LLM-as-Judge rubrics.",
     kind: "ai",
     featured: true,
     repo: `${GITHUB}/llm-resume-coach`,
     stack: ["Python", "Groq (Llama)", "Pydantic", "REST API", "Streamlit"],
-    metrics: [{ label: "Scorers", value: "2" }],
+    metrics: [
+      { label: "Scorers", value: "LLM + rules" },
+      { label: "Judge dimensions", value: "6" },
+      { label: "Quality gate", value: "11 checks" },
+      { label: "Prompt variants", value: "4" },
+      { label: "Tests", value: "45" },
+    ],
     description: [
       "I built a resume coach using synthetic data, a rule-based analyzer, and LLM-as-a-Judge evaluation. The system identifies the fit between a resume and job posting, detects quality issues, and provides actionable feedback.",
       "The evaluation pipeline includes data validation and correlation matrices with heatmaps. The system also exposes an API for running the pipeline.",
@@ -115,7 +122,8 @@ export const projects: Project[] = [
   {
     slug: "synthetic-data-pipeline",
     name: "Synthetic Data Pipeline",
-    tagline: "Synthetic Q&A with a calibrated judge",
+    tagline:
+      "Data generation for a home repair Q & A, using LLM-as-Judge as a flywheel for prompt refinement.",
     kind: "ai",
     featured: false,
     repo: `${GITHUB}/synthetic-data-pipeline`,
@@ -128,7 +136,13 @@ export const projects: Project[] = [
       "Streamlit",
       "Matplotlib",
     ],
-    metrics: [{ label: "Quality dimensions", value: "6" }],
+    metrics: [
+      { label: "Labels", value: "human + LLM" },
+      { label: "Judge dimensions", value: "6" },
+      { label: "Quality gate", value: "7 checks" },
+      { label: "Prompt variants", value: "4" },
+      { label: "Agreement target", value: "80% per dim" },
+    ],
     description: [
       "I built a pipeline for synthetic data generation for a Q&A repair chatbot. The pipeline generates structured repair guidance evaluated for data quality, along with human-in-the-loop labeling. The evaluation metric is LLM-as-Judge agreement with human labeling over six quality dimensions. The generation prompt and judge prompt are iterated until the agreement threshold is met. Visualizations, metrics and log reports are generated to guide prompt adjustment based on empirical observations.",
     ],
