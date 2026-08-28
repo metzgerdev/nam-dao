@@ -58,11 +58,11 @@
         ]
       }
     </script>
-    <script type="module" crossorigin="" src="/nam-dao/assets/index-CaNUk6Et.js"></script>
+    <script type="module" crossorigin="" src="/nam-dao/assets/index-Dftig2rC.js"></script>
     <link rel="modulepreload" crossorigin="" href="/nam-dao/assets/jsx-runtime-D-oznMWL.js">
     <link rel="modulepreload" crossorigin="" href="/nam-dao/assets/react-DcCgrBX5.js">
     <link rel="stylesheet" crossorigin="" href="/nam-dao/assets/index-sXovKDtt.css">
-  <link rel="modulepreload" as="script" crossorigin="" href="/nam-dao/assets/Blog-U1_keO5U.js"><link rel="stylesheet" crossorigin="" href="/nam-dao/assets/Blog-a0M8ssAZ.css"></head>
+  <link rel="modulepreload" as="script" crossorigin="" href="/nam-dao/assets/Blog-D-qiGuFe.js"><link rel="stylesheet" crossorigin="" href="/nam-dao/assets/Blog-a0M8ssAZ.css"></head>
   <body>
     <div id="root"><div class="app-frame"><nav class="site-nav" aria-label="Primary"><div class="site-nav-inner"><a class="site-nav-brand" href="/nam-dao/">Home</a><div class="site-nav-links"><a class="" href="/nam-dao/work/">Work</a><a class="active" href="/nam-dao/blog/">Writing</a><a class="external" href="https://github.com/metzgerdev" rel="noopener noreferrer" target="_blank">GitHub</a></div></div></nav><div class="app-route-stage"><main class="blog" aria-label="Midi GPT: A Model Tuned to My Taste"><button type="button" class="blog-back">← All posts</button><article class="blog-article"><h1>Midi GPT</h1>
 <p><em>A small language model that generates MIDI, trained on a curated data set, and fine tuned further with Direct Preference Optimization.</em></p>
@@ -182,7 +182,6 @@ an M-series GPU.</p>
 0.18 — and from roughly epoch 40 the run is grinding out small improvements. Validation
 bottoms at 0.1243 on epoch 131 and drifts up slightly afterwards.</p>
 <p><img alt="Training and validation cross-entropy over 150 epochs of the bass model, shown whole and zoomed from epoch 20, with a generalisation gap of +0.022 and best validation 0.1243 at epoch 131" src="/nam-dao/blog/midi-gpt/loss-curves-bass.png"></p>
-<p>The +0.022 gap is flattering. The split is random over the augmented corpus, so 300 of the 354 phrases appear on both sides of it in some other key — and since the augmentation exists to make the model key-invariant, those are very nearly the same example. The true gap on phrases it has never heard is wider.</p>
 <h2>SFT</h2>
 <p>From the base checkpoint, I generated 10 outputs, and edited them to my preference.  These edits were transposed through a range of 12 semitones and concatented with the existing corpus into a shuffled loader for SFT.  This mixture, along with a low learning rate (1e-4), and only 8 epochs, limits drift from the base model.  As seen below, the goal is to shift the distribution towards the preference, but not destroy the base model.</p>
 <p><img alt="Mean log P(clip) across base, ft1, ft2 and ft3: the chosen line rises from -133 to -7, the rejected line lags" src="/nam-dao/blog/midi-gpt/sft-preference-shift.png"></p>

@@ -1,4 +1,4 @@
-import{i as e,n as t,r as n,t as r}from"./jsx-runtime-D-oznMWL.js";import{t as i}from"./react-DcCgrBX5.js";import{a}from"./index-CaNUk6Et.js";var o=`# MusicGen: How turning parallel streams into a single stream simplified audio generation
+import{i as e,n as t,r as n,t as r}from"./jsx-runtime-D-oznMWL.js";import{t as i}from"./react-DcCgrBX5.js";import{a}from"./index-Dftig2rC.js";var o=`# MusicGen: How turning parallel streams into a single stream simplified audio generation
 
 *Meta's MusicGen used a simple time-offset pattern to collapse a three-model cascade into a single transformer — greatly simplifying training and inference requirements of generative audio.*
 
@@ -205,8 +205,6 @@ Most of the drop happens in the first fifteen epochs — cross-entropy falls fro
 bottoms at 0.1243 on epoch 131 and drifts up slightly afterwards.
 
 ![Training and validation cross-entropy over 150 epochs of the bass model, shown whole and zoomed from epoch 20, with a generalisation gap of +0.022 and best validation 0.1243 at epoch 131](midi-gpt/loss-curves-bass.png)
-
-The +0.022 gap is flattering. The split is random over the augmented corpus, so 300 of the 354 phrases appear on both sides of it in some other key — and since the augmentation exists to make the model key-invariant, those are very nearly the same example. The true gap on phrases it has never heard is wider.
 
 ## SFT
 
