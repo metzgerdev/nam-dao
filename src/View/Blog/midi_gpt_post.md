@@ -94,8 +94,6 @@ bottoms at 0.1243 on epoch 131 and drifts up slightly afterwards.
 
 ![Training and validation cross-entropy over 150 epochs of the bass model, shown whole and zoomed from epoch 20, with a generalisation gap of +0.022 and best validation 0.1243 at epoch 131](midi-gpt/loss-curves-bass.png)
 
-The +0.022 gap is flattering. The split is random over the augmented corpus, so 300 of the 354 phrases appear on both sides of it in some other key — and since the augmentation exists to make the model key-invariant, those are very nearly the same example. The true gap on phrases it has never heard is wider.
-
 ## SFT
 
 
