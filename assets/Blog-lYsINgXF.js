@@ -1,4 +1,4 @@
-import{i as e,n as t,r as n,t as r}from"./jsx-runtime-D-oznMWL.js";import{t as i}from"./react-DcCgrBX5.js";import{a}from"./index-Dftig2rC.js";var o=`# MusicGen: How turning parallel streams into a single stream simplified audio generation
+import{i as e,n as t,r as n,t as r}from"./jsx-runtime-D-oznMWL.js";import{t as i}from"./react-DcCgrBX5.js";import{a}from"./index-lRb0OopI.js";var o=`# MusicGen: How turning parallel streams into a single stream simplified audio generation
 
 *Meta's MusicGen used a simple time-offset pattern to collapse a three-model cascade into a single transformer — greatly simplifying training and inference requirements of generative audio.*
 
