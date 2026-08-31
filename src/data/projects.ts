@@ -148,6 +148,32 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "digital-clone",
+    name: "Multi Agent Digital Clone",
+    tagline:
+      "A multi-agent system that retrieves evidence, writes in a learned voice, and routes responses",
+    kind: "ai",
+    featured: true,
+    repo: `${GITHUB}/digital-clone`,
+    stack: [
+      "Python",
+      "CrewAI",
+      "FAISS",
+      "Sentence Transformers",
+      "OpenRouter",
+      "GPT-5.6 Luna",
+    ],
+    metrics: [
+      { label: "Routing accuracy", value: "25/25" },
+      { label: "Grounding score", value: "0.823" },
+      { label: "Request latency", value: "2.78s" },
+      { label: "Routing", value: "send / fallback" },
+    ],
+    description: [
+      "I built a multi-agent digital clone that retrieves relevant evidence, drafts an answer in a learned author style, evaluates the result, and routes the response to `send` or `fallback`. The project includes offline grounding evaluation, routing calibration, and a human review UI.",
+    ],
+  },
+  {
     slug: "sequencer",
     name: "Sequencer",
     tagline: "A TR-909 step sequencer with the audio engine kept out of React",
